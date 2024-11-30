@@ -1,0 +1,8 @@
+/* Add padding to notice cards on mobile view */
+@media (max-width: 768px) {
+  .notice-card {
+    padding-left: 1rem; /* Add padding to the left */
+    padding-right: 1rem; /* Add padding to the right */
+    margin: 0 auto; /* Center the card in mobile view */
+  }
+}
