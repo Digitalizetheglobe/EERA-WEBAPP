@@ -74,9 +74,9 @@ const Freature = () => {
         </div>
         
         <div className="flex justify-start pl-4 mb-6">
-          <button className="text-[#A99067] font-semibold w-32 h-10 rounded-md border border-[#A99067]">
+          {/* <button className="text-[#A99067] font-semibold w-32 h-10 rounded-md border border-[#A99067]">
          Read More
-          </button>
+          </button> */}
           </div>
       </div>
     </div>
