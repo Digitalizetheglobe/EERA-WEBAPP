@@ -12,6 +12,7 @@ import OtpDialog from './Webapp/OtpDialog.js';
 import LoginSuccess from './Webapp/LoginSuccess.js';
 import Notice from './Webapp/Notices/Notics.js';
 import WebappPricing from './Webapp/Pricing/Pricing.js';
+import SearchNotices from './Webapp/SearchNotices.js';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path='/LoginSuccess' element={<LoginSuccess />} />
         <Route path="/notices/:id" element={<Notice />} />
         <Route path='/WebappPricing' element={<WebappPricing />} />
+        <Route path='/search-notices' element={<SearchNotices/>} />
       </Routes>
     </Router>
 

@@ -7,7 +7,7 @@ import LoginModal from "../../Webapp/LoginModal";
 const Homeheader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [open, setOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("login"); // 'login' or 'signup'
+  const [modalMode, setModalMode] = useState("login");
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -23,11 +23,14 @@ const Homeheader = () => {
 
   return (
     <>
-      <header className="absolute top-0 left-0 right-0 z-50 tracking-wide">
+      <header
+        className="absolute top-0 left-0 right-0 z-50 tracking-wide bg-opacity-70"
+        style={{ backgroundColor: "rgba(0, 26, 59, 0.7)" }}
+      >
         {/* Main Header Section */}
         <section className="flex items-center justify-between py-3 lg:px-10 px-4">
           {/* Logo */}
-          <Link to='/home' className="shrink-0">
+          <Link to="/home" className="shrink-0">
             <img src={logo} alt="logo" className="w-10 sm:w-14" />
           </Link>
 
@@ -51,12 +54,19 @@ const Homeheader = () => {
           <div className="hidden lg:flex items-center justify-between flex-grow text-center space-x-6">
             <ul className="flex space-x-6 flex-grow justify-center">
               <li>
-                <Link to='/home' href="#" className="text-white text-[15px] font-medium">
+                <Link
+                  to="/home"
+                  href="#"
+                  className="text-white text-[15px] font-medium"
+                >
                   Home
                 </Link>
               </li>
               <li className="flex items-center space-x-2">
-                <Link to="/about" className="text-white text-[15px] font-medium">
+                <Link
+                  to="/about"
+                  className="text-white text-[15px] font-medium"
+                >
                   About
                 </Link>
               </li>
@@ -65,11 +75,11 @@ const Homeheader = () => {
                   Saved
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/WebappPricing" className="text-white text-[15px] font-medium">
                   Pricing
                 </Link>
-              </li>
+              </li> */}
             </ul>
             <div className="flex space-x-3">
               <button
@@ -105,7 +115,10 @@ const Homeheader = () => {
               </li>
               <li className="flex items-center space-x-2">
                 <img src={saved} className="w-3" alt="Saved icon" />
-                <Link to="/about" className="text-[#004B80] text-sm font-medium">
+                <Link
+                  to="/about"
+                  className="text-[#004B80] text-sm font-medium"
+                >
                   About
                 </Link>
               </li>
