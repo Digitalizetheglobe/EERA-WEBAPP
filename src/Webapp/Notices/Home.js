@@ -10,6 +10,8 @@ import Faq from "../../LandingPage/Faq";
 import Testimonial from "../../LandingPage/Testimonial";
 import WebFooter from "./WebFooter";
 import Webtestimonial from "./Webtestimonial";
+import PostNotices from "../../PostNotices/PostNotices";
+import CTA from "../CTA";
 
 const Home = () => {
   const [keyword, setKeyword] = useState("");
@@ -73,6 +75,7 @@ const Home = () => {
 
       <AllNotices />
       <RecentLatestNotice />
+      <CTA/>
       <Faq />
       <Webtestimonial />
       <WebFooter />

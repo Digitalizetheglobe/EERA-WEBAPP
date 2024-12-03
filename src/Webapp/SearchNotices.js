@@ -20,26 +20,28 @@ const SearchNotices = () => {
         throw new Error("Failed to fetch notices");
       }
       const data = await response.json();
-
+  
       // Filter based on keyword and location
-      const filtered = data.filter(
-        (notice) =>
+      const filtered = data.filter((notice) => {
+        const title = notice.notice_title || ""; // Fallback to an empty string if null/undefined
+        const description = notice.notice_description || ""; // Fallback to an empty string if null/undefined
+        const noticeLocation = notice.location || ""; // Fallback to an empty string if null/undefined
+  
+        return (
           (!keyword ||
-            notice.notice_title.toLowerCase().includes(keyword.toLowerCase()) ||
-            notice.notice_description
-              .toLowerCase()
-              .includes(keyword.toLowerCase())) &&
-          (!location ||
-            notice.location.toLowerCase().includes(location.toLowerCase()))
-      );
-
+            title.toLowerCase().includes(keyword.toLowerCase()) ||
+            description.toLowerCase().includes(keyword.toLowerCase())) &&
+          (!location || noticeLocation.toLowerCase().includes(location.toLowerCase()))
+        );
+      });
+  
       setNotices(filtered);
       setLoading(false);
     } catch (err) {
       setError(err.message);
       setLoading(false);
     }
-  };
+  }; 
 
   useEffect(() => {
     fetchFilteredNotices();
