@@ -41,7 +41,7 @@ const SearchNotices = () => {
       setError(err.message);
       setLoading(false);
     }
-  }; 
+  };
 
   useEffect(() => {
     fetchFilteredNotices();

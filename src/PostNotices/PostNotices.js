@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import steimg from "../assets/banner/steps image.png";
 import bgimg1 from "../assets/banner/Backgroundimage.png";
+import WebFooter from "../Webapp/Notices/WebFooter";
+import Homeheader from "../Webapp/Notices/Homewebheader";
 
 const PostNotices = () => {
   const [fileName, setFileName] = useState(""); // State to store the file name
@@ -14,6 +16,9 @@ const PostNotices = () => {
 
   return (
     <>
+   
+      <Homeheader />
+    
       <div
         className="flex justify-center items-center h-full min-h-screen p-4"
         style={{
@@ -23,7 +28,7 @@ const PostNotices = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="grid md:grid-cols-2 items-center gap-8 ">
+        <div className="grid md:grid-cols-2 items-center gap-8 mt-20">
           <div className="">
             <h1 className="text-white text-center items-center justify-center mb-6 text-3xl font-bold">
               <span className="text-[#A99067]">Be Seen:</span> Post Your Notice
@@ -177,6 +182,9 @@ const PostNotices = () => {
           </form>
         </div>
       </div>
+
+      <WebFooter />
+     
     </>
   );
 };

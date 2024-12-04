@@ -2,13 +2,14 @@ import React from "react";
 import groupdiscussion from "../assets/banner/groupdiscussion.jpg";
 import Webheader from "./Notices/Webheader";
 import Homeheader from "./Notices/Homewebheader";
+import WebFooter from "./Notices/WebFooter";
 
 
 const About = () => {
   return (
     <>
     <Homeheader />
-    <section className="flex mb-8 mt-14">
+    <section className="flex mb-8 mt-24">
       <div className="w-full max-w-6xl grid grid-cols-5 gap-6 mx-auto">
 
         {/* About Us Title and Get Started Button */}
@@ -67,6 +68,10 @@ const About = () => {
         </div>
       </div>
     </section>
+
+    <WebFooter />
+     
+
     </>
   );
 };
