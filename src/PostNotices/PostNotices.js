@@ -3,22 +3,81 @@ import steimg from "../assets/banner/steps image.png";
 import bgimg1 from "../assets/banner/Backgroundimage.png";
 import WebFooter from "../Webapp/Notices/WebFooter";
 import Homeheader from "../Webapp/Notices/Homewebheader";
+import { useNavigate } from "react-router-dom";
 
 const PostNotices = () => {
-  const [fileName, setFileName] = useState(""); // State to store the file name
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    description: "",
+  });
+  const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Get the first selected file
-    if (file) {
-      setFileName(file.name); // Set the file name to state
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setFileName(selectedFile.name);
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const payload = new FormData();
+    payload.append("name", formData.name);
+    payload.append("email", formData.email);
+    payload.append("phone", formData.phone);
+    payload.append("location", formData.location);
+    payload.append("description", formData.description);
+    if (file) payload.append("document", file);
+
+    try {
+      const response = await fetch("http://api.epublicnotices.in/api/request-upload-notice", {
+        method: "POST",
+        body: payload,
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setMessage("Notice uploaded successfully!");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          location: "",
+          description: "",
+        });
+        setFile(null);
+        setFileName("");
+        setIsModalOpen(true); // Open modal on success
+      } else {
+        setMessage(result.message || "Failed to upload notice.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setMessage("An error occurred while submitting the form.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
-   
       <Homeheader />
-    
       <div
         className="flex justify-center items-center h-full min-h-screen p-4"
         style={{
@@ -42,7 +101,9 @@ const PostNotices = () => {
               />
             </div>
           </div>
-          <form className="md:max-w-md w-full mx-auto bg-[#001A3B] p-6">
+          <form
+            onSubmit={handleSubmit}
+            className="md:max-w-md w-full mx-auto bg-[#001A3B] p-6">
             <div className="mb-12">
               <h3 className="text-2xl font-bold text-white">
                 {" "}
@@ -54,8 +115,9 @@ const PostNotices = () => {
                 <div className="relative z-0 w-full mb-5 group">
                   <input
                     type="text"
-                    name="floating_first_name"
-                    id="floating_first_name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
@@ -69,11 +131,12 @@ const PostNotices = () => {
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
                   <input
-                    type="text"
-                    name="floating_last_name"
-                    id="floating_last_name"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder=""
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
                     required
                   />
                   <label
@@ -88,8 +151,9 @@ const PostNotices = () => {
                 <div className="relative z-0 w-full mb-5 group">
                   <input
                     type="text"
-                    name="floating_first_name"
-                    id="floating_first_name"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
@@ -104,8 +168,9 @@ const PostNotices = () => {
                 <div class="relative z-0 w-full mb-5 group">
                   <input
                     type="text"
-                    name="floating_last_name"
-                    id="floating_last_name"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleInputChange}
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
@@ -121,11 +186,12 @@ const PostNotices = () => {
               <div className="grid md:grid-cols md:gap-6">
                 <div className="relative z-0 w-full mb-5 group">
                   <input
-                    type="text"
-                    name="floating_first_name"
-                    id="floating_first_name"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    placeholder=""
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
+
                     required
                   />
                   <label
@@ -152,39 +218,54 @@ const PostNotices = () => {
                 id="file-upload"
                 name="file-upload"
                 className="hidden"
-                onChange={handleFileChange} // Handle file change
+                onChange={handleFileChange}
               />
-              {/* Display file name if a file is selected */}
               {fileName && (
                 <div className="mt-2 text-sm text-gray-600">
                   Selected file: <span className="font-medium">{fileName}</span>
                 </div>
               )}
             </div>
-
             <div className="mt-12">
               <button
-                type="button"
+                type="submit"
                 className="w-full shadow-xl py-2.5 px-5 text-md font-semibold text-white bg-[#A99067] hover:bg-[#A99067] focus:outline-none"
+                disabled={loading}
               >
-                Send Notice for Verification
+                {loading ? "Submitting..." : "Send Notice for Verification"}
               </button>
-              {/* <p className="text-gray-800 text-sm text-center mt-6">
-              Don't have an account
-              <a
-                href="#"
-                className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap"
-              >
-                Register here
-              </a>
-            </p> */}
             </div>
+            {message && (
+              <div className="mt-4 text-center text-white">{message}</div>
+            )}
           </form>
         </div>
       </div>
-
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-md w-96">
+            <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
+              Thank You for Your Submission
+            </h2>
+            <p className="text-center text-gray-600">
+              Your notice has been successfully submitted! It will be live in the next 4 hours.
+            </p>
+            <div className="mt-6 flex justify-center">
+              <button
+                className="bg-[#A99067] text-white px-6 py-2 rounded-md"
+                onClick={() => {
+                  setIsModalOpen(false);
+                  navigate("/home"); // Navigate to '/home' on close
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <WebFooter />
-     
     </>
   );
 };
