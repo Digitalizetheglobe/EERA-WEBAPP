@@ -53,7 +53,7 @@ const Homeheader = () => {
           {/* Desktop Nav Links and Buttons (hidden on mobile) */}
           <div className="hidden lg:flex items-center justify-between flex-grow text-center space-x-6">
             <ul className="flex space-x-6 flex-grow justify-center">
-              <li>
+              {/* <li>
                 <Link
                   to="/home"
                   href="#"
@@ -74,7 +74,7 @@ const Homeheader = () => {
                 <a href="#" className="text-white text-[15px] font-medium">
                   Saved
                 </a>
-              </li>
+              </li> */}
               {/* <li>
                 <Link to="/WebappPricing" className="text-white text-[15px] font-medium">
                   Pricing

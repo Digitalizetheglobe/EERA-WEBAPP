@@ -43,7 +43,8 @@ const PostNotices = () => {
     payload.append("email", formData.email);
     payload.append("phone", formData.phone);
     payload.append("location", formData.location);
-    payload.append("description", formData.description);
+    payload.append("city", formData.city || ""); 
+    payload.append("message", formData.description || ""); 
     if (file) payload.append("document", file);
 
     try {
@@ -51,7 +52,6 @@ const PostNotices = () => {
         method: "POST",
         body: payload,
       });
-
       const result = await response.json();
       if (result.success) {
         setMessage("Notice uploaded successfully!");
@@ -60,11 +60,12 @@ const PostNotices = () => {
           email: "",
           phone: "",
           location: "",
+          city: "",
           description: "",
         });
         setFile(null);
         setFileName("");
-        setIsModalOpen(true); // Open modal on success
+        setIsModalOpen(true); 
       } else {
         setMessage(result.message || "Failed to upload notice.");
       }
@@ -75,6 +76,7 @@ const PostNotices = () => {
       setLoading(false);
     }
   };
+
   return (
     <>
       <Homeheader />
@@ -165,6 +167,16 @@ const PostNotices = () => {
                     Phone Number
                   </label>
                 </div>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300"
+                  placeholder="City"
+                  required
+                />
+
                 <div class="relative z-0 w-full mb-5 group">
                   <input
                     type="text"
