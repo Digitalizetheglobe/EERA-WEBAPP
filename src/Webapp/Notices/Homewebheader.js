@@ -3,6 +3,7 @@ import logo from "../../assets/logo/WhatsApp Image 2024-10-09 at 4.07.14 PM (1) 
 import saved from "../../assets/logo/Shape.png";
 import { Link } from "react-router-dom";
 import LoginModal from "../../Webapp/LoginModal";
+import SignUpModal from "../SignUpModal";
 
 const Homeheader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -61,8 +62,8 @@ const Homeheader = () => {
                 >
                   Home
                 </Link>
-              </li>
-              <li className="flex items-center space-x-2">
+              </li> */}
+              {/* <li className="flex items-center space-x-2">
                 <Link
                   to="/about"
                   className="text-white text-[15px] font-medium"
@@ -108,12 +109,12 @@ const Homeheader = () => {
         {isMenuOpen && (
           <div className="lg:hidden bg-gray-100 py-4 px-6">
             <ul className="flex flex-col space-y-4">
-              <li>
+              {/* <li>
                 <a href="#" className="text-[#004B80] text-sm font-medium">
                   Home
                 </a>
-              </li>
-              <li className="flex items-center space-x-2">
+              </li> */}
+              {/* <li className="flex items-center space-x-2">
                 <img src={saved} className="w-3" alt="Saved icon" />
                 <Link
                   to="/about"
@@ -121,17 +122,17 @@ const Homeheader = () => {
                 >
                   About
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <a href="#" className="text-[#004B80] text-sm font-medium">
                   Saved
                 </a>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <a href="#" className="text-[#004B80] text-sm font-medium">
                   Pricing
                 </a>
-              </li>
+              </li> */}
               <div className="flex space-x-2 mt-4">
                 <button
                   className="bg-[#004B80] text-white px-4 py-2 rounded"
@@ -158,7 +159,8 @@ const Homeheader = () => {
       </header>
 
       {/* Login Modal */}
-      <LoginModal open={open} setOpen={setOpen} mode={modalMode} />
+      {modalMode === "login" && <LoginModal open={open} setOpen={setOpen} />}
+      {modalMode === "signup" && <SignUpModal open={open} setOpen={setOpen} />}
     </>
   );
 };

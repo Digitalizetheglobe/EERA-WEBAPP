@@ -4,7 +4,6 @@ import Webheader from "./Notices/Webheader";
 import Homeheader from "./Notices/Homewebheader";
 import WebFooter from "./Notices/WebFooter";
 
-
 const About = () => {
   return (
     <>
