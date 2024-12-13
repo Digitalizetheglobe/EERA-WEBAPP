@@ -29,6 +29,9 @@ export default function LoginModal({ open, setOpen }) {
       const result = await response.json();
 
       if (response.ok) {
+        // Save token to local storage
+        localStorage.setItem('authToken', result.token);
+
         toast.success('Login successful!');
         setTimeout(() => {
           setOpen(false); // Close the modal
@@ -105,7 +108,7 @@ export default function LoginModal({ open, setOpen }) {
                             </div>
                             <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
                               <span className="px-3">
-                              <LockClosedIcon className="h-5 w-5 text-gray-400" /> {/* Password Icon */}
+                              <LockClosedIcon className="h-5 w-5 text-gray-400" />
                               </span>
                               <input
                                 type="password"
