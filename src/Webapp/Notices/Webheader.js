@@ -94,10 +94,10 @@ const Webheader = () => {
                 </button>
               ) : (
                 <>
-                  <Link to="/login" className="bg-[#004B80] text-white px-4 py-2 rounded">
+                  <Link to="/home" className="bg-[#004B80] text-white px-4 py-2 rounded">
                     Login
                   </Link>
-                  <Link to="/signup" className="bg-[#004B80] text-white px-4 py-2 rounded">
+                  <Link to="/home" className="bg-[#004B80] text-white px-4 py-2 rounded">
                     Sign Up
                   </Link>
                 </>
