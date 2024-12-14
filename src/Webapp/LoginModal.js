@@ -11,9 +11,42 @@ export default function LoginModal({ open, setOpen }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
+
+  // const handleLogin = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch('http://api.epublicnotices.in/api/webapp/login', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ email, password }),
+  //     });
+
+  //     const result = await response.json();
+
+  //     if (response.ok) {
+  //       // Save token to local storage
+  //       localStorage.setItem('authToken', result.token);
+
+  //       toast.success('Login successful!');
+  //       setTimeout(() => {
+  //         setOpen(false); // Close the modal
+  //       }, 1500);
+  //     } else {
+  //       toast.error(result.message || 'Login failed. Please try again.');
+  //     }
+  //   } catch (error) {
+  //     toast.error('An error occurred. Please check your connection.');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
 
   const handleLogin = async () => {
     setLoading(true);
@@ -25,16 +58,17 @@ export default function LoginModal({ open, setOpen }) {
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const result = await response.json();
-
+  
       if (response.ok) {
         // Save token to local storage
         localStorage.setItem('authToken', result.token);
-
+  
         toast.success('Login successful!');
         setTimeout(() => {
           setOpen(false); // Close the modal
+          window.location.reload(); // Refresh the page
         }, 1500);
       } else {
         toast.error(result.message || 'Login failed. Please try again.');
@@ -45,7 +79,7 @@ export default function LoginModal({ open, setOpen }) {
       setLoading(false);
     }
   };
-
+  
   return (
     <>
       <ToastContainer />

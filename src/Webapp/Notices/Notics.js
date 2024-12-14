@@ -112,14 +112,14 @@ const Notice = () => {
               <p className="text-gray-600 text-justify">{notice.notice_description}</p>
             </div>
             <div className="border-t border-gray-300 pt-4 space-y-3">
-              <div className="text-gray-600">
+              {/* <div className="text-gray-600">
                 <p>
                   <strong>Location:</strong> {notice.location}
                 </p>
                 <p>
                   <strong>Address:</strong> {notice.address || "Not available"}
                 </p>
-              </div>
+              </div> */}
               <div className="flex space-x-4 pt-4">
                 <button onClick={() => setIsModalOpen(true)} className="bg-[#A99067] text-white px-6 py-2 rounded-md font-medium hover:bg-[#8c6f42] transition flex items-center space-x-2">
                   <span>View Notice</span>
