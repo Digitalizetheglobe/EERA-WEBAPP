@@ -76,7 +76,7 @@ const Notice = () => {
       </nav>
       <section className="p-8 max-w-4xl mx-auto bg-white space-y-6">
         <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 text-md font-medium">
-          {notice.selected_date}
+        {new Date(notice.date).toLocaleDateString()} 
         </span>
         <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 ml-2 py-1 text-md font-medium">
           {notice.location}
@@ -88,7 +88,7 @@ const Notice = () => {
           {notice.notice_title}
         </h1>
         <p className="text-[#004B80] text-md font-semibold">
-          {new Date(notice.date).toLocaleDateString()} • {new Date(notice.date).toLocaleTimeString()}
+         
         </p>
 
         <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-8">
