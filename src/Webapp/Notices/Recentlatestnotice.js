@@ -20,7 +20,16 @@ function RecentLatestNotice() {
           throw new Error("Failed to fetch notices");
         }
         const data = await response.json();
-        setNotices(data.slice(0, 4));
+  
+        // Sort notices by `createdAt` in descending order
+        const sortedNotices = data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+  
+        // Log the sorted notices for debugging
+        console.log("Sorted Notices:", sortedNotices);
+  
+        setNotices(sortedNotices.slice(0, 4)); // Keep only the latest 4 notices
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -29,6 +38,7 @@ function RecentLatestNotice() {
     };
     fetchNotices();
   }, []);
+  
   // Filter notices based on selected category
   const filteredNotices = selectedCategory === "All"
     ? notices
@@ -49,18 +59,21 @@ function RecentLatestNotice() {
 
         {/* Category Buttons */}
         <div className="flex gap-4 mb-6">
-          {["All", "Featured", "Realestate", "Corporate", "Environmental"].map((category, index) => (
-            <button
-              key={index}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold ${selectedCategory === category
-                ? "bg-transparent border border-[#A99067] text-[#A99067]"
-                : "bg-transparent border text-gray-700"
+          {["All", "Categeory", "City", "Paper Name", "Language"].map(
+            (category, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                  selectedCategory === category
+                    ? "bg-transparent border border-[#A99067] text-[#A99067]"
+                    : "bg-transparent border text-gray-700"
                 } hover:bg-[#A99067] hover:text-white transition`}
-            >
-              {category}
-            </button>
-          ))}
+              >
+                {category}
+              </button>
+            )
+          )}
         </div>
 
         {/* Loading/Error State */}
@@ -70,7 +83,10 @@ function RecentLatestNotice() {
         {/* Display Notices */}
         {!loading &&
           filteredNotices.map((notice) => (
-            <div key={notice.id} className="bg-[#E7EBEE80] p-6 rounded-lg sm:mx-auto">
+            <div
+              key={notice.id}
+              className="bg-[#E7EBEE80] p-6 rounded-lg sm:mx-auto"
+            >
               <div className="flex items-center mb-2">
                 <span className="bg-transparent border border-[#A99067] text-[#A99067] text-xs font-semibold px-2 py-1 rounded-full mr-2">
                   {notice.category && notice.category[0]}
@@ -80,19 +96,34 @@ function RecentLatestNotice() {
                 {notice.notice_title}
               </h3>
               <p className="text-sm text-gray-500">
-                <FontAwesomeIcon icon={faCalendar} className="text-gray-500 mr-1" />{" "}
+                <FontAwesomeIcon
+                  icon={faCalendar}
+                  className="text-gray-500 mr-1"
+                />{" "}
                 {new Date(notice.date).toLocaleDateString()} |{" "}
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="text-gray-500 mx-1" />{" "}
-                {notice.lawyer_name} |{" "}
-                <FontAwesomeIcon icon={faMapLocationDot} className="text-gray-500 mx-1" />{" "}
+                <FontAwesomeIcon
+                  icon={faMapMarkerAlt}
+                  className="text-gray-500 mx-1"
+                />{" "}
+                {notice.newspaper_name} |{" "}
+                <FontAwesomeIcon
+                  icon={faMapLocationDot}
+                  className="text-gray-500 mx-1"
+                />{" "}
                 {notice.location}
               </p>
               <p className="text-gray-500 mb-4">
                 {notice.notice_description
-                  ? notice.notice_description.split(" ").slice(0, 50).join(" ") + "..."
+                  ? notice.notice_description
+                      .split(" ")
+                      .slice(0, 50)
+                      .join(" ") + "..."
                   : ""}
               </p>
-              <Link to={`/notices/${notice.id}`} className="text-[#A99067] font-semibold hover:underline">
+              <Link
+                to={`/notices/${notice.id}`}
+                className="text-[#A99067] font-semibold hover:underline"
+              >
                 Read More...
               </Link>
             </div>

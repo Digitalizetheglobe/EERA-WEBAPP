@@ -15,10 +15,13 @@ const PostNotices = () => {
   });
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
+  const [fileError, setFileError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -28,6 +31,16 @@ const PostNotices = () => {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
+    const allowedFormats = ["image/jpeg", "image/jpg", "image/png"];
+
+    if (selectedFile && !allowedFormats.includes(selectedFile.type)) {
+      setFileError("Only JPG, JPEG, and PNG files are allowed.");
+      setFile(null);
+      setFileName("");
+      return;
+    }
+
+    setFileError(""); // Clear any previous error
     if (selectedFile) {
       setFile(selectedFile);
       setFileName(selectedFile.name);
@@ -36,6 +49,20 @@ const PostNotices = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if the user is logged in
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+
+    // Ensure file is valid
+    if (!file) {
+      setFileError("Please upload a document.");
+      return;
+    }
+
     setLoading(true);
 
     const payload = new FormData();
@@ -43,9 +70,9 @@ const PostNotices = () => {
     payload.append("email", formData.email);
     payload.append("phone", formData.phone);
     payload.append("location", formData.location);
-    payload.append("city", formData.city || ""); 
-    payload.append("message", formData.description || ""); 
-    if (file) payload.append("document", file);
+    payload.append("city", formData.city || "");
+    payload.append("message", formData.description || "");
+    payload.append("document", file);
 
     try {
       const response = await fetch("http://api.epublicnotices.in/api/request-upload-notice", {
@@ -65,7 +92,7 @@ const PostNotices = () => {
         });
         setFile(null);
         setFileName("");
-        setIsModalOpen(true); 
+        setIsModalOpen(true);
       } else {
         setMessage(result.message || "Failed to upload notice.");
       }
@@ -105,7 +132,8 @@ const PostNotices = () => {
           </div>
           <form
             onSubmit={handleSubmit}
-            className="md:max-w-md w-full mx-auto bg-[#001A3B] p-6">
+            className="md:max-w-md w-full mx-auto bg-[#001A3B] p-6"
+          >
             <div className="mb-12">
               <h3 className="text-2xl font-bold text-white">
                 {" "}
@@ -115,7 +143,7 @@ const PostNotices = () => {
             <div>
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-5 group">
-                  <input
+                <input
                     type="text"
                     name="name"
                     value={formData.name}
@@ -132,7 +160,7 @@ const PostNotices = () => {
                   </label>
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
-                  <input
+                <input
                     type="email"
                     name="email"
                     value={formData.email}
@@ -214,6 +242,7 @@ const PostNotices = () => {
                   </label>
                 </div>
               </div>
+              {/* Other Inputs */}
               <div className="flex items-center justify-between gap-4 border-b border-gray-300 pb-2 mb-4 mt-4">
                 <label htmlFor="file-upload" className="text-sm text-gray-500">
                   Attach Documents
@@ -232,6 +261,7 @@ const PostNotices = () => {
                 className="hidden"
                 onChange={handleFileChange}
               />
+              {fileError && <div className="text-red-500 text-sm">{fileError}</div>}
               {fileName && (
                 <div className="mt-2 text-sm text-gray-600">
                   Selected file: <span className="font-medium">{fileName}</span>
@@ -241,7 +271,7 @@ const PostNotices = () => {
             <div className="mt-12">
               <button
                 type="submit"
-                className="w-full shadow-xl py-2.5 px-5 text-md font-semibold text-white bg-[#A99067] hover:bg-[#A99067] focus:outline-none"
+                className="w-full shadow-xl py-2.5 px-5 text-md font-semibold text-white bg-[#A99067]"
                 disabled={loading}
               >
                 {loading ? "Submitting..." : "Send Notice for Verification"}
@@ -253,7 +283,7 @@ const PostNotices = () => {
           </form>
         </div>
       </div>
-      {/* Modal */}
+      {/* Submission Success Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
           <div className="bg-white p-8 rounded-md w-96">
@@ -272,6 +302,30 @@ const PostNotices = () => {
                 }}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Login Modal */}
+      {isLoginModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-md w-96">
+            <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
+              Login Required
+            </h2>
+            <p className="text-center text-gray-600">
+              Sorry, you need to log in first to use this feature.
+            </p>
+            <div className="mt-6 flex justify-center">
+              <button
+                className="bg-[#A99067] text-white px-6 py-2 rounded-md"
+                onClick={() => {
+                  setIsLoginModalOpen(false);
+                  navigate("/login");
+                }}
+              >
+                Login
               </button>
             </div>
           </div>

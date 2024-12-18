@@ -14,6 +14,9 @@ import Notice from './Webapp/Notices/Notics.js';
 import WebappPricing from './Webapp/Pricing/Pricing.js';
 import SearchNotices from './Webapp/SearchNotices.js';
 import PostNotices from './PostNotices/PostNotices.js';
+import Login from './Webapp/LoginandRegistration/Login.js';
+import Register from './Webapp/LoginandRegistration/Register.js';
+
 
 function App() {
   return (
@@ -32,6 +35,8 @@ function App() {
         <Route path='/WebappPricing' element={<WebappPricing />} />
         <Route path='/search-notices' element={<SearchNotices/>} />
         <Route path='/post-notices' element={<PostNotices/>}/>
+        <Route path='/Login' element={<Login/>} />
+        <Route path='/Register' element={<Register/>} />
       </Routes>
     </Router>
 
