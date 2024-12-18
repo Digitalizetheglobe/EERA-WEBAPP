@@ -75,10 +75,15 @@ const Notice = () => {
         </div>
       </nav>
       <section className="p-8 max-w-4xl mx-auto bg-white space-y-6">
-        <button className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 text-md font-medium">
-          {notice.newspaper_name}
-        </button>
-
+        <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 text-md font-medium">
+          {notice.selected_date}
+        </span>
+        <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 ml-2 py-1 text-md font-medium">
+          {notice.location}
+        </span>
+        <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 ml-2 text-md font-medium">
+           {notice.newspaper_name}
+        </span>
         <h1 className="text-[#004B80] text-4xl font-semibold">
           {notice.notice_title}
         </h1>
