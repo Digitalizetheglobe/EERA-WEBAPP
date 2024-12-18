@@ -7,15 +7,15 @@ import Footer from "../../LandingPage/Footer";
 import WebFooter from "./WebFooter";
 import Webheader from "./Webheader";
 import arrow from '../../assets/logo/arrow.png';
-import { toast, ToastContainer } from "react-toastify"; // Import Toastify
-import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
+import { toast, ToastContainer } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css"; 
 
 const Notice = () => {
   const { id } = useParams();
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   useEffect(() => {
     const fetchNotice = async () => {

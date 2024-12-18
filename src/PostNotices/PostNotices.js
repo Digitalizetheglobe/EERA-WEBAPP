@@ -4,6 +4,7 @@ import bgimg1 from "../assets/banner/Backgroundimage.png";
 import WebFooter from "../Webapp/Notices/WebFooter";
 import Homeheader from "../Webapp/Notices/Homewebheader";
 import { useNavigate } from "react-router-dom";
+import Warn from '../assets/warn.gif';
 
 const PostNotices = () => {
   const [formData, setFormData] = useState({
@@ -309,27 +310,37 @@ const PostNotices = () => {
       )}
       {/* Login Modal */}
       {isLoginModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
-          <div className="bg-white p-8 rounded-md w-96">
-            <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
-              Login Required
-            </h2>
-            <p className="text-center text-gray-600">
-              Sorry, you need to log in first to use this feature.
-            </p>
-            <div className="mt-6 flex justify-center">
-              <button
-                className="bg-[#A99067] text-white px-6 py-2 rounded-md"
-                onClick={() => {
-                  setIsLoginModalOpen(false);
-                  navigate("/login");
-                }}
-              >
-                Login
-              </button>
-            </div>
-          </div>
-        </div>
+         <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
+         <div className="bg-white p-8 rounded-md w-96 shadow-lg">
+           {/* GIF Display */}
+           <div className="flex justify-center mb-4">
+             <img src={Warn} alt="Warning" className="w-20 h-20" />
+           </div>
+     
+           {/* Heading */}
+           <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
+             Login Required
+           </h2>
+     
+           {/* Description */}
+           <p className="text-center text-gray-600">
+             Sorry, you need to log in first to use this feature.
+           </p>
+     
+           {/* Button */}
+           <div className="mt-6 flex justify-center">
+             <button
+               className="bg-[#A99067] hover:bg-[#8a7c5b] text-white px-6 py-2 rounded-md transition duration-300"
+               onClick={() => {
+                 setIsLoginModalOpen(false);
+                 navigate("/login");
+               }}
+             >
+               Login
+             </button>
+           </div>
+         </div>
+       </div>
       )}
       <WebFooter />
     </>

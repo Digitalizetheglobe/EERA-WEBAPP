@@ -5,7 +5,8 @@ import Webheader from "../Notices/Webheader";
 import WebFooter from "../Notices/WebFooter";
 import coverImage from "../../assets/banner/groupdiscussion.jpg"
 import Google from "../../assets/google.png";
-import Facebook from "../../assets/facebook.png"
+import Facebook from "../../assets/facebook.png";
+import Success from "../../assets/success.gif";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -79,8 +80,8 @@ const Register = () => {
     <>
       <Webheader />
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">
-        {/* <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4"> */}
+        <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">
+          {/* <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4"> */}
           {/* <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full"> */}
           <div
             className="hidden md:block md:w-1/2 bg-cover bg-center"
@@ -95,7 +96,7 @@ const Register = () => {
           </div>
 
           <div className="bg-white md:w-1/2 p-8">
-          <h3 className="text-3xl font-bold text-gray-800 mb-6 text-center">Create Your Account</h3>
+            <h3 className="text-3xl font-bold text-gray-800 mb-6 text-center">Create Your Account</h3>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -109,9 +110,9 @@ const Register = () => {
 
               <div className="space-y-4">
                 <div>
-                <label htmlFor="firstName" className="text-sm font-semibold text-gray-600 block mb-2">
-                  First Name
-                </label>
+                  <label htmlFor="firstName" className="text-sm font-semibold text-gray-600 block mb-2">
+                    First Name
+                  </label>
                   <input
                     value={firstName}
                     type="text"
@@ -122,9 +123,9 @@ const Register = () => {
                   />
                 </div>
                 <div>
-                <label htmlFor="lastName" className="text-sm font-semibold text-gray-600 block mb-2">
-                  Last Name
-                </label>
+                  <label htmlFor="lastName" className="text-sm font-semibold text-gray-600 block mb-2">
+                    Last Name
+                  </label>
                   <input
                     value={lastName}
                     type="text"
@@ -135,9 +136,9 @@ const Register = () => {
                   />
                 </div>
                 <div>
-                <label htmlFor="email" className="text-sm font-semibold text-gray-600 block mb-2">
-                  Email Address
-                </label>
+                  <label htmlFor="email" className="text-sm font-semibold text-gray-600 block mb-2">
+                    Email Address
+                  </label>
                   <input
                     value={email}
                     type="email"
@@ -148,9 +149,9 @@ const Register = () => {
                   />
                 </div>
                 <div>
-                <label htmlFor="password" className="text-sm font-semibold text-gray-600 block mb-2">
-                  Password
-                </label>
+                  <label htmlFor="password" className="text-sm font-semibold text-gray-600 block mb-2">
+                    Password
+                  </label>
                   <input
                     value={password}
                     type="password"
@@ -166,9 +167,8 @@ const Register = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white ${
-                    loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
-                  } focus:outline-none`}
+                  className={`w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white ${loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
+                    } focus:outline-none`}
                 >
                   {loading ? "Signing up..." : "Sign Up"}
                 </button>
@@ -192,23 +192,33 @@ const Register = () => {
                 Facebook
               </button>
             </div>
-            </div>
           </div>
+        </div>
         {/* </div> */}
-      {/* </div> */}
+        {/* </div> */}
       </div>
 
       {/* Success Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md text-center">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md text-center shadow-lg">
+            {/* Success GIF */}
+            <div className="flex justify-center mb-4">
+              <img src={Success} alt="Success" className="w-30 h-30" />
+            </div>
+
+            {/* Modal Heading */}
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Congratulations!</h2>
+
+            {/* Modal Description */}
             <p className="text-gray-600 mb-6">
               You have successfully registered. Please log in to access all features and functionality.
             </p>
+
+            {/* Button */}
             <button
               onClick={closeModal}
-              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition duration-300 focus:outline-none"
             >
               Login Now
             </button>
