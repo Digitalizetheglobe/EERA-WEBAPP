@@ -3,6 +3,9 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Webheader from "../Notices/Webheader";
 import WebFooter from "../Notices/WebFooter";
+import coverImage from "../../assets/banner/groupdiscussion.jpg"
+import Google from "../../assets/google.png";
+import Facebook from "../../assets/facebook.png"
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -75,27 +78,24 @@ const Register = () => {
   return (
     <>
       <Webheader />
-      <div className="font-[sans-serif]">
-        <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
-          <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
-            <div>
-              <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px] text-gray-800">
-                Create Your Account
-              </h2>
-              <p className="text-sm mt-6 text-gray-800">
-                Sign up to unlock exclusive features and manage your preferences effortlessly.
-              </p>
-              <p className="text-sm mt-12 text-gray-800">
-                Already have an account?{" "}
-                <a
-                  href="/login"
-                  className="text-blue-600 font-semibold hover:underline ml-1"
-                >
-                  Log in here
-                </a>
-              </p>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">
+        {/* <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4"> */}
+          {/* <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full"> */}
+          <div
+            className="hidden md:block md:w-1/2 bg-cover bg-center"
+            style={{ backgroundImage: `url(${coverImage})` }}
+          >
+            <div className="h-full flex items-center justify-center bg-black bg-opacity-40 text-white p-8">
+              <div>
+                <h2 className="text-4xl font-bold mb-4">EERA Notices</h2>
+                <p className="text-sm">Sign up to unlock exclusive features and manage your preferences effortlessly.</p>
+              </div>
             </div>
+          </div>
 
+          <div className="bg-white md:w-1/2 p-8">
+          <h3 className="text-3xl font-bold text-gray-800 mb-6 text-center">Create Your Account</h3>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -103,49 +103,61 @@ const Register = () => {
               }}
               className="max-w-md md:ml-auto w-full"
             >
-              <h3 className="text-gray-800 text-3xl font-extrabold mb-8">
+              {/* <h3 className="text-gray-800 text-3xl font-extrabold mb-8">
                 Sign Up
-              </h3>
+              </h3> */}
 
               <div className="space-y-4">
                 <div>
+                <label htmlFor="firstName" className="text-sm font-semibold text-gray-600 block mb-2">
+                  First Name
+                </label>
                   <input
                     value={firstName}
                     type="text"
                     onChange={(e) => setFirstName(e.target.value)}
                     required
-                    className="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     placeholder="First Name"
                   />
                 </div>
                 <div>
+                <label htmlFor="lastName" className="text-sm font-semibold text-gray-600 block mb-2">
+                  Last Name
+                </label>
                   <input
                     value={lastName}
                     type="text"
                     onChange={(e) => setLastName(e.target.value)}
                     required
-                    className="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     placeholder="Last Name"
                   />
                 </div>
                 <div>
+                <label htmlFor="email" className="text-sm font-semibold text-gray-600 block mb-2">
+                  Email Address
+                </label>
                   <input
                     value={email}
                     type="email"
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent"
-                    placeholder="Email Address"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="Enter your email"
                   />
                 </div>
                 <div>
+                <label htmlFor="password" className="text-sm font-semibold text-gray-600 block mb-2">
+                  Password
+                </label>
                   <input
                     value={password}
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent"
-                    placeholder="Password"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="Enter Your Password"
                   />
                 </div>
               </div>
@@ -162,8 +174,28 @@ const Register = () => {
                 </button>
               </div>
             </form>
+            <div className="mt-6 text-center text-sm text-gray-600">
+              <p>
+                Already have an account?{" "}
+                <a href="/Login" className="text-blue-500 hover:underline font-semibold">
+                  Login here
+                </a>
+              </p>
+            </div>
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
+                <img src={Google} alt="Google" className="h-5 w-5" />
+                Google
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
+                <img src={Facebook} alt="Apple" className="h-5 w-5" />
+                Facebook
+              </button>
+            </div>
+            </div>
           </div>
-        </div>
+        {/* </div> */}
+      {/* </div> */}
       </div>
 
       {/* Success Modal */}
