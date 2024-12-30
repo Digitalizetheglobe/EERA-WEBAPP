@@ -22,7 +22,7 @@ const Home = () => {
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
-        const response = await fetch("http://api.epublicnotices.in/notices");
+        const response = await fetch("https://api.epublicnotices.in/notices");
         if (response.ok) {
           const data = await response.json();
           setSuggestions(data);

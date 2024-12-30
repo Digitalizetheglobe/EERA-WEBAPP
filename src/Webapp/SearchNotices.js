@@ -15,7 +15,7 @@ const SearchNotices = () => {
   const fetchFilteredNotices = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://api.epublicnotices.in/notices`);
+      const response = await fetch(`https://api.epublicnotices.in/notices`);
       if (!response.ok) {
         throw new Error("Failed to fetch notices");
       }

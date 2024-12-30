@@ -21,7 +21,7 @@ export default function SignUpModal({ open, setOpen, setLoginModalOpen }) {
   const handleLastNameChange = (e) => setLastName(e.target.value);
 
   const handleSignUp = async () => {
-    const apiUrl = "http://api.epublicnotices.in/api/webapp/register";
+    const apiUrl = "https://api.epublicnotices.in/api/webapp/register";
     const payload = {
       firstName,
       lastName,

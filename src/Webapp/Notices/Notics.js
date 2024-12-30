@@ -20,7 +20,7 @@ const Notice = () => {
   useEffect(() => {
     const fetchNotice = async () => {
       try {
-        const response = await fetch(`http://api.epublicnotices.in/notices/${id}`);
+        const response = await fetch(`https://api.epublicnotices.in/notices/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch notice details");
         }
@@ -38,7 +38,7 @@ const Notice = () => {
   const downloadAsPDF = () => {
     if (notice && notice.notices_images) {
       const pdf = new jsPDF();
-      const imgUrl = `http://api.epublicnotices.in/noticesimage/${notice.notices_images}`;
+      const imgUrl = `https://api.epublicnotices.in/noticesimage/${notice.notices_images}`;
       const imgWidth = 190; // Adjust as needed
       const imgHeight = 160; // Adjust as needed
 
@@ -99,7 +99,7 @@ const Notice = () => {
             >
               {notice.notices_images ? (
                 <img
-                  src={`http://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                  src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
                   alt="Notice Indicator"
                   className="object-cover w-full h-64 sm:h-80 lg:h-96"
                 />
@@ -152,7 +152,7 @@ const Notice = () => {
             </button>
             {notice.notices_images && (
               <img
-                src={`http://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
                 alt="Notice Indicator"
                 className="object-contain w-full h-full" // Ensures the image fits within the modal
               />

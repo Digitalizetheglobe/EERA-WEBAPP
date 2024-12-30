@@ -76,7 +76,7 @@ const PostNotices = () => {
     payload.append("document", file);
 
     try {
-      const response = await fetch("http://api.epublicnotices.in/api/request-upload-notice", {
+      const response = await fetch("https://api.epublicnotices.in/api/request-upload-notice", {
         method: "POST",
         body: payload,
       });

@@ -20,7 +20,7 @@ const Login = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://api.epublicnotices.in/api/webapp/login", {
+      const response = await fetch("https://api.epublicnotices.in/api/webapp/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

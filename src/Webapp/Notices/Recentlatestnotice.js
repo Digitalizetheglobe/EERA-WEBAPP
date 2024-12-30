@@ -15,7 +15,7 @@ function RecentLatestNotice() {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const response = await fetch("http://api.epublicnotices.in/notices");
+        const response = await fetch("https://api.epublicnotices.in/notices");
         if (!response.ok) {
           throw new Error("Failed to fetch notices");
         }

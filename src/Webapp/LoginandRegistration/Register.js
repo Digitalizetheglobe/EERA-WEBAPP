@@ -18,7 +18,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
-    const apiUrl = "http://api.epublicnotices.in/api/webapp/register";
+    const apiUrl = "https://api.epublicnotices.in/api/webapp/register";
     const payload = {
       firstName,
       lastName,

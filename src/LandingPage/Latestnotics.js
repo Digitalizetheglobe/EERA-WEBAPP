@@ -11,7 +11,7 @@ const LatestNotices = () => {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const response = await axios.get("http://api.epublicnotices.in/notices");
+        const response = await axios.get("https://api.epublicnotices.in/notices");
         setNotices(response.data.slice(0, 5)); 
       } catch (error) {
         console.error("Error fetching notices:", error);
