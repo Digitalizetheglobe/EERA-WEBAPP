@@ -10,6 +10,8 @@ import WebFooter from "./WebFooter";
 import Webtestimonial from "./Webtestimonial";
 import PostNotices from "../../PostNotices/PostNotices";
 import CTA from "../CTA";
+import SearchBar from '../SearchBar/SearchBar';
+
 
 const Home = () => {
   const [keyword, setKeyword] = useState("");
@@ -18,7 +20,6 @@ const Home = () => {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch suggestions from the API
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
@@ -36,6 +37,7 @@ const Home = () => {
   }, []);
 
   // Filter suggestions based on keyword input
+
   useEffect(() => {
     if (keyword) {
       setFilteredSuggestions(
@@ -48,38 +50,37 @@ const Home = () => {
     }
   }, [keyword, suggestions]);
 
-  const handleSearch = () => {
+  const handleSearch = (searchData) => {
+    const { keyword, location, layerName, newspaperName, date } = searchData;
     navigate("/search-notices", {
-      state: { keyword, location },
+      state: { keyword, location, layerName, newspaperName, date },
     });
   };
 
+
   const handleSuggestionClick = (title) => {
     setKeyword(title);
-    setFilteredSuggestions([]); // Hide suggestions
+    setFilteredSuggestions([]);
   };
 
   return (
     <>
       <section className="relative">
-        {/* Header */}
-        <Homeheader />
 
-        {/* Banner Image */}
+        <Homeheader />
         <img
           src={banner1}
           alt="banner"
           className="w-full h-[80vh] sm:h-full object-cover"
         />
-
         {/* Search Bar */}
         <div className="absolute inset-0 flex flex-col justify-center items-center p-8 sm:p-20 text-white">
-            <h1 className="text-3xl sm:text-4xl lg:text-4xl text-center font-bold mt-4 mb-4 leading-tight sm:leading-normal max-w-xs sm:max-w-2xl">
+          <h1 className="text-3xl sm:text-4xl lg:text-4xl text-center font-bold mt-4 mb-4 leading-tight sm:leading-normal max-w-xs sm:max-w-2xl">
             All Your Essential Notices in One Place
           </h1>
-          <div className="w-full max-w-2xl mt-6 flex items-center bg-gray-200 bg-opacity-40 p-4 rounded-lg space-x-2">
-          <div className="relative w-full">
-          
+          {/* <div className="w-full max-w-2xl mt-6 flex items-center bg-gray-200 bg-opacity-40 p-4 rounded-lg space-x-2">
+            <div className="relative w-full">
+
               <input
                 type="text"
                 placeholder="Title or keyword"
@@ -87,7 +88,7 @@ const Home = () => {
                 onChange={(e) => setKeyword(e.target.value)}
                 className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
               />
-              {/* Suggestions Dropdown */}
+             
               {filteredSuggestions.length > 0 && (
                 <ul className="absolute z-10 bg-white border border-gray-300 rounded-md w-full mt-1 max-h-40 overflow-y-auto">
                   {filteredSuggestions.map((suggestion) => (
@@ -108,7 +109,7 @@ const Home = () => {
                 placeholder="Select Location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                 className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
+                className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
               />
             </div>
             <button
@@ -118,12 +119,14 @@ const Home = () => {
 
               Search Notice
             </button>
-          </div>
+          </div> */}
+
+          <SearchBar onSearch={handleSearch} />
         </div>
       </section>
       <AllNotices />
       <RecentLatestNotice />
-      <CTA/>
+      <CTA />
       <Faq />
       <Webtestimonial />
       <WebFooter />

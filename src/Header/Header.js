@@ -48,7 +48,7 @@ const Header = () => {
               <li className="mb-6 hidden max-lg:block">
                 <img src={logo} alt="logo" className="w-20" />
               </li>
-              {["Home", "About", "Contact"].map((item) => (
+              {["", "", ""].map((item) => (
                 <li key={item} className="max-lg:border-b max-lg:py-3">
                   <a
                     href="#"

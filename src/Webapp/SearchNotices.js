@@ -11,7 +11,8 @@ const SearchNotices = () => {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [newspaperName, setNewspaperName] = useState('');
+  
   const fetchFilteredNotices = async () => {
     try {
       setLoading(true);
@@ -21,17 +22,19 @@ const SearchNotices = () => {
       }
       const data = await response.json();
   
-      // Filter based on keyword and location
+      // Filter based on keyword, location, and newspaperName
       const filtered = data.filter((notice) => {
-        const title = notice.notice_title || ""; // Fallback to an empty string if null/undefined
-        const description = notice.notice_description || ""; // Fallback to an empty string if null/undefined
-        const noticeLocation = notice.location || ""; // Fallback to an empty string if null/undefined
+        const title = notice.notice_title || "";
+        const description = notice.notice_description || "";
+        const noticeLocation = notice.location || "";
+        const newspaper = notice.newspaper_name || "";
   
         return (
           (!keyword ||
             title.toLowerCase().includes(keyword.toLowerCase()) ||
             description.toLowerCase().includes(keyword.toLowerCase())) &&
-          (!location || noticeLocation.toLowerCase().includes(location.toLowerCase()))
+          (!location || noticeLocation.toLowerCase().includes(location.toLowerCase())) &&
+          (!newspaperName || newspaper.toLowerCase().includes(newspaperName.toLowerCase()))
         );
       });
   
@@ -42,6 +45,7 @@ const SearchNotices = () => {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchFilteredNotices();
@@ -84,6 +88,18 @@ const SearchNotices = () => {
                 className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
               />
             </div>
+            <div className="relative w-full">
+              <i className="fas fa-newspaper absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+              <input
+                type="text"
+                placeholder="Newspaper Name"
+                value={newspaperName}
+                onChange={(e) => setNewspaperName(e.target.value)}
+                className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
+              />
+            </div>
+
+
 
             {/* Search Button */}
             <button
@@ -122,9 +138,9 @@ const SearchNotices = () => {
                 <p className="text-gray-500">
                   {notice.notice_description
                     ? notice.notice_description
-                        .split(" ")
-                        .slice(0, 50)
-                        .join(" ") + "..."
+                      .split(" ")
+                      .slice(0, 50)
+                      .join(" ") + "..."
                     : ""}
                 </p>
                 <Link
