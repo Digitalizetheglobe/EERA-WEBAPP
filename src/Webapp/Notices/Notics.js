@@ -7,15 +7,15 @@ import Footer from "../../LandingPage/Footer";
 import WebFooter from "./WebFooter";
 import Webheader from "./Webheader";
 import arrow from '../../assets/logo/arrow.png';
-import { toast, ToastContainer } from "react-toastify"; 
-import "react-toastify/dist/ReactToastify.css"; 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Notice = () => {
   const { id } = useParams();
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchNotice = async () => {
@@ -39,12 +39,12 @@ const Notice = () => {
     if (notice && notice.notices_images) {
       const pdf = new jsPDF();
       const imgUrl = `https://api.epublicnotices.in/noticesimage/${notice.notices_images}`;
-      const imgWidth = 190; // Adjust as needed
-      const imgHeight = 160; // Adjust as needed
+      const imgWidth = 190;
+      const imgHeight = 160;
 
-      pdf.text("Source : - EERA epublicnotices.in", 10, 10); // Add optional title
-      pdf.addImage(imgUrl, "JPEG", 10, 20, imgWidth, imgHeight); // Add image to PDF
-      pdf.save("notice.pdf"); // Trigger download
+      pdf.text("Source : - EERA epublicnotices.in", 10, 10);
+      pdf.addImage(imgUrl, "JPEG", 10, 20, imgWidth, imgHeight);
+      pdf.save("notice.pdf");
       toast.success("Notice downloaded successfully!");
     } else {
       toast.error("Notice image not available");
@@ -75,20 +75,20 @@ const Notice = () => {
         </div>
       </nav>
       <section className="p-8 max-w-4xl mx-auto bg-white space-y-6">
-        <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 text-md font-medium">
-        {new Date(notice.date).toLocaleDateString()} 
-        </span>
-        <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 ml-2 py-1 text-md font-medium">
+        {/* <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 text-md font-medium">
+          {new Date(notice.date).toLocaleDateString()}
+        </span> */}
+        {/* <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 ml-2 py-1 text-md font-medium">
           {notice.location}
-        </span>
-        <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 ml-2 text-md font-medium">
-           {notice.newspaper_name}
-        </span>
+        </span> */}
+        {/* <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 ml-2 text-md font-medium">
+          {notice.newspaper_name}
+        </span> */}
         <h1 className="text-[#004B80] text-4xl font-semibold">
           {notice.notice_title}
         </h1>
         <p className="text-[#004B80] text-md font-semibold">
-         
+
         </p>
 
         <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-8">
@@ -113,8 +113,18 @@ const Notice = () => {
 
           <div className="lg:w-2/3 space-y-6">
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-gray-800">About Notice</h3>
-              <p className="text-gray-600 text-justify">{notice.notice_description}</p>
+              {/* <h3 className="text-lg font-semibold text-gray-800">About Notice</h3> */}
+<br/>
+              <span className="text-[#A99067] border border-[#A99067] rounded-full mt-10 px-3 py-1 text-md font-medium">
+                {new Date(notice.date).toLocaleDateString()}
+              </span>
+              <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 ml-2 py-1 text-md font-medium">
+                {notice.location}
+              </span>
+              <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 ml-2 text-md font-medium">
+                {notice.newspaper_name}
+              </span>
+              {/* <p className="text-gray-600 text-justify">{notice.notice_description}</p> */}
             </div>
             <div className="border-t border-gray-300 pt-4 space-y-3">
               {/* <div className="text-gray-600">
