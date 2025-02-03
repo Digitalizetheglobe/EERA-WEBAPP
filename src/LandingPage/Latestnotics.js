@@ -12,7 +12,11 @@ const LatestNotices = () => {
     const fetchNotices = async () => {
       try {
         const response = await axios.get("https://api.epublicnotices.in/notices");
-        setNotices(response.data.slice(0, 5)); 
+
+        // Sort notices by date in descending order
+        const sortedNotices = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        setNotices(sortedNotices.slice(0, 6)); // Keep only the latest 5 notices
       } catch (error) {
         console.error("Error fetching notices:", error);
       }

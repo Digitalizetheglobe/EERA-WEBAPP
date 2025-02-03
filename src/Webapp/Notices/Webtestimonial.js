@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import testimonial from "../../assets/banner/Testimonial.png";
-import { Link } from "react-router-dom";
 import user from "../../assets/testimonialuser/Ellipse 54.svg";
 import user1 from "../../assets/testimonialuser/Ellipse 55.svg";
 import user2 from "../../assets/testimonialuser/Ellipse 56.svg";
@@ -11,16 +10,16 @@ import quote from "../../assets/testimonialuser/Group 212.svg";
 import frame from "../../assets/icons/Frame 36.png";
 
 const Webtestimonial = () => {
-  // State for avatar set
   const [currentSet, setCurrentSet] = useState(0);
-
-  // State for current testimonial
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  
+  // Ref for the contact section to scroll to it
+  const contactRef = useRef(null);
 
   // Array of user avatars
   const avatarSets = [
     [user, user1, user2, user3],
-    [user2, user3, user4, user1], // Change the avatars to show the next set of users
+    [user2, user3, user4, user1],
   ];
 
   // Array of testimonials for each user
@@ -62,8 +61,15 @@ const Webtestimonial = () => {
     setCurrentTestimonial(index);
   };
 
+  // Handle scroll to contact section
+  const scrollToContact = () => {
+    contactRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section
+      id="contact"
+      ref={contactRef} // Attach the ref to the contact section
       className="flex flex-col md:flex-row bg-cover bg-center h-screen items-center justify-center p-4 md:p-0"
       style={{ backgroundImage: `url(${testimonial})` }}
     >

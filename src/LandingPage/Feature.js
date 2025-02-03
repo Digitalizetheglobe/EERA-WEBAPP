@@ -1,7 +1,7 @@
 import React from "react";
 import feacture from "../assets/banner/Mask group.png";
 
-const Freature = () => {
+const Feature = () => {
   return (
     <div className="max-w-6xl max-md:max-w-xl mx-auto font-[PT Serif]">
       <div className="grid xl:grid-cols-2 md:grid-cols-2 items-center">
@@ -18,8 +18,8 @@ const Freature = () => {
         {/* Cards Section */}
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2 flex items-center space-x-2 font-[700] p-4">
-            <h1 className="text-4xl font-semibold text-[#001A3B] mt-6">Our</h1>
-            <h1 className="text-4xl font-semibold text-[#A99067] mt-6">
+            <h1 className="text-5xl font-semibold text-[#001A3B] mt-6">Our</h1>
+            <h1 className="text-5xl font-semibold text-[#A99067] mt-6">
               Key Features
             </h1>
           </div>
@@ -83,4 +83,4 @@ const Freature = () => {
   );
 };
 
-export default Freature;
+export default Feature;

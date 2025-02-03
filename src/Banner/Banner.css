@@ -2,110 +2,119 @@
 
 /* Existing banner section styles */
 .banner-section {
-    position: relative;
-    height: 600px;
-  }
-  
-  .banner-section img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .banner-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    color: white;
-  }
-  
+  position: relative;
+  height: 600px;
+}
+.read-more-container {
+  display: inline-block;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.read-more-container:hover {
+  transform: scale(1.05);
+  opacity: 0.95;
+}
+
+.read-more-container img {
+  transition: transform 0.2s ease-in-out;
+}
+
+.read-more-container:hover img {
+  transform: scale(1.08);
+}
+.banner-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  color: white;
+}
+
+.banner-heading {
+  font-size: 2rem;
+  font-weight: bold;
+  max-width: 80%;
+  margin-bottom: 1rem;
+}
+
+.banner-text {
+  font-size: 1rem;
+  max-width: 70%;
+  margin-bottom: 1.5rem;
+}
+
+.banner-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.banner-buttons button {
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 5px;
+}
+
+.button-post {
+  background-color: #a99067;
+  color: black;
+}
+
+.button-explore {
+  border: 1px solid white;
+  color: white;
+  background: transparent;
+}
+
+.button-explore:hover {
+  background-color: white;
+  color: black;
+}
+
+.readmore-img {
+  width: 120px;
+  height: 60px;
+  margin-top: 20px;
+}
+
+@media (min-width: 768px) {
   .banner-heading {
-    font-size: 2rem;
-    font-weight: bold;
-    max-width: 80%;
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    max-width: 600px;
   }
-  
+
   .banner-text {
-    font-size: 1rem;
-    max-width: 70%;
-    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    max-width: 500px;
   }
-  
+
   .banner-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
   }
-  
-  .banner-buttons button {
-    padding: 10px 20px;
-    font-weight: 600;
-    border-radius: 5px;
-  }
-  
-  .button-post {
-    background-color: #A99067;
-    color: black;
-  }
-  
-  .button-explore {
-    border: 1px solid white;
-    color: white;
-    background: transparent;
-  }
-  
-  .button-explore:hover {
-    background-color: white;
-    color: black;
-  }
-  
+
   .readmore-img {
-    width: 120px;
-    height: 60px;
-    margin-top: 20px;
+    width: 160px;
+    height: 80px;
+    margin-left: auto;
   }
-  
-  @media (min-width: 768px) {
-    .banner-heading {
-      font-size: 2.5rem;
-      max-width: 600px;
-    }
-  
-    .banner-text {
-      font-size: 1.25rem;
-      max-width: 500px;
-    }
-  
-    .banner-buttons {
-      flex-direction: row;
-    }
-  
-    .readmore-img {
-      width: 160px;
-      height: 80px;
-      margin-left: auto;
-    }
+}
+
+/* Mobile-Only Styles */
+@media (max-width: 767px) {
+  .readmore-img {
+    width: 80px; /* Smaller size for mobile */
+    height: 40px;
   }
-  
-  /* Mobile-Only Styles */
-  @media (max-width: 767px) {
-    .readmore-img {
-      width: 80px; /* Smaller size for mobile */
-      height: 40px;
-    }
-  
-    .banner-heading {
-      font-size: 1.5rem; /* Smaller text size for mobile */
-    }
-  
-    .banner-text {
-      font-size: 0.875rem; /* Smaller subtext size for mobile */
-    }
+
+  .banner-heading {
+    font-size: 1.5rem; /* Smaller text size for mobile */
   }
-  
+
+  .banner-text {
+    font-size: 0.875rem; /* Smaller subtext size for mobile */
+  }
+}

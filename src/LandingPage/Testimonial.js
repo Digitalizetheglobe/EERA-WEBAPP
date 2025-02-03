@@ -58,6 +58,7 @@ const Testimonial = () => {
 
   return (
     <section
+      id="contact"
       className="flex flex-col md:flex-row bg-cover bg-center h-screen items-center justify-center p-4 md:p-0"
       style={{ backgroundImage: `url(${testimonial})` }}
     >
@@ -102,26 +103,35 @@ const Testimonial = () => {
         className="p-8 w-full md:w-1/3 rounded-md shadow-lg"
         style={{ background: 'rgba(169, 144, 103, 0.8)' }}
       >
-        <h3 className="text-2xl text-white font-bold mb-4">Get Started</h3>
         <form className="flex flex-col">
+          <label className="mb-2 text-white">Full Name</label>
+          <input
+            type="text"
+            placeholder="Enter your full name"
+            className="mb-4 p-3 rounded-md border focus:outline-none"
+          />
           <label className="mb-2 text-white">Email</label>
           <input
             type="email"
             placeholder="Enter your email"
             className="mb-4 p-3 rounded-md border focus:outline-none"
           />
-          <label className="mb-2 text-white">Message</label>
-          <textarea
-            placeholder="What are you saying?"
+          <label className="mb-2 text-white">Mobile Number</label>
+          <input
+            type="tel"
+            placeholder="Enter your mobile number"
             className="mb-4 p-3 rounded-md border focus:outline-none"
-          ></textarea>
+          />
+          <label className="mb-2 text-white">Subject</label>
+          <input
+            type="text"
+            placeholder="Enter the subject"
+            className="mb-4 p-3 rounded-md border focus:outline-none"
+          />
           <button className="bg-[#002244] text-white font-semibold py-3 rounded-md hover:bg-[#00172E]">
-            Request Demo
+            Submit
           </button>
         </form>
-        <p className="mt-4 text-right text-[#001A3B]">
-          or <Link to="#" className="underline text-white">Start Free Trial</Link>
-        </p>
       </div>
     </section>
   );

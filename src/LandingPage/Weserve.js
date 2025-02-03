@@ -14,27 +14,27 @@ const Weserve = () => {
           {
             loop: true,
             slides: {
-              origin: "center",
-              perView: 3, // Show 4 cards
-              spacing: 16, // Space between cards
+              origin: "auto",
+              perView: 4, // Display 4 slides at a time
+              spacing: 16, // Adjust spacing between slides
             },
             breakpoints: {
               "(min-width: 1024px)": {
                 slides: {
-                  origin: "auto",
-                  perView: 4, // Show 4 cards in larger screens
-                  spacing: 32,
+                  perView: 4,
+                  spacing: 16,
                 },
               },
               "(max-width: 1024px)": {
                 slides: {
-                  perView: 2, // Show 2 cards on medium screens
+                  perView: 2,
+                  spacing: 8,
                 },
               },
               "(max-width: 640px)": {
-                // Adjust the max-width for small screens
                 slides: {
-                  perView: 1, // Show 1 card on small screens
+                  perView: 1,
+                  spacing: 4,
                 },
               },
             },
@@ -42,17 +42,14 @@ const Weserve = () => {
           []
         );
 
-        const keenSliderPrevious = document.getElementById(
-          "keen-slider-previous"
-        );
-        const keenSliderNext = document.getElementById("keen-slider-next");
+        document
+          .getElementById("keen-slider-previous")
+          .addEventListener("click", () => keenSlider.prev());
+        document
+          .getElementById("keen-slider-next")
+          .addEventListener("click", () => keenSlider.next());
 
-        keenSliderPrevious.addEventListener("click", () => keenSlider.prev());
-        keenSliderNext.addEventListener("click", () => keenSlider.next());
-
-        return () => {
-          keenSlider.destroy();
-        };
+        return () => keenSlider.destroy();
       }
     );
   }, []);
@@ -61,14 +58,14 @@ const Weserve = () => {
     <section
       className="bg-gray-50 overflow-hidden mt-16 p-4"
       style={{
-        backgroundImage: `url(${bgimg})`, // Set the background image here
-        backgroundSize: "cover", // Make the image cover the entire section
-        backgroundPosition: "center", // Center the background image
-        backgroundRepeat: "no-repeat", // Prevent the image from repeating
+        backgroundImage: `url(${bgimg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       <div className="max-w-full px-4 py-12 sm:px-2 lg:py-16 lg:px-8 xl:py-24">
-        <div className="flex items-center justify-between space-x-4 px-4 lg:pl-32 col-span-2">
+        <div className="flex items-center justify-between space-x-4 px-4 lg:pl-7 col-span-2">
           <div className="flex items-center space-x-2 font-[700]">
             <h1 className="text-4xl font-semibold text-[#fff]">Who</h1>
             <h1 className="text-4xl font-semibold text-[#A99067]">We Serve</h1>
@@ -122,26 +119,27 @@ const Weserve = () => {
         <div
           className="keen-slider mt-8"
           id="keen-slider"
-          style={{ paddingLeft: "10%", paddingRight: "10%" }}
+          style={{
+            overflow: "hidden", // Ensure there's no overflow
+          }}
         >
           {/* Slide 1 */}
-          <div className="keen-slider__slide" style={{ width: "220px" }}>
+          <div className="keen-slider__slide" style={{ width: "calc(25% - 16px)" }}>
             <blockquote className="flex h-full flex-col justify-between bg-[#001A3B] rounded-md p-4 shadow-sm sm:p-6 lg:p-8">
-              {/* Slide content */}
               <p className="text-[20px] font-semibold text-white">
                 Real Estate Professionals
               </p>
               <p className="text-[16px] leading-relaxed text-white">
                 Stay informed about regulatory updates and property notices.
               </p>
-              <button className=" b border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
-                {/* &mdash; Reviewer 1 */} Read More
+              <button className="border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
+                Read More
               </button>
             </blockquote>
           </div>
 
-          {/* Additional slides */}
-          <div className="keen-slider__slide" style={{ width: "220px" }}>
+          {/* Slide 2 */}
+          <div className="keen-slider__slide" style={{ width: "calc(25% - 16px)" }}>
             <blockquote className="flex h-full flex-col justify-between rounded-md bg-[#001A3B] p-4 shadow-sm sm:p-6 lg:p-8">
               <p className="text-[20px] font-semibold text-white">
                 Corporate Executives and Business Leaders
@@ -149,12 +147,14 @@ const Weserve = () => {
               <p className="text-[16px] leading-relaxed text-white">
                 Gain quick access to the latest corporate and legal updates.
               </p>
-              <button className=" b border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
-                {/* &mdash; Reviewer 1 */} Read More
+              <button className="border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
+                Read More
               </button>
             </blockquote>
           </div>
-          <div className="keen-slider__slide" style={{ width: "220px" }}>
+
+          {/* Slide 3 */}
+          <div className="keen-slider__slide" style={{ width: "calc(25% - 16px)" }}>
             <blockquote className="flex h-full flex-col justify-between rounded-md bg-[#001A3B] p-4 shadow-sm sm:p-6 lg:p-8">
               <p className="text-[20px] font-semibold text-white">
                 Banks and Financial Institutes
@@ -163,23 +163,24 @@ const Weserve = () => {
                 Ensure that critical notices are published and compliant with
                 legal standards.
               </p>
-              <button className="mt-2 b border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
-                {/* &mdash; Reviewer 1 */} Read More
+              <button className="mt-2 border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
+                Read More
               </button>
             </blockquote>
           </div>
-          <div className="keen-slider__slide" style={{ width: "220px" }}>
+
+          {/* Slide 4 */}
+          <div className="keen-slider__slide" style={{ width: "calc(25% - 16px)" }}>
             <blockquote className="flex h-full flex-col justify-between rounded-md bg-[#001A3B] p-4 shadow-sm sm:p-6 lg:p-8">
               <p className="text-[20px] font-semibold text-white">
-                The General publication
+                The General Public
               </p>
-
               <p className="text-[16px] leading-relaxed text-white">
                 Easily find public notices for real estate, corporate changes,
                 or local events.
               </p>
-              <button className=" b border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
-                {/* &mdash; Reviewer 1 */} Read More
+              <button className="border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
+                Read More
               </button>
             </blockquote>
           </div>

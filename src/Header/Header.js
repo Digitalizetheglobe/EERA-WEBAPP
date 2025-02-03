@@ -16,18 +16,16 @@ const Header = () => {
         style={{ backgroundColor: "rgba(0, 26, 59, 0.7)" }}
       >
         <div className="flex items-center gap-5 w-full">
-          <Link>
+          <Link to="/">
             <img src={logo} alt="logo" className="w-14 max-lg:mr-5" />
           </Link>
 
           {/* Mobile Sidebar */}
           <div
             id="collapseMenu"
-            className={`${
-              menuOpen ? "max-lg:flex" : "max-lg:hidden"
-            } lg:flex lg:ml-auto max-lg:fixed max-lg:bg-white max-lg:w-3/4 max-lg:min-w-[250px] max-lg:top-0 max-lg:right-0 max-lg:h-full max-lg:p-6 max-lg:shadow-lg max-lg:z-50 transition-transform transform ${
-              menuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={`${menuOpen ? "max-lg:flex" : "max-lg:hidden"
+              } lg:flex lg:ml-auto max-lg:fixed max-lg:bg-white max-lg:w-3/4 max-lg:min-w-[250px] max-lg:top-0 max-lg:right-0 max-lg:h-full max-lg:p-6 max-lg:shadow-lg max-lg:z-50 transition-transform transform ${menuOpen ? "translate-x-0" : "translate-x-full"
+              }`}
           >
             <button
               id="toggleClose"
@@ -48,16 +46,41 @@ const Header = () => {
               <li className="mb-6 hidden max-lg:block">
                 <img src={logo} alt="logo" className="w-20" />
               </li>
-              {["", "", ""].map((item) => (
-                <li key={item} className="max-lg:border-b max-lg:py-3">
-                  <a
-                    href="#"
-                    className="block text-lg font-medium max-lg:text-gray-800 lg:text-white max-lg:text-center"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
+
+              {/* Separate Navigation Items with Routing */}
+              <li className="max-lg:border-b max-lg:py-3 group">
+                <Link
+                  to="/home"
+                  className="block text-lg font-medium max-lg:text-gray-800 lg:text-[#A99067] max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
+                >
+                  Home
+                </Link>
+              </li>
+              <li className="max-lg:border-b max-lg:py-3 group">
+                <Link
+                  to="/about"w
+                  className="block text-lg font-medium max-lg:text-gray-800 lg:text-[#A99067] max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
+                >
+                  About
+                </Link>
+              </li>
+              <li className="max-lg:border-b max-lg:py-3 group">
+                {/* Update to scroll to the contact section */}
+                <a
+                  href="#contact"
+                  className="block text-lg font-medium max-lg:text-gray-800 lg:text-[#A99067] max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
+                >
+                  Contact
+                </a>
+              </li>
+              <li className="max-lg:border-b max-lg:py-3 group">
+                <Link
+                  to="/notices"
+                  className="block text-lg font-medium max-lg:text-gray-800 lg:text-[#A99067] max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
+                >
+                  All Notices
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -65,10 +88,11 @@ const Header = () => {
           <div className="flex items-center ml-auto space-x-4">
             <Link
               to="/home"
-              className="px-4 py-2 text-sm rounded font-semibold text-black bg-[#A99067] transition-all duration-300"
+              className="px-4 py-2 text-sm rounded font-semibold text-black bg-[#A99067] transition-all duration-300 hover:bg-white hover:text-black"
             >
               Get Started
             </Link>
+
             <button id="toggleOpen" onClick={toggleMenu} className="lg:hidden">
               <svg
                 className="w-7 h-7 text-white"

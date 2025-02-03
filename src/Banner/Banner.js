@@ -2,7 +2,7 @@ import React from "react";
 import banner from "../assets/banner/1HIMW2VTQLimGQKOEOzmaw 1.png";
 import readmore from "../assets/banner/Group 2.png";
 import Header from "../Header/Header";
-import Freature from "../LandingPage/Freature";
+import Feature from "../LandingPage/Feature";
 import Aboutus from "../LandingPage/Aboutus";
 import Weserve from "../LandingPage/Weserve";
 import Latestnotics from "../LandingPage/Latestnotics";
@@ -52,7 +52,7 @@ const BannerSection = () => {
             </div>
 
             {/* Right Side - Read More Image Button */}
-            <div className="w-32 sm:w-40 h-12 sm:h-20 ml-0 sm:ml-auto">
+            <div className="w-32 sm:w-40 h-12 sm:h-20 ml-0 sm:ml-auto read-more-container">
               <Link to="/about">
                 <img
                   src={readmore}
@@ -61,13 +61,14 @@ const BannerSection = () => {
                 />
               </Link>
             </div>
+
           </div>
         </div>
       </section>
 
       {/* Main Content Sections */}
       <Aboutus />
-      <Freature />
+      <Feature />
       <Weserve />
       <Latestnotics />
       {/* <Pricing /> */}

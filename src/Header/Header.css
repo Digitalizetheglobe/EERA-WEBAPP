@@ -1,5 +1,9 @@
 /* HeaderMobile.css */
 @media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+  
     .mobile-header {
       background-color: rgba(0, 26, 59, 0.9);
       position: fixed;
