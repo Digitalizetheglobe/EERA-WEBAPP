@@ -37,8 +37,6 @@ const Aboutus = () => {
             >
               Read More
             </button>
-
-
           </div>
         </div>
       </div>

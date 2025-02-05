@@ -12,7 +12,7 @@ import Footer from "../LandingPage/Footer";
 import "./Banner.css";
 import Pricing from "../LandingPage/Pricing";
 import { Link } from "react-router-dom";
-
+import NoticesSection from "../LandingPage/Noticecount";
 const BannerSection = () => {
   return (
     <>
@@ -23,7 +23,7 @@ const BannerSection = () => {
         <img
           src={banner}
           alt="banner"
-          className="w-full h-[90vh] sm:h-full object-cover"
+          className="w-full h-[90vh] sm:h-full object-cover ml-[-1px]"
         />
 
         {/* Text and Button Overlay */}
@@ -38,7 +38,7 @@ const BannerSection = () => {
           </p>
 
           {/* Buttons Row */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
             {/* Left Side Buttons */}
             <div className="flex space-x-0 sm:space-x-4 sm:flex-row flex-col">
               {/* <button className="px-6 py-3 bg-[#A99067] text-black font-semibold rounded hover:bg-opacity-90 transition">
@@ -52,21 +52,34 @@ const BannerSection = () => {
             </div>
 
             {/* Right Side - Read More Image Button */}
-            <div className="w-32 sm:w-40 h-12 sm:h-20 ml-0 sm:ml-auto read-more-container">
+            <div className="w-32 sm:w-40 h-12 sm:h-20 mr-auto flex items-center justify-start">
               <Link to="/about">
-                <img
-                  src={readmore}
-                  alt="Read more"
-                  className="object-contain"
-                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-12 h-12 sm:w-11 sm:h-11 text-[#A99067] transition-transform transform hover:scale-110"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M8 12h8" />
+                  <path d="m12 16 4-4-4-4" />
+                </svg>
               </Link>
             </div>
+
+
+
 
           </div>
         </div>
       </section>
 
       {/* Main Content Sections */}
+      <NoticesSection/>
       <Aboutus />
       <Feature />
       <Weserve />

@@ -51,24 +51,23 @@ const Header = () => {
               <li className="max-lg:border-b max-lg:py-3 group">
                 <Link
                   to="/home"
-                  className="block text-lg font-medium max-lg:text-gray-800 lg:text-[#A99067] max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
+                  className="block text-lg font-semibold max-lg:text-gray-900 lg:text-white lg:text-xl max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
                 >
                   Home
                 </Link>
               </li>
               <li className="max-lg:border-b max-lg:py-3 group">
                 <Link
-                  to="/about"w
-                  className="block text-lg font-medium max-lg:text-gray-800 lg:text-[#A99067] max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
+                  to="/about"
+                  className="block text-lg font-semibold max-lg:text-gray-900 lg:text-white lg:text-xl max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
                 >
                   About
                 </Link>
               </li>
               <li className="max-lg:border-b max-lg:py-3 group">
-                {/* Update to scroll to the contact section */}
                 <a
                   href="#contact"
-                  className="block text-lg font-medium max-lg:text-gray-800 lg:text-[#A99067] max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
+                  className="block text-lg font-semibold max-lg:text-gray-900 lg:text-white lg:text-xl max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
                 >
                   Contact
                 </a>
@@ -76,11 +75,12 @@ const Header = () => {
               <li className="max-lg:border-b max-lg:py-3 group">
                 <Link
                   to="/notices"
-                  className="block text-lg font-medium max-lg:text-gray-800 lg:text-[#A99067] max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
+                  className="block text-lg font-semibold max-lg:text-gray-900 lg:text-white lg:text-xl max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
                 >
                   All Notices
                 </Link>
               </li>
+
             </ul>
           </div>
 

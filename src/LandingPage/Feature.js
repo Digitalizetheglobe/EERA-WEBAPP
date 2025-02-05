@@ -3,81 +3,61 @@ import feacture from "../assets/banner/Mask group.png";
 
 const Feature = () => {
   return (
-    <div className="max-w-6xl max-md:max-w-xl mx-auto font-[PT Serif]">
-      <div className="grid xl:grid-cols-2 md:grid-cols-2 items-center">
+    <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-16 font-[PT Serif]">
+      <div className="grid xl:grid-cols-2 gap-10 items-center">
         {/* Image Section */}
-        <div className="row-span-2 mb-6">
+        <div className="flex justify-center xl:justify-start">
           <img
             src={feacture}
-            className="rounded-md"
+            className="rounded-lg shadow-lg"
             alt="Feature section"
-            style={{ width: "470px", height: "650px" }}
+            style={{ width: "500px", height: "650px", objectFit: "cover" }}
           />
         </div>
 
-        {/* Cards Section */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2 flex items-center space-x-2 font-[700] p-4">
-            <h1 className="text-5xl font-semibold text-[#001A3B] mt-6">Our</h1>
-            <h1 className="text-5xl font-semibold text-[#A99067] mt-6">
-              Key Features
-            </h1>
+        {/* Features Section */}
+        <div className="space-y-8">
+          {/* Title */}
+          <div className="text-center xl:text-left">
+            <h1 className="text-4xl font-bold text-[#001A3B]">Our</h1>
+            <h1 className="text-4xl font-bold text-[#A99067]">Key Features</h1>
           </div>
 
-          <div className="text-left p-5">
-            <h1 className="text-xl font-semibold">01</h1>
-
-            <h3 className="text-[#001A3B] text-xl font-[600] mt-3 mb-3">
-              Browse and Access Notices Instantly
-            </h3>
-            <p className="text-[#001A3B] text-sm leading-relaxed" style={{fontSize:'15px'}}>
-              Quickly browse the latest legal and corporate updates. Filter by
-              date, category, or region for fast, personalized access.
-            </p>
+          {/* Feature Cards */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                number: "01",
+                title: "Browse and Access Notices Instantly",
+                desc: "Quickly browse the latest legal and corporate updates. Filter by date, category, or region for fast, personalized access.",
+              },
+              {
+                number: "02",
+                title: "Posting Notices Made Simple",
+                desc: "Effortlessly post real estate and corporate notices with our easy-to-use interface. Streamline the submission process with clear forms and instant publication.",
+              },
+              {
+                number: "03",
+                title: "Download and Enquire Anytime",
+                desc: "Download detailed notices or make inquiries with just one click. Always stay ahead of deadlines and legal requirements.",
+              },
+              {
+                number: "04",
+                title: "Legal and Regulatory Compliance Updates",
+                desc: "Receive timely notifications on new laws, policy changes, and compliance requirements, helping you stay compliant with industry standards.",
+              },
+            ].map((feature, index) => (
+              <div key={index} className="p-5 border-l-4 border-[#A99067] shadow-md bg-white rounded-lg">
+                <h1 className="text-2xl font-bold text-[#001A3B]">{feature.number}</h1>
+                <h3 className="text-[#001A3B] text-lg font-semibold mt-3 mb-3">{feature.title}</h3>
+                <p className="text-[#001A3B] text-sm leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
           </div>
 
-          <div className="text-left p-5">
-            <h1 className="text-xl font-semibold">02</h1>
-
-            <h3 className="text-[#001A3B] text-xl font-semibold mt-3 mb-3">
-              Posting Notices Made Simple
-            </h3>
-            <p className="text-[#001A3B] text-sm leading-relaxed" style={{fontSize:'15px'}}>
-              Effortlessly post real estate and corporate notices with our
-              easy-to-use interface. Streamline the submission process with
-              clear forms and instant publication.
-            </p>
-          </div>
-
-          <div className="text-left p-5">
-            <h1 className="text-xl font-semibold">03</h1>
-            <h3 className="text-[#001A3B] text-xl font-semibold mt-3 mb-3">
-              Download and Enquire Anytime
-            </h3>
-            <p className="text-[#001A3B] text-sm leading-relaxed" style={{fontSize:'15px'}}>
-              Download detailed notices or make inquiries with just one click.
-              Always stay ahead of deadlines and legal requirements.
-            </p>
-          </div>
-
-          <div className="text-left p-5">
-            <h1 className="text-xl font-semibold">04</h1>
-            <h3 className="text-[#001A3B] text-xl font-semibold mt-3 mb-3">
-              Legal and Regulatory Compliance Updates
-            </h3>
-            <p className="text-[#001A3B] text-sm leading-relaxed" style={{fontSize:'15px'}}>
-              Our platform ensures that you receive timely notifications on new
-              laws, policy changes, and compliance requirements, helping you
-              stay compliant with industry standards.
-            </p>
-          </div>
+          {/* Read More Button */}
+          
         </div>
-        
-        <div className="flex justify-start pl-4 mb-6">
-          {/* <button className="text-[#A99067] font-semibold w-32 h-10 rounded-md border border-[#A99067]">
-         Read More
-          </button> */}
-          </div>
       </div>
     </div>
   );

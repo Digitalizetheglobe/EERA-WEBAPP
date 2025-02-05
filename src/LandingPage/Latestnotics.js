@@ -80,7 +80,7 @@ const LatestNotices = () => {
             <div key={index} className="w-full md:w-1/3 flex-shrink-0 px-2">
               <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
                 <img
-                  src={notice.image || defaultImage} 
+                  src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`} 
                   alt={notice.notice_title || "Default Notice"}
                   className="w-full h-40 object-cover"
                 />
