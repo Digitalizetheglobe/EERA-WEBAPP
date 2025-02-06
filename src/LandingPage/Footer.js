@@ -2,8 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
-  return (
+  // Function to scroll to the top when a link is clicked
+  const scrollToTop = () => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  };
 
+  return (
     <footer
       className="py-12 px-4 sm:px-8 tracking-wide"
       style={{ background: 'linear-gradient(180.24deg, #001A3B 0.24%, #00040A 110.27%)' }}
@@ -33,15 +37,14 @@ const Footer = () => {
           <h4 className="text-lg font-bold mb-6 text-[#fff]">Services</h4>
           <ul className="space-y-4">
             <li><Link to="/post-notices" className="text-white hover:text-[#A99067] text-[15px]">Post Your Notices.</Link></li>
-
           </ul>
         </div>
 
         <div>
           <h4 className="text-lg font-bold mb-6 text-[#fff]">About Us</h4>
           <ul className="space-y-4">
-            <li><Link to="/home" className="text-white hover:text-[#A99067] text-[15px]">Home</Link></li>
-            <li><Link to="/about" className="text-white hover:text-[#A99067] text-[15px]">About us</Link></li>
+            <li><Link to="/home" className="text-white hover:text-[#A99067] text-[15px]" onClick={scrollToTop}>Home</Link></li>
+            <li><Link to="/about" className="text-white hover:text-[#A99067] text-[15px]" onClick={scrollToTop}>About us</Link></li>
           </ul>
         </div>
       </div>
@@ -51,7 +54,6 @@ const Footer = () => {
           <Link to='' className="hover:text-[#A99067] text-white">Terms and Conditions</Link>
 
           <Link to='' className="hover:text-[#A99067] text-white">Privacy Policy</Link>
-
         </div>
       </div>
     </footer>
