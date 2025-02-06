@@ -2,8 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const WebFooter = () => {
-  return (
+  // Function to scroll to the top when a link is clicked
+  const scrollToTop = () => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  };
 
+  return (
     <footer
       className="py-12 px-4 sm:px-8 tracking-wide"
       style={{ background: 'linear-gradient(180.24deg, #001A3B 0.24%, #00040A 110.27%)' }}
@@ -22,7 +26,7 @@ const WebFooter = () => {
               </li>
               <li className="flex items-center">
                 <i className="fas fa-phone text-white mr-2"></i>
-                <a href="tel:001-265-6526" className="text-white hover:text-[#A99067] text-[15px]">001-265-6526</a>
+                <a href="tel:+91 7391092093" className="text-white hover:text-[#A99067] text-[15px]">+91 7391092093</a>
               </li>
               <li className="flex items-center">
                 <i className="fas fa-map-marker-alt text-white mr-2"></i>
@@ -32,7 +36,7 @@ const WebFooter = () => {
           </div>
         </div>
 
-        <div >
+        <div>
           {/* <h4 className="text-lg font-bold mb-6 text-[#fff]">Services</h4>
           <ul className="space-y-4">
             <li><Link to="/post-notices" className="text-white hover:text-[#A99067] text-[15px]">Post Your Notices.</Link></li>
@@ -43,7 +47,7 @@ const WebFooter = () => {
         <div>
           <h4 className="text-lg font-bold mb-6 text-[#fff]">Services</h4>
           <ul className="space-y-4">
-          <li><Link to="/post-notices" className="text-white hover:text-[#A99067] text-[15px]">Post Your Notices.</Link></li>
+            <li><Link to="/post-notices" className="text-white hover:text-[#A99067] text-[15px]" onClick={scrollToTop}>Post Your Notices.</Link></li>
 
             {/* <li><a href="javascript:void(0)" className="text-white hover:text-[#A99067] text-[15px]">Webinars</a></li>
             <li><a href="javascript:void(0)" className="text-white hover:text-[#A99067] text-[15px]">Ebooks</a></li>
@@ -55,8 +59,8 @@ const WebFooter = () => {
         <div>
           <h4 className="text-lg font-bold mb-6 text-[#fff]">Quick Link</h4>
           <ul className="space-y-4">
-            <li><Link to="/home"  className="text-white hover:text-[#A99067] text-[15px]">Home</Link></li>
-            <li><Link to="/about" className="text-white hover:text-[#A99067] text-[15px]">About us</Link></li>
+            <li><Link to="/home" className="text-white hover:text-[#A99067] text-[15px]" onClick={scrollToTop}>Home</Link></li>
+            <li><Link to="/about" className="text-white hover:text-[#A99067] text-[15px]" onClick={scrollToTop}>About us</Link></li>
             {/* <li><a href="javascript:void(0)" className="text-white hover:text-[#A99067] text-[15px]">Team</a></li>
             <li><a href="javascript:void(0)" className="text-white hover:text-[#A99067] text-[15px]">Testimonials</a></li> */}
           </ul>

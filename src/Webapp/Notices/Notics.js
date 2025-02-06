@@ -122,7 +122,7 @@ const [notices, setNotices] = useState([]);
       transformOrigin: `${zoomPoint.x * 100}% ${zoomPoint.y * 100}%`
     };
   };
-  const cardsPerSlide = 2;
+  const cardsPerSlide = 3;
   const totalSlides = Math.ceil(notices.length / cardsPerSlide);
 
   // Handle navigation
@@ -291,9 +291,6 @@ const [notices, setNotices] = useState([]);
                             <Link to={`/notices/${notice.id}`} className="bg-[#001A3B] text-white px-4 py-2 rounded">
                               Read Notice
                             </Link>
-                            <button className="text-[#A99067] border border-[#A99067] px-4 py-2 rounded">
-                              Save
-                            </button>
                           </div>
                         </div>
                       </div>

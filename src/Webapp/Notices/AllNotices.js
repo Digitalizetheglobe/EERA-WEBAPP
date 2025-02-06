@@ -1,12 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import noticesimg from '../../assets/banner/noticesimg.png';
 
 function AllNotices() {
+  const [noticesCount, setNoticesCount] = useState(0);
+
+  useEffect(() => {
+    // Fetching the notices data from the API
+    const fetchNotices = async () => {
+      try {
+        const response = await fetch('https://api.epublicnotices.in/notices');
+        const data = await response.json();
+
+        // Assuming the response data is an array of notices
+        setNoticesCount(data.length); // Calculate the length of the array
+      } catch (error) {
+        console.error('Error fetching notices:', error);
+      }
+    };
+
+    fetchNotices();
+  }, []);
+
   return (        
     <div className="max-w-5xl max-md:max-w-xl mx-auto px-6 py-14 mb-6">
       <h2 className="text-2xl sm:text-3xl text-[#334862] font-bold text-center md:text-left">
         Focus on What Matters: Explore All{' '}
-        <span className="text-[#A99067] font-extrabold">150</span> Notices
+        <span className="text-[#A99067] font-extrabold">{noticesCount}</span> Notices
       </h2>
       
       <div className="flex flex-col md:flex-row gap-12 items-start mt-8">

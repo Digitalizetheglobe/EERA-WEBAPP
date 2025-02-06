@@ -1,26 +1,46 @@
 import React from "react";
+import { motion } from "framer-motion";
 import feacture from "../assets/banner/Mask group.png";
 
 const Feature = () => {
   return (
     <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-16 font-[PT Serif]">
-      <div className="grid xl:grid-cols-2 gap-10 items-center">
+      <motion.div 
+        className="grid xl:grid-cols-2 gap-10 items-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
         {/* Image Section */}
-        <div className="flex justify-center xl:justify-start">
+        <motion.div
+          className="flex justify-center xl:justify-start"
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
           <img
             src={feacture}
             className="rounded-lg shadow-lg"
             alt="Feature section"
             style={{ width: "500px", height: "650px", objectFit: "cover" }}
           />
-        </div>
+        </motion.div>
 
         {/* Features Section */}
-        <div className="space-y-8">
+        <motion.div
+          className="space-y-8"
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
           {/* Title */}
           <div className="text-center xl:text-left">
-            <h1 className="text-4xl font-bold text-[#001A3B]">Our</h1>
-            <h1 className="text-4xl font-bold text-[#A99067]">Key Features</h1>
+            <motion.h1 className="text-4xl font-bold text-[#001A3B]" whileHover={{ scale: 1.1 }}>
+              Our
+            </motion.h1>
+            <motion.h1 className="text-4xl font-bold text-[#A99067]" whileHover={{ scale: 1.1 }}>
+              Key Features
+            </motion.h1>
           </div>
 
           {/* Feature Cards */}
@@ -47,18 +67,22 @@ const Feature = () => {
                 desc: "Receive timely notifications on new laws, policy changes, and compliance requirements, helping you stay compliant with industry standards.",
               },
             ].map((feature, index) => (
-              <div key={index} className="p-5 border-l-4 border-[#A99067] shadow-md bg-white rounded-lg">
+              <motion.div
+                key={index}
+                className="p-5 border-l-4 border-[#A99067] shadow-md bg-white rounded-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.1, delay: index * 0.2 }}
+                whileHover={{ scale: 1.05 }}
+              >
                 <h1 className="text-2xl font-bold text-[#001A3B]">{feature.number}</h1>
                 <h3 className="text-[#001A3B] text-lg font-semibold mt-3 mb-3">{feature.title}</h3>
                 <p className="text-[#001A3B] text-sm leading-relaxed">{feature.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-
-          {/* Read More Button */}
-          
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

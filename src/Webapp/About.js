@@ -17,9 +17,7 @@ const About = () => {
           <h2 className="text-xl text-[#001A3BCC] font-semibold mb-2">
             Empower Your Business’s Financial Future Effortlessly
           </h2>
-          <button className="mt-2 px-4 py-2 bg-[#A99067] text-white rounded-lg font-semibold border hover:text-[#A99067] hover:border-[#A99067] hover:bg-transparent">
-            Get Started
-          </button>
+        
         </div>
 
         {/* Introductory Text */}
