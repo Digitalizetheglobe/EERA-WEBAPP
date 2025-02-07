@@ -16,7 +16,7 @@ import SearchNotices from './Webapp/SearchNotices.js';
 import PostNotices from './PostNotices/PostNotices.js';
 import Login from './Webapp/LoginandRegistration/Login.js';
 import Register from './Webapp/LoginandRegistration/Register.js';
-
+import AllNotices from './AllNotices/Page.jsx';
 
 function App() {
   return (
@@ -37,6 +37,7 @@ function App() {
         <Route path='/post-notices' element={<PostNotices/>}/>
         <Route path='/Login' element={<Login/>} />
         <Route path='/Register' element={<Register/>} />
+        <Route path='/all-notices' element={<AllNotices/>} />
       </Routes>
     </Router>
 

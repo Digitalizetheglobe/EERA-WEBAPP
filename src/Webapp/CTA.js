@@ -20,11 +20,13 @@ const CTA = () => {
           estate information, ensure your message reaches the right audience.
         </p>
         <Link
-         to='/post-notices'
+          to="/post-notices"
           className="mt-12 text-base font-semibold py-2.5 px-5 border-2 border-[#A99067] hover:bg-transparent hover:text-[#A99067] hover:border-[#A99067] bg-[#A99067] text-white rounded"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           Post a Notice Now
         </Link>
+
       </div>
     </div>
   );
