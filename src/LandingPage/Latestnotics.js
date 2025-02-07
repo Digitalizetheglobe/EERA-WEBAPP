@@ -125,12 +125,14 @@ const LatestNotices = () => {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-auto">
-                    <Link
-                      to={`/notices/${notice.id}`}
-                      className="flex-1 bg-[#001A3B] text-white px-4 py-2 rounded text-center text-sm sm:text-base hover:bg-[#002a5c] transition-colors"
-                    >
-                      Read Notice
-                    </Link>
+                  <Link
+  to={`/notices/${notice.id}`}
+  className="flex-1 bg-[#001A3B] text-white px-4 py-2 rounded text-center text-sm sm:text-base 
+            hover:bg-[#002a5c] transition-transform transform hover:scale-105"
+>
+  Read Notice
+</Link>
+
                   </div>
                 </div>
               </div>

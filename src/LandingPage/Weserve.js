@@ -15,8 +15,8 @@ const Weserve = () => {
             loop: true,
             slides: {
               origin: "auto",
-              perView: 4, // Display 4 slides at a time
-              spacing: 16, // Adjust spacing between slides
+              perView: 4,
+              spacing: 16,
             },
             breakpoints: {
               "(min-width: 1024px)": {
@@ -67,8 +67,8 @@ const Weserve = () => {
       <div className="max-w-full px-4 py-12 sm:px-2 lg:py-16 lg:px-8 xl:py-24">
         <div className="flex items-center justify-between space-x-4 px-4 lg:pl-7 col-span-2">
           <div className="flex items-center space-x-2 font-[700]">
-            <h1 className="text-4xl font-semibold text-[#fff]">Who</h1>
-            <h1 className="text-4xl font-semibold text-[#A99067]">We Serve</h1>
+            <h1 className="text-4xl font-semibold text-[#fff] transition-all duration-300 ease-in-out hover:text-[#A99067]">Who</h1>
+            <h1 className="text-4xl font-semibold text-[#A99067] transition-all duration-300 ease-in-out hover:text-[#fff]">We Serve</h1>
           </div>
 
           <div className="flex gap-4">
@@ -120,19 +120,19 @@ const Weserve = () => {
           className="keen-slider mt-8"
           id="keen-slider"
           style={{
-            overflow: "hidden", // Ensure there's no overflow
+            overflow: "hidden",
           }}
         >
           {/* Slide 1 */}
           <div className="keen-slider__slide" style={{ width: "calc(25% - 16px)" }}>
-            <blockquote className="flex h-full flex-col justify-between bg-[#001A3B] rounded-md p-4 shadow-sm sm:p-6 lg:p-8">
+            <blockquote className="flex h-full flex-col justify-between bg-[#001A3B] rounded-md p-4 shadow-sm sm:p-6 lg:p-8 transition-transform duration-300 ease-in-out hover:scale-105">
               <p className="text-[20px] font-semibold text-white">
                 Real Estate Professionals
               </p>
               <p className="text-[16px] leading-relaxed text-white">
                 Stay informed about regulatory updates and property notices.
               </p>
-              <button className="border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
+              <button className="border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067] transition-all duration-300 ease-in-out hover:bg-[#A99067] hover:text-white">
                 Read More
               </button>
             </blockquote>
@@ -140,14 +140,14 @@ const Weserve = () => {
 
           {/* Slide 2 */}
           <div className="keen-slider__slide" style={{ width: "calc(25% - 16px)" }}>
-            <blockquote className="flex h-full flex-col justify-between rounded-md bg-[#001A3B] p-4 shadow-sm sm:p-6 lg:p-8">
+            <blockquote className="flex h-full flex-col justify-between rounded-md bg-[#001A3B] p-4 shadow-sm sm:p-6 lg:p-8 transition-transform duration-300 ease-in-out hover:scale-105">
               <p className="text-[20px] font-semibold text-white">
                 Corporate Executives and Business Leaders
               </p>
               <p className="text-[16px] leading-relaxed text-white">
                 Gain quick access to the latest corporate and legal updates.
               </p>
-              <button className="border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
+              <button className="border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067] transition-all duration-300 ease-in-out hover:bg-[#A99067] hover:text-white">
                 Read More
               </button>
             </blockquote>
@@ -155,7 +155,7 @@ const Weserve = () => {
 
           {/* Slide 3 */}
           <div className="keen-slider__slide" style={{ width: "calc(25% - 16px)" }}>
-            <blockquote className="flex h-full flex-col justify-between rounded-md bg-[#001A3B] p-4 shadow-sm sm:p-6 lg:p-8">
+            <blockquote className="flex h-full flex-col justify-between rounded-md bg-[#001A3B] p-4 shadow-sm sm:p-6 lg:p-8 transition-transform duration-300 ease-in-out hover:scale-105">
               <p className="text-[20px] font-semibold text-white">
                 Banks and Financial Institutes
               </p>
@@ -163,7 +163,7 @@ const Weserve = () => {
                 Ensure that critical notices are published and compliant with
                 legal standards.
               </p>
-              <button className="mt-2 border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
+              <button className="mt-2 border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067] transition-all duration-300 ease-in-out hover:bg-[#A99067] hover:text-white">
                 Read More
               </button>
             </blockquote>
@@ -171,7 +171,7 @@ const Weserve = () => {
 
           {/* Slide 4 */}
           <div className="keen-slider__slide" style={{ width: "calc(25% - 16px)" }}>
-            <blockquote className="flex h-full flex-col justify-between rounded-md bg-[#001A3B] p-4 shadow-sm sm:p-6 lg:p-8">
+            <blockquote className="flex h-full flex-col justify-between rounded-md bg-[#001A3B] p-4 shadow-sm sm:p-6 lg:p-8 transition-transform duration-300 ease-in-out hover:scale-105">
               <p className="text-[20px] font-semibold text-white">
                 The General Public
               </p>
@@ -179,7 +179,7 @@ const Weserve = () => {
                 Easily find public notices for real estate, corporate changes,
                 or local events.
               </p>
-              <button className="border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067]">
+              <button className="border-[#A99067] border w-28 h-10 text-sm font-medium text-[#A99067] transition-all duration-300 ease-in-out hover:bg-[#A99067] hover:text-white">
                 Read More
               </button>
             </blockquote>

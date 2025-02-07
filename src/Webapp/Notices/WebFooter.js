@@ -67,7 +67,7 @@ const WebFooter = () => {
         </div>
       </div>
       <div className="mt-8 flex justify-between items-center text-gray-600 text-[15px] border-t border-gray-300 pt-4">
-        <div className="hover:text-[#A99067] text-white">© 2024 EERA Inc. Copyright and rights reserved</div>
+        <div className="hover:text-[#A99067] text-white">© 2025 EERA Inc. Copyright and rights reserved</div>
         <div className="space-x-4">
           <Link to='' className="hover:text-[#A99067] text-white">Terms and Conditions</Link>
 

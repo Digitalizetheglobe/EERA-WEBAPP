@@ -49,20 +49,22 @@ const About = () => {
         </div>
 
         {/* Mission Card */}
-        <div className="col-span-2 bg-[#A9906766] p-4 rounded-lg">
-          <h3 className="text-2xl font-semibold mb-4">Our Mission</h3>
-          <p className="text-md text-gray-600">
-            To deliver innovative IT solutions that empower businesses.
-          </p>
-        </div>
+{/* Mission Card */}
+<div className="col-span-2 bg-[#A9906766] p-4 rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg">
+  <h3 className="text-2xl font-semibold mb-4">Our Mission</h3>
+  <p className="text-md text-gray-600">
+    To deliver innovative IT solutions that empower businesses.
+  </p>
+</div>
 
-        {/* Vision Card */}
-        <div className="col-span-2 bg-[#001A3B] p-4 rounded-lg text-white">
-          <h3 className="text-2xl font-semibold mb-4">Our Vision</h3>
-          <p className="text-md">
-            To lead in technology and shape a smarter, more connected future.
-          </p>
-        </div>
+{/* Vision Card */}
+<div className="col-span-2 bg-[#001A3B] p-4 rounded-lg text-white transition-transform transform hover:scale-105 hover:shadow-lg">
+  <h3 className="text-2xl font-semibold mb-4">Our Vision</h3>
+  <p className="text-md">
+    To lead in technology and shape a smarter, more connected future.
+  </p>
+</div>
+
       </div>
     </section>
 

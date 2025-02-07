@@ -4,7 +4,7 @@ import feacture from "../assets/banner/Mask group.png";
 
 const Feature = () => {
   return (
-    <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-16 font-[PT Serif]">
+    <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-5 font-[PT Serif]">
       <motion.div 
         className="grid xl:grid-cols-2 gap-10 items-center"
         initial={{ opacity: 0 }}
