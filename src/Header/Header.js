@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../assets/logo/WhatsApp Image 2024-10-09 at 4.07.14 PM (1) 1.png";
+import logo from "../assets/logo/logo.png";
 import { Link } from "react-router-dom";
 
 const Header = () => {

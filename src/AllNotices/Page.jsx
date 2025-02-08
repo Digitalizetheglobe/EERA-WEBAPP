@@ -24,7 +24,7 @@ function AllNotices() {
         }
         const data = await response.json();
         setAllNotices(data);
-        setNotices(data.slice(0, 9));
+        applyFiltersAndSort(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -34,27 +34,73 @@ function AllNotices() {
 
     fetchNotices();
   }, []);
+  
+  const applyFiltersAndSort = (data) => {
+    let filteredNotices = [...data];
+
+    if (filters.search) {
+      filteredNotices = filteredNotices.filter(notice =>
+        notice.title.toLowerCase().includes(filters.search.toLowerCase())
+      );
+    }
+
+    if (filters.category) {
+      filteredNotices = filteredNotices.filter(notice => notice.category === filters.category);
+    }
+
+    if (filters.location) {
+      filteredNotices = filteredNotices.filter(notice =>
+        notice.location.toLowerCase().includes(filters.location.toLowerCase())
+      );
+    }
+
+    if (filters.newspaper) {
+      filteredNotices = filteredNotices.filter(notice =>
+        notice.newspaper.toLowerCase().includes(filters.newspaper.toLowerCase())
+      );
+    }
+
+    if (filters.date) {
+      filteredNotices = filteredNotices.filter(notice =>
+        new Date(notice.date).toISOString().split('T')[0] === filters.date
+      );
+    }
+
+    if (sortBy === 'date-desc') {
+      filteredNotices.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (sortBy === 'date-asc') {
+      filteredNotices.sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+
+    setNotices(filteredNotices.slice(0, visibleCount));
+    setAllNotices(filteredNotices);
+  };
 
   const handleFilterChange = (newFilters) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
+    setFilters(prev => {
+      const updatedFilters = { ...prev, ...newFilters };
+      applyFiltersAndSort(allNotices);
+      return updatedFilters;
+    });
   };
 
   const handleSortChange = (sort) => {
     setSortBy(sort);
+    applyFiltersAndSort(allNotices);
   };
 
   const loadMore = () => {
     const newVisibleCount = visibleCount + 9;
-    setNotices(allNotices.slice(0, newVisibleCount));
     setVisibleCount(newVisibleCount);
+    setNotices(allNotices.slice(0, newVisibleCount));
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <Header />
-
       <main className="mt-24 max-w-7xl mx-auto px-6 sm:px-8">
-        <h1 className="text-4xl font-semibold text-[#001A3B] mb-6">
+        <h1 className="text-4xl font-semibold text-[#001A3B] mb-6 text-center">
           All Notices
         </h1>
         <Filters onFilterChange={handleFilterChange} onSortChange={handleSortChange} />
@@ -68,14 +114,11 @@ function AllNotices() {
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="relative">
-              <div className="w-16 h-16 border-4 border-gray-300 border-t-primary rounded-full animate-spin"></div>
-              <p className="mt-4 text-primary text-sm font-semibold">Loading notices...</p>
-            </div>
+            <div className="w-10 h-10 border-4 border-t-transparent border-[#001A3B] rounded-full animate-spin"></div>
           </div>
         ) : (
           <>
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {notices.map((notice) => (
                 <NoticeCard key={notice.id} notice={notice} />
               ))}
@@ -83,16 +126,13 @@ function AllNotices() {
 
             {visibleCount < allNotices.length && (
               <div className="flex justify-center mt-8">
-              <button
-                onClick={loadMore}
-                className="px-6 py-3 bg-[#A99067] text-white font-semibold rounded-xl 
-                shadow-lg hover:bg-[#8B785A] transform hover:-translate-y-0.5 
-                transition-all duration-200 focus:outline-none focus:ring-2 
-                focus:ring-[#A99067] focus:ring-opacity-50 active:bg-[#8B785A]"
-              >
-                Load More
-              </button>
-            </div>
+                <button
+                  onClick={loadMore}
+                  className="px-6 py-3 bg-[#A99067] text-white font-semibold rounded-xl shadow-lg hover:bg-[#8B785A] transition-transform transform hover:-translate-y-1"
+                >
+                  Load More
+                </button>
+              </div>
             )}
           </>
         )}

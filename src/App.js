@@ -17,7 +17,7 @@ import PostNotices from './PostNotices/PostNotices.js';
 import Login from './Webapp/LoginandRegistration/Login.js';
 import Register from './Webapp/LoginandRegistration/Register.js';
 import AllNotices from './AllNotices/Page.jsx';
-
+import PrivacyPolicy from './PrivacyPolicy/page.jsx';
 function App() {
   return (
     <Router>
@@ -38,10 +38,12 @@ function App() {
         <Route path='/Login' element={<Login/>} />
         <Route path='/Register' element={<Register/>} />
         <Route path='/all-notices' element={<AllNotices/>} />
+        <Route path='/privacypolicy' element={<PrivacyPolicy/>} />
       </Routes>
     </Router>
 
   );
 }
+
 
 export default App;

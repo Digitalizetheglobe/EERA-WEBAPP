@@ -3,6 +3,7 @@ import React from "react";
 const Aboutus = () => {
   return (
     <div>
+      
       <div className="p-6 md:p-14">
 
         {/* Responsive grid with a single-column layout on mobile */}

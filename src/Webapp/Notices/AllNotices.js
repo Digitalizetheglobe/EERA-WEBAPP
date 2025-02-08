@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import noticesimg from '../../assets/banner/noticesimg.png';
 
-function AllNotices() {
+function AllNotices2() {
   const [noticesCount, setNoticesCount] = useState(0);
 
   useEffect(() => {
@@ -85,4 +85,4 @@ function AllNotices() {
   );
 };
 
-export default AllNotices;
+export default AllNotices2;

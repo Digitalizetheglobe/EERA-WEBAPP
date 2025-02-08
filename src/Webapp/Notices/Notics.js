@@ -137,7 +137,13 @@ const [notices, setNotices] = useState([]);
       setCurrentSlide((prev) => prev - 1);
     }
   };
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="w-8 h-8 border-4 border-t-transparent border-[#001A3B] rounded-full animate-spin"></div>
+      </div>
+    );
+  
   if (error) return <p className="text-red-500">{error}</p>;
   if (!notice) return <p>Notice not found</p>;
 

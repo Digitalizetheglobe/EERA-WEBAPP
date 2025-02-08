@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaFacebook, FaYoutube, FaInstagram, FaLinkedin } from "react-icons/fa";
 const Footer = () => {
   // Function to scroll to the top when a link is clicked
   const scrollToTop = () => {
@@ -9,53 +9,52 @@ const Footer = () => {
 
   return (
     <footer
-      className="py-12 px-4 sm:px-8 tracking-wide"
+      className="py-12 px-4 sm:px-8 tracking-wide text-white"
       style={{ background: 'linear-gradient(180.24deg, #001A3B 0.24%, #00040A 110.27%)' }}
     >
-      <div className="grid max-sm:grid-cols-1 max-lg:grid-cols-2 lg:grid-cols-5 lg:gap-14 max-lg:gap-8">
-        <div className="lg:col-span-2 text-left">
-          <h4 className="text-4xl font-bold mb-6 text-[#A99067]">EERA</h4>
-          <div>
-            <ul className="space-y-4 mt-4">
-              <li className="flex items-center">
-                <i className="fas fa-envelope text-white mr-2"></i>
-                <a href="mailto:contact@epublicnotices.in" className="text-white hover:text-[#A99067] text-[15px]">Email contact@epublicnotices.in</a>
-              </li>
-              <li className="flex items-center">
-                <i className="fas fa-phone text-white mr-2"></i>
-                <a href="tel:+91 7391092093" className="text-white hover:text-[#A99067] text-[15px]">+91 7391092093</a>
-              </li>
-              <li className="flex items-center">
-                <i className="fas fa-map-marker-alt text-white mr-2"></i>
-                <span className="text-white hover:text-[#A99067] text-[15px]">Kohinoor World Tower, T3-408, Old Mumbai - Pune Hwy, MIDC, Chinchwad, Pune, Pimpri-Chinchwad, Maharashtra 411018</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div>
-          <h4 className="text-lg font-bold mb-6 text-[#fff]">Services</h4>
-          <ul className="space-y-4">
-            <li><Link to="/post-notices" className="text-white hover:text-[#A99067] text-[15px]" onClick={scrollToTop}>Post Your Notices.</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="text-lg font-bold mb-6 text-[#fff]">About Us</h4>
-          <ul className="space-y-4">
-            <li><Link to="/home" className="text-white hover:text-[#A99067] text-[15px]" onClick={scrollToTop}>Home</Link></li>
-            <li><Link to="/about" className="text-white hover:text-[#A99067] text-[15px]" onClick={scrollToTop}>About us</Link></li>
-          </ul>
-        </div>
-      </div>
-      <div className="mt-8 flex justify-between items-center text-gray-600 text-[15px] border-t border-gray-300 pt-4">
-        <div className="hover:text-[#A99067] text-white">© 2025 EERA Inc. Copyright and rights reserved</div>
-        <div className="space-x-4">
-          <Link to='' className="hover:text-[#A99067] text-white">Terms and Conditions</Link>
-
-          <Link to='' className="hover:text-[#A99067] text-white">Privacy Policy</Link>
-        </div>
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* About Section */}
+              <div>
+                <img src="/logo.png" alt="Logo" className="mb-4 w-32" />
+                <h4 className="text-xl font-bold mb-4">About EERA</h4>
+                <p className="text-[#A99067] text-sm">
+                  Get started now try our product. We provide high-quality services with transparency and customer focus.
+                </p>
+              </div>
+      
+              {/* Useful Links */}
+              <div>
+                <h4 className="text-xl font-bold mb-4">Useful Links</h4>
+                <ul className="space-y-2">
+                  <li><Link to="/post-notices" className="hover:text-[#A99067] text-sm " onClick={scrollToTop}>Post Your Notices</Link></li>
+                </ul>
+              </div>
+      
+              {/* Quick Links */}
+              <div>
+                <h4 className="text-xl font-bold mb-4">Quick Links</h4>
+                <ul className="space-y-2">
+                  <li><Link to="/home" className="hover:text-[#A99067] text-sm" onClick={scrollToTop}>Home</Link></li>
+                  <li><Link to="/about" className="hover:text-[#A99067] text-sm" onClick={scrollToTop} >About Us</Link></li>
+                </ul>
+              </div>
+      
+              {/* Contact Section */}
+              <div>
+                <h4 className="text-xl font-bold mb-4">Contact Us</h4>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center hover:text-[#A99067]"><FaMapMarkerAlt className="mr-2 hover:text-[#A99067]" /> Kohinoor World Tower, Pune, Maharashtra 411018</li>
+                  <li className="flex items-center"><FaPhone className="mr-2" /> <a href="tel:+917391092093" className="hover:text-[#A99067]">+91 7391092093</a></li>
+                  <li className="flex items-center"><FaEnvelope className="mr-2" /> <a href="mailto:contact@epublicnotices.in" className="hover:text-[#A99067]">contact@epublicnotices.in</a></li>
+                </ul>
+              </div>
+            </div>
+            
+            {/* Footer Bottom */}
+            <div className="mt-8 text-center text-sm border-t border-gray-700 pt-4 flex justify-between">
+              <p>© 2025 EERA Inc. All rights reserved.</p>
+              <Link to="/privacy-policy" className="hover:text-[#A99067]">Privacy Policy</Link>
+            </div>
     </footer>
   );
 };
