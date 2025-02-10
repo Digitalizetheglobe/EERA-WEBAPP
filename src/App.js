@@ -37,8 +37,8 @@ function App() {
         <Route path='/post-notices' element={<PostNotices/>}/>
         <Route path='/Login' element={<Login/>} />
         <Route path='/Register' element={<Register/>} />
-        <Route path='/all-notices' element={<AllNotices/>} />
-        <Route path='/privacypolicy' element={<PrivacyPolicy/>} />
+        {/* <Route path='/all-notices' element={<AllNotices/>} /> */}
+        <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
       </Routes>
     </Router>
 
