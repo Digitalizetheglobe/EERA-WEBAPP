@@ -3,6 +3,8 @@ import { AlertCircle } from 'lucide-react';
 import { NoticeCard } from './NoticeCard';
 import Filters from './Filters';
 import Header from '../Header/Header';
+import Webheader from '../Webapp/Notices/Webheader';
+import Homeheader from '../Webapp/Notices/Homewebheader';
 
 function AllNotices() {
   const [notices, setNotices] = useState([]);
@@ -98,7 +100,7 @@ function AllNotices() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
-      <Header />
+      <Homeheader/>
       <main className="mt-24 max-w-7xl mx-auto px-6 sm:px-8">
         <h1 className="text-4xl font-semibold text-[#001A3B] mb-6 text-center">
           All Notices
