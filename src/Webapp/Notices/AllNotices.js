@@ -39,14 +39,14 @@ function AllNotices2() {
           <p className="text-lg font-semibold text-gray-800 mb-6">Organized by Category</p>
           <div className="grid lg:grid-cols-2 gap-6">
             {[
-              { number: '01', title: 'Property Sales and Auctions' },
-              { number: '02', title: 'Government Notices and Updates' },
-              { number: '03', title: 'Corporate Announcements' },
-              { number: '04', title: 'Public Hearings and Meetings' },
-              { number: '05', title: 'Legal and Regulatory Compliance' },
-              { number: '06', title: 'Environmental and Land Use' },
-              { number: '07', title: 'Infrastructure and Public Works' },
-              { number: '08', title: 'Judicial and Court Proceedings' },
+              { number: '01', title: 'Legal Notices' },
+              { number: '02', title: 'Planning Applications' },
+              { number: '03', title: 'Government Notices' },
+              { number: '04', title: 'Financial Notices' },
+              { number: '05', title: 'Environmental Notices' },
+              { number: '06', title: 'Municipal Announcements' },
+              { number: '07', title: 'Corporate Disclosures' },
+              { number: '08', title: 'Public Safety Alerts' },
             ].map((category, index) => (
               <div
                 key={index}
@@ -71,14 +71,7 @@ function AllNotices2() {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Button */}
-          <div className="mt-8">
-            <button className="text-sm font-semibold text-[#A99067] px-6 py-2 border border-[#A99067] rounded-lg hover:bg-[#A99067] hover:text-white transition duration-300">
-              Explore all 25 Categories →
-            </button>
-          </div>
+          </div> 
         </div>
       </div>
     </div>

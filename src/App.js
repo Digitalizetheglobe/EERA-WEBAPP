@@ -18,6 +18,7 @@ import Login from './Webapp/LoginandRegistration/Login.js';
 import Register from './Webapp/LoginandRegistration/Register.js';
 import AllNotices from './AllNotices/Page.jsx';
 import PrivacyPolicy from './PrivacyPolicy/page.jsx';
+import ContactPage from './Contact/page.jsx';
 function App() {
   return (
     <Router>
@@ -37,8 +38,9 @@ function App() {
         <Route path='/post-notices' element={<PostNotices/>}/>
         <Route path='/Login' element={<Login/>} />
         <Route path='/Register' element={<Register/>} />
-        {/* <Route path='/all-notices' element={<AllNotices/>} /> */}
+        <Route path='/all-notices' element={<AllNotices/>} />
         <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
+        <Route path='/contact' element={<ContactPage/>} />
       </Routes>
     </Router>
 

@@ -13,6 +13,7 @@ import "./Banner.css";
 import Pricing from "../LandingPage/Pricing";
 import { Link } from "react-router-dom";
 import NoticesSection from "../LandingPage/Noticecount";
+import StickyNotice from "../PostNoticesSticky/page";
 const BannerSection = () => {
   return (
     <>
@@ -77,13 +78,13 @@ const BannerSection = () => {
           </div>
         </div>
       </section>
-
       {/* Main Content Sections */}
-      <NoticesSection/>
+      {/* <StickyNotice/> */}
       <Aboutus />
+      <NoticesSection/>
       <Feature />
-      <Weserve />
       <Latestnotics />
+      <Weserve />
       {/* <Pricing /> */}
       <Faq />
       <Testimonial />

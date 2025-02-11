@@ -53,7 +53,7 @@ const Footer = () => {
             {/* Footer Bottom */}
             <div className="mt-8 text-center text-sm border-t border-gray-700 pt-4 flex justify-between">
               <p>© 2025 EERA Inc. All rights reserved.</p>
-              <Link to="/privacy-policy" className="hover:text-[#A99067]">Privacy Policy</Link>
+              <Link to="/privacy-policy" className="hover:text-[#A99067]" onClick={scrollToTop}>Privacy Policy</Link>
             </div>
     </footer>
   );
