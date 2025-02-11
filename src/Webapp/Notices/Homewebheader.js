@@ -40,7 +40,7 @@ const Homeheader = () => {
           <Link to="/home" className="hover:text-[#A99067]">Home</Link>
           <Link to="/about" className="hover:text-[#A99067]">About</Link>
           <Link to="/all-notices" className="hover:text-[#A99067]">All Notices</Link>
-          {/* <Link to="#contact" className="hover:text-[#A99067]">Contact</Link> */}
+          <Link to="/contact" className="hover:text-[#A99067]">Contact</Link>
           
         </nav>
 
@@ -95,7 +95,7 @@ const Homeheader = () => {
           <Link to="/home" className="block text-[#004B80] py-2">Home</Link>
           <Link to="/about" className="block text-[#004B80] py-2">About</Link>
           <Link to="/all-notices" className="block text-[#004B80] py-2">All Notices</Link>
-          {/* <Link to="#contact" className="block text-[#004B80] py-2">Contact</Link> */}
+          <Link to="/contact" className="block text-[#004B80] py-2">Contact</Link>
           
           {isLoggedIn ? (
             <>
