@@ -14,7 +14,7 @@ const PrivacyPolicy = () => {
                     <div className="space-y-12">
                         {/* Introduction */}
                         <section>
-                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Introduction</h2>
+                            <h2 className="text-2xl font-semibold text-gray-900 mt-5">Introduction</h2>
                             <p className="text-gray-700 leading-relaxed">
                                 We are committed to protecting your privacy. This policy outlines our practices concerning
                                 the collection, use, and protection of your personal information.
@@ -23,8 +23,8 @@ const PrivacyPolicy = () => {
 
                         {/* Information We Collect */}
                         <section>
-                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Information We Collect</h2>
-                            <p className="text-gray-700 mb-4">We collect the following types of information:</p>
+                            <h2 className="text-2xl font-semibold text-gray-900 mt-5">Information We Collect</h2>
+                            <p className="text-gray-700 mb-2">We collect the following types of information:</p>
                             <ul className="ml-6 space-y-2 text-gray-700">
                                 <li className="flex items-start">
                                     <span className="text-black mr-2">•</span>
@@ -51,8 +51,8 @@ const PrivacyPolicy = () => {
 
                         {/* How We Use Your Information */}
                         <section>
-                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">How We Use Your Information</h2>
-                            <p className="text-gray-700 mb-4">We use your information to:</p>
+                            <h2 className="text-2xl font-semibold text-gray-900 mt-5">How We Use Your Information</h2>
+                            <p className="text-gray-700 mb-2">We use your information to:</p>
                             <ul className="ml-6 space-y-2 text-gray-700">
                                 <li className="flex items-start">
                                     <span className="text-black mr-2">•</span>
@@ -75,8 +75,8 @@ const PrivacyPolicy = () => {
 
                         {/* Information Sharing */}
                         <section>
-                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Information Sharing</h2>
-                            <p className="text-gray-700 mb-4">We may share your information with:</p>
+                            <h2 className="text-2xl font-semibold text-gray-900 mt-5">Information Sharing</h2>
+                            <p className="text-gray-700 mb-2">We may share your information with:</p>
                             <ul className="ml-6 space-y-2 text-gray-700">
                                 <li className="flex items-start">
                                     <span className="text-black mr-2">•</span>
@@ -98,8 +98,8 @@ const PrivacyPolicy = () => {
 
                         {/* Your Rights */}
                         <section>
-                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Your Rights</h2>
-                            <p className="text-gray-700 mb-4">You have the right to:</p>
+                            <h2 className="text-2xl font-semibold text-gray-900 mt-5">Your Rights</h2>
+                            <p className="text-gray-700 mb-2">You have the right to:</p>
                             <ul className="ml-6 space-y-2 text-gray-700">
                                 <li className="flex items-start">
                                     <span className="text-black mr-2">•</span>
@@ -122,7 +122,7 @@ const PrivacyPolicy = () => {
 
                         {/* Security Measures */}
                         <section>
-                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Security Measures</h2>
+                            <h2 className="text-2xl font-semibold text-gray-900 mt-5">Security Measures</h2>
                             <p className="text-gray-700 leading-relaxed">
                                 We implement industry-standard security measures to protect your data, including
                                 encryption and access controls.
@@ -131,7 +131,7 @@ const PrivacyPolicy = () => {
 
                         {/* Changes to Policy */}
                         <section>
-                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Changes to This Policy</h2>
+                            <h2 className="text-2xl font-semibold text-gray-900 mt-5">Changes to This Policy</h2>
                             <p className="text-gray-700 leading-relaxed">
                                 We may update this policy periodically. Significant changes will be notified to you
                                 via email or website notice.

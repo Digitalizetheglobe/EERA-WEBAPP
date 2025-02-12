@@ -49,7 +49,7 @@ const Header = () => {
             </li>
             <li className="group">
               <a
-                href="#contact"
+                href="/contact"
                 className="block text-lg font-semibold lg:text-white lg:text-xl transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
               >
                 Contact
@@ -142,7 +142,7 @@ const Header = () => {
           </li>
           <li className="group">
             <a
-              href="#contact"
+              href="/contact"
               className="block text-lg font-semibold max-lg:text-gray-900 lg:text-white lg:text-xl max-lg:text-center transition-all duration-300 transform group-hover:scale-105 group-hover:text-[#A99067] group-hover:underline"
             >
               Contact

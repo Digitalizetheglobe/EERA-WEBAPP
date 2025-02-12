@@ -11,6 +11,7 @@ import Webtestimonial from "./Webtestimonial";
 import PostNotices from "../../PostNotices/PostNotices";
 import CTA from "../CTA";
 import SearchBar from '../SearchBar/SearchBar';
+import StickyNotice from "../../PostNoticesSticky/page";
 
 
 const Home = () => {
@@ -68,6 +69,7 @@ const Home = () => {
       <section className="relative">
 
         <Homeheader />
+        <StickyNotice/>
         <img
           src={banner1}
           alt="banner"

@@ -10,7 +10,9 @@ const Homeheader = () => {
   const [user, setUser] = useState({});
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [popoverVisible, setPopoverVisible] = useState(false);
-
+  const scrollToTop = () => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  };
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) setIsMenuOpen(false);
@@ -37,10 +39,10 @@ const Homeheader = () => {
 
         {/* Navigation Links */}
         <nav className="hidden lg:flex space-x-6 text-white text-lg">
-          <Link to="/home" className="hover:text-[#A99067]">Home</Link>
-          <Link to="/about" className="hover:text-[#A99067]">About</Link>
-          <Link to="/all-notices" className="hover:text-[#A99067]">All Notices</Link>
-          <Link to="/contact" className="hover:text-[#A99067]">Contact</Link>
+          <Link to="/home" className="hover:text-[#A99067]" onClick={scrollToTop}>Home</Link>
+          <Link to="/about" className="hover:text-[#A99067]" onClick={scrollToTop}>About</Link>
+          <Link to="/all-notices" className="hover:text-[#A99067]" onClick={scrollToTop}>All Notices</Link>
+          <Link to="/contact" className="hover:text-[#A99067]" onClick={scrollToTop}>Contact</Link>
           
         </nav>
 
@@ -70,23 +72,86 @@ const Homeheader = () => {
               )}
             </div>
           ) : (
-            <div className="space-x-3">
-              <Link to="/Login" className="bg-white text-[#004B80] px-4 py-2 border border-white rounded shadow-md">
-                Login
-              </Link>
-              <Link to="/Register" className="bg-[#004B80] text-white px-4 py-2 rounded shadow-md">
-                Sign Up
-              </Link>
-            </div>
+            <div className="flex items-center gap-4">
+              <div className="sm:flex sm:gap-4">
+                {/* Login Button */}
+                <a
+                  className="group relative inline-flex items-center overflow-hidden rounded border border-current px-8 py-3 bg-[#A99067] text-[#001A3B] focus:outline-none focus:ring active:text-[#001A3B] hover:bg-white hover:text-[#001A3B]"
+                  href="/login"
+                >
+                  <span className="absolute -end-full transition-all group-hover:end-4">
+                    <svg
+                      className="size-5 rtl:rotate-180"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </span>
+                  <span className="text-sm transition-all group-hover:me-4 font-bold">
+                    {" "}
+                    Login{" "}
+                  </span>
+                </a>
+
+                {/* Register Button */}
+                <a
+                  className="group relative inline-flex items-center overflow-hidden rounded border border-current px-8 py-3 bg-[#A99067] text-[#001A3B] focus:outline-none focus:ring active:text-[#001A3B] hover:bg-white hover:text-[#001A3B]"
+                  href="/register"
+                >
+                  <span className="absolute -end-full transition-all group-hover:end-4">
+                    <svg
+                      className="size-5 rtl:rotate-180"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </span>
+                  <span className="text-sm transition-all group-hover:me-4 font-bold">
+                    {" "}
+                    Register{" "}
+                  </span>
+                </a>
+              </div>
+              </div>
+
           )}
         </div>
 
         {/* Mobile Menu Button */}
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-2 text-white">
-          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 5h16M4 12h16M4 19h16" />
-          </svg>
-        </button>
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
+        <span className="sr-only">Toggle menu</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+
       </header>
 
       {/* Mobile Menu */}

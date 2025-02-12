@@ -7,6 +7,7 @@ import coverImage from "../../assets/banner/groupdiscussion.jpg"
 import Google from "../../assets/google.png";
 import Facebook from "../../assets/facebook.png";
 import Success from "../../assets/success.gif";
+import Homeheader from "../Notices/Homewebheader";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -78,7 +79,7 @@ const Register = () => {
 
   return (
     <>
-      <Webheader />
+      <Homeheader/>
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">
           {/* <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4"> */}

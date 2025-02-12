@@ -26,7 +26,7 @@ const NoticesSection = () => {
   }, []);
 
   return (
-    <div className="mt-10 border border-[#001A3B] p-6 rounded-lg shadow-md w-full max-w-md mx-auto">
+    <div className="mt-10 mb-10 border border-[#001A3B] p-6 rounded-lg shadow-md w-full max-w-md mx-auto">
       <h2 className="text-center text-4xl font-bold mb-4 text-[#A99067]">Notices Overview</h2>
       <div className="flex justify-between items-center">
         <div>

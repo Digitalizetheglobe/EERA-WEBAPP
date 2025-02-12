@@ -79,7 +79,7 @@ const BannerSection = () => {
         </div>
       </section>
       {/* Main Content Sections */}
-      {/* <StickyNotice/> */}
+      <StickyNotice/>
       <Aboutus />
       <NoticesSection/>
       <Feature />

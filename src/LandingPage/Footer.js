@@ -15,7 +15,7 @@ const Footer = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* About Section */}
               <div>
-                <img src="/logo.png" alt="Logo" className="mb-4 w-32" />
+                <img src="/logo.svg" alt="Logo" className="mb-4 w-32" />
                 <h4 className="text-xl font-bold mb-4">About EERA</h4>
                 <p className="text-[#A99067] text-sm">
                   Get started now try our product. We provide high-quality services with transparency and customer focus.

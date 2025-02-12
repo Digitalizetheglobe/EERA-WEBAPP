@@ -8,7 +8,9 @@ const Webheader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-
+  const scrollToTop = () => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -37,7 +39,7 @@ const Webheader = () => {
       <header className="tracking-wide relative z-50">
         <section className="flex items-center justify-between py-3 lg:px-10 px-4 border-b bg-white lg:min-h-[80px] max-lg:min-h-[60px]">
           {/* Logo */}
-          <Link to="/home" className="shrink-0">
+          <Link to="/home" className="shrink-0" onClick={scrollToTop}>
             <img src={logo} alt="logo" className="w-10 sm:w-14" />
           </Link>
           <button onClick={toggleMenu} className="lg:hidden p-2">
@@ -84,7 +86,7 @@ const Webheader = () => {
                 </Link>
               </li> */}
             </ul>
-            <div className="flex space-x-3">
+            <div className="flex space-x-3" onClick={scrollToTop}>
               {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
@@ -93,14 +95,57 @@ const Webheader = () => {
                   Logout
                 </button>
               ) : (
-                <>
-                  <Link to="/Login" className="bg-[#004B80] text-white px-4 py-2 rounded">
-                    Login
-                  </Link>
-                  <Link to="/Register" className="bg-[#004B80] text-white px-4 py-2 rounded">
-                    Sign Up
-                  </Link>
-                </>
+                <div className="flex items-center gap-4" onClick={scrollToTop}>
+                  <a
+                    className="group relative inline-flex items-center overflow-hidden rounded bg-[#A99067] hover:bg-[#001A3B] hover:border-[#A99067] border hover:text-[#A99067] px-8 py-3 text-white"
+                    href="#"
+                  >
+                    <span className="absolute -end-full transition-all group-hover:end-4">
+                    <svg
+                        className="size-5 rtl:rotate-180"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+
+                    </span>
+                    <span className="text-sm transition-all group-hover:me-4 font-bold" onClick={scrollToTop}>
+                      Login
+                    </span>
+                  </a>
+                  <a
+                    className="group relative inline-flex items-center overflow-hidden rounded bg-[#A99067] hover:bg-[#001A3B] hover:border-[#A99067] border hover:text-[#A99067] px-8 py-3 text-white"
+                    href="#"
+                  >
+                    <span className="absolute -end-full transition-all group-hover:end-4">
+                      <svg
+                        className="size-5 rtl:rotate-180"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </span>
+                    <span className="text-sm transition-all group-hover:me-4 font-bold" onClick={scrollToTop}>
+                      Register
+                    </span>
+                  </a>
+                </div>
               )}
             </div>
           </div>
@@ -135,7 +180,7 @@ const Webheader = () => {
                   Pricing
                 </Link> */}
               </li>
-              <div className="flex space-x-2 mt-4">
+              <div className="flex space-x-2 mt-4" onClick={scrollToTop}>
                 {isLoggedIn ? (
                   <button
                     onClick={handleLogout}

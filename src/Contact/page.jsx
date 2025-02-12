@@ -1,117 +1,142 @@
-import React from "react";
-import Homeheader from "../Webapp/Notices/Homewebheader";
-import { Link } from "react-router-dom";
+import React from 'react';
+import Homeheader from '../Webapp/Notices/Homewebheader'; // Import your header component
+import Footer from "../LandingPage/Footer"; // Import your footer component
+import { Facebook, Twitter, Instagram, Phone, Mail, MapPin } from "lucide-react";
 
-const ContactPage = () => {
+const ContactUs = () => {
   return (
-    <div className="min-h-[350px] bg-[#001A3B] relative mx-auto">
-      {/* Navigation */}
-      <Homeheader />
-      <main className="max-w-[1400px] mt-12">
-        {/* Left Column - Text Content */}
-        <div className="flex justify-start translate-x-30">
-        <div className="text-white px-10 py-10 w-1/2">
-          <p className="text-sm uppercase tracking-widest opacity-70">Contact Us</p>
-          <h1 className="text-4xl font-light mt-2">
-            <em className="block">Work for yourself</em>
-            <span className="block">not by yourself,</span>
-            <span className="block">with Gaspar insurance</span>
+    <>
+      <Homeheader /> {/* Include your header */}
+      <div className="w-full min-h-screen flex flex-col mt-5">
+
+        {/* Banner Section */}
+        <div
+          className="mt-12 h-64 bg-cover bg-center flex items-center justify-center relative overflow-hidden transition-transform duration-500"
+          style={{ backgroundImage: "url('/Testimonial.png')" }}
+        >
+          <div className="absolute inset-0 bg-black/50 hover:bg-black/30 transition-colors duration-300" />
+          <h1 className="text-white text-4xl font-bold relative z-10 tracking-wide hover:text-[#A99067] transition-colors duration-300">
+            Contact Us
           </h1>
-          <p className="text-lg opacity-80 mt-4">
-            <span className="block">Send us a message and we’ll get your questions </span>
-            <span className="block">answered as soon as possible.</span>
-          </p>
-          <div className="flex items-center gap-6 mt-6">
-            <button className="bg-[#A99067] text-white font-bold py-2 px-6 rounded-full">
-              Find an agent
-            </button>
-            <a href="tel:8183023060" className="text-white text-lg flex items-center">
-              📞 818.302.3060
-            </a>
+        </div>
+
+        <div className="max-w-6xl mx-auto w-full p-8 my-12">
+          <div className="grid md:grid-cols-2 gap-12">
+            
+            {/* Contact Details */}
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-3xl font-bold text-[#001A3B] mb-4 hover:text-[#A99067] transition-colors duration-300">
+                  Get In Touch
+                </h2>
+                <p className="text-gray-600 text-lg leading-relaxed hover:text-gray-800 transition-colors duration-300 mb-2">
+                  Connect with us!
+                </p>
+                <p className="text-gray-600 text-lg leading-relaxed hover:text-gray-800 transition-colors duration-300">
+                  We're always looking for ways to improve access to public information. Share your thoughts, suggestions, and feedback with our platform.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {[
+                  { icon: <Phone />, text: "+91 7391092093" },
+                  { icon: <Mail />, text: "contact@epublicnotices.in" },
+                  { icon: <MapPin />, text: "Kohinoor World Tower, Pune, Maharashtra 411018" },
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center space-x-4 group hover:text-[#001A3B] transition-colors duration-300">
+                    <span className="text-2xl group-hover:scale-125 transition-transform duration-300">{item.icon}</span>
+                    <p className="text-lg group-hover:underline transition-all duration-300">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Social Media */}
+              <div className="pt-6">
+                <h3 className="text-xl font-semibold mb-4 text-[#001A3B] hover:text-[#A99067] transition-colors duration-300">
+                  Follow Us
+                </h3>
+                <div className="flex space-x-6">
+                  {[
+                    { icon: <Facebook size={24} />, link: "#" },
+                    { icon: <Instagram size={24} />, link: "#" },
+                  
+                  ].map((social, index) => (
+                    <a
+                      key={index}
+                      href={social.link}
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-[#001A3B] text-[#A99067] hover:bg-[#A99067] hover:text-[#001A3B] transition-colors duration-300 cursor-pointer hover:scale-110"
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="bg-white rounded-xl shadow-xl p-8 transition-shadow duration-300">
+              <h2 className="text-3xl font-bold text-[#001A3B] mb-8 text-center hover:text-[#A99067] transition-colors duration-300">
+                Contact Form
+              </h2>
+              <form className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {[
+                    { placeholder: "Name" },
+                    { placeholder: "City" }
+                  ].map((input, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      placeholder={input.placeholder}
+                      className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#001A3B] focus:border-transparent transition-all duration-300 hover:border-[#001A3B]"
+                    />
+                  ))}
+                </div>
+                {[
+                  { type: "email", placeholder: "Email" },
+                  { type: "text", placeholder: "Phone" }
+                ].map((input, index) => (
+                  <input
+                    key={index}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                    className="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#001A3B] focus:border-transparent transition-all duration-300 hover:border-[#001A3B]"
+                  />
+                ))}
+                <textarea
+                  placeholder="Message"
+                  rows="4"
+                  className="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#001A3B] focus:border-transparent transition-all duration-300 resize-none hover:border-[#001A3B]"
+                ></textarea>
+                <button className="w-full bg-[#001A3B] text-[#A99067] py-3 px-6 rounded-lg text-lg font-semibold hover:bg-[#A99067] hover:text-[#001A3B] transition-colors duration-300 transform hover:scale-105 active:scale-95">
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
+
+          {/* Map Section */}
+          <div className="mt-12">
+            <h2 className="text-3xl font-bold text-[#001A3B] mb-4 hover:text-[#A99067] transition-colors duration-300 text-center">
+              Our Location
+            </h2>
+            <div className="w-full flex justify-center">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3780.650343622792!2d73.79664587519447!3d18.6347903824811!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b92d986822d9%3A0x13b0437cbf911d4a!2sKohinoor%20World%20Towers!5e0!3m2!1sen!2sin!4v1739359789161!5m2!1sen!2sin&z=15"
+                width="100%"
+                height="350"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
           </div>
         </div>
-        </div>
-        
-        {/* Right Column - Form */}
-        
-      </main>
-      <div className="mt-14 absolute right-4 top-0 z-10 bg-white rounded-lg shadow-lg p-10 md:w-1/3">
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <label className="block text-sm text-gray-700">Name*</label>
-              <input type="text" required className="mt-1 w-full px-3 py-2 border border-gray-300 rounded" />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-700">Email address*</label>
-              <input type="email" required className="mt-1 w-full px-3 py-2 border border-gray-300 rounded" />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-700">Phone number*</label>
-              <input type="tel" required className="mt-1 w-full px-3 py-2 border border-gray-300 rounded" />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-700">City</label>
-              <input type="text" className="mt-1 w-full px-3 py-2 border border-gray-300 rounded" />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-700">Message</label>
-              <textarea rows={4} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded"></textarea>
-            </div>
-            <button type="submit" className="px-6 py-2 bg-[#A99067] text-white rounded-full hover:bg-gray-800">
-              Submit
-            </button>
-          </form>
-
-        </div>
-      {/* Bottom Sections */}
-      <div className="bg-white p-10 mt-24">
-        <div>
-          <h2 className="text-xl font-semibold mb-4">General inquiries</h2>
-          <p className="text-gray-600">
-            Reach us at{" "}
-            <Link to="mailto:info@gasparinsurance.com" className="text-[#1C2434] hover:underline">
-              info@gasparinsurance.com
-            </Link>{" "}
-            and we will get back to you asap
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-xl font-semibold mb-2 mt-4">Working at Gaspar?</h2>
-          <p className="text-gray-600">
-            Visit our careers page or send us an email at{" "}
-            <Link to="mailto:careers@gasparinsurance.com" className="text-[#1C2434] hover:underline">
-              careers@gasparinsurance.com
-            </Link>
-          </p>
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold mb-2 mt-4">Insurance agent?</h2>
-          <p className="text-gray-600">
-            Become an insurance agent by contacting us at{" "}
-            <Link to="mailto:agents@gaspar.com" className="text-[#1C2434] hover:underline">
-              agents@gaspar.com
-            </Link>
-          </p>
-        </div>
-        <div>
-          <p className="text-sm font-medium mb-2 mt-4">Follow us</p>
-          <div className="flex space-x-4">
-            <Link to="#" className="text-gray-600 hover:text-[#1C2434]">
-              Facebook
-            </Link>
-            <Link to="#" className="text-gray-600 hover:text-[#1C2434]">
-              Instagram
-            </Link>
-            <Link to="#" className="text-gray-600 hover:text-[#1C2434]">
-              Twitter
-            </Link>
-          </div>
-        </div>
+        <Footer className="mt-auto" /> {/* Include your footer */}
       </div>
-    </div>
+    </>
   );
 };
 
-export default ContactPage;
+export default ContactUs;
