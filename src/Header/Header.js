@@ -62,7 +62,7 @@ const Header = () => {
           <div className="flex items-center ml-auto space-x-4">
             <Link
               to="/home"
-              className="px-4 py-2 text-sm rounded font-semibold text-black bg-[#A99067] transition-all duration-300 hover:bg-white hover:text-black"
+              className="px-4 py-2 text-sm rounded font-semibold text-black bg-[#A99067] transition-all duration-300 hover:bg-[#dfbc8c] hover:text-black"
             >
               Get Started
             </Link>

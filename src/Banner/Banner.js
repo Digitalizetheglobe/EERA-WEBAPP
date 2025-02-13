@@ -24,7 +24,7 @@ const BannerSection = () => {
         <img
           src={banner}
           alt="banner"
-          className="w-full h-[90vh] sm:h-full object-cover ml-[-1px]"
+          className="w-full h-full sm:h-full object-cover"
         />
 
         {/* Text and Button Overlay */}

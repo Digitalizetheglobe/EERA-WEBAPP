@@ -76,7 +76,7 @@ const Homeheader = () => {
               <div className="sm:flex sm:gap-4">
                 {/* Login Button */}
                 <a
-                  className="group relative inline-flex items-center overflow-hidden rounded border border-current px-8 py-3 bg-[#A99067] text-[#001A3B] focus:outline-none focus:ring active:text-[#001A3B] hover:bg-white hover:text-[#001A3B]"
+                  className="group relative inline-flex items-center overflow-hidden rounded border border-current px-8 py-3 bg-[#A99067] text-[#001A3B] focus:outline-none focus:ring active:text-[#001A3B] hover:bg-[#dfbc8c] hover:text-[#001A3B]"
                   href="/login"
                 >
                   <span className="absolute -end-full transition-all group-hover:end-4">
@@ -103,7 +103,7 @@ const Homeheader = () => {
 
                 {/* Register Button */}
                 <a
-                  className="group relative inline-flex items-center overflow-hidden rounded border border-current px-8 py-3 bg-[#A99067] text-[#001A3B] focus:outline-none focus:ring active:text-[#001A3B] hover:bg-white hover:text-[#001A3B]"
+                  className="group relative inline-flex items-center overflow-hidden rounded border border-current px-8 py-3 bg-[#A99067] text-[#001A3B] focus:outline-none focus:ring active:text-[#001A3B] hover:bg-[#dfbc8c] hover:text-[#001A3B]"
                   href="/register"
                 >
                   <span className="absolute -end-full transition-all group-hover:end-4">
