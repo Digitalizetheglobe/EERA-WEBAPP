@@ -1,7 +1,7 @@
 import React from "react";
 import banner from "../assets/banner/1HIMW2VTQLimGQKOEOzmaw 1.png";
 import readmore from "../assets/banner/Group 2.png";
-import Header from "../Header/Header";
+// import Header from "../Header/Header";
 import Feature from "../LandingPage/Feature";
 import Aboutus from "../LandingPage/Aboutus";
 import Weserve from "../LandingPage/Weserve";
@@ -14,13 +14,19 @@ import Pricing from "../LandingPage/Pricing";
 import { Link } from "react-router-dom";
 import NoticesSection from "../LandingPage/Noticecount";
 import StickyNotice from "../PostNoticesSticky/page";
+import Header from "../Header/Header2";
 const BannerSection = () => {
   return (
     <>
-      <section className="relative">
+      {/* Separate Header */}
+      <div className="relative z-50 bg-white shadow-md">
         <Header />
+      </div>
 
+      {/* Banner Section */}
+      <section className="relative">
         {/* Banner Image */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#051c35] to-transparent"></div>
         <img
           src={banner}
           alt="banner"
@@ -28,8 +34,7 @@ const BannerSection = () => {
         />
 
         {/* Text and Button Overlay */}
-        <div className="absolute inset-0 flex flex-col justify-center p-8 sm:p-20 text-white">
-          {/* Heading and Subtext */}
+        <div className="absolute inset-0 flex flex-col justify-center p-8 sm:p-20 text-white z-10">
           <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold mt-4 mb-4 leading-tight sm:leading-normal max-w-xs sm:max-w-2xl">
             Professional Notices Delivered Fast and Efficiently
           </h1>
@@ -38,13 +43,9 @@ const BannerSection = () => {
             connecting professionals with the information that matters
           </p>
 
-          {/* Buttons Row */}
+          {/* Buttons */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            {/* Left Side Buttons */}
             <div className="flex space-x-0 sm:space-x-4 sm:flex-row flex-col">
-              {/* <button className="px-6 py-3 bg-[#A99067] text-black font-semibold rounded hover:bg-opacity-90 transition">
-                Post Notice
-              </button> */}
               <Link to="/Home">
                 <button className="px-6 py-3 bg-[#A99067] text-[#001A3B] font-semibold rounded hover:bg-white hover:text-black transition mt-4 sm:mt-0">
                   Explore Notices
@@ -52,7 +53,6 @@ const BannerSection = () => {
               </Link>
             </div>
 
-            {/* Right Side - Read More Image Button */}
             <div className="w-32 sm:w-40 h-12 sm:h-20 mr-auto flex items-center justify-start">
               <Link to="/about">
                 <svg
@@ -71,21 +71,17 @@ const BannerSection = () => {
                 </svg>
               </Link>
             </div>
-
-
-
-
           </div>
         </div>
       </section>
+
       {/* Main Content Sections */}
-      <StickyNotice/>
+      <StickyNotice />
       <Aboutus />
-      <NoticesSection/>
+      <NoticesSection />
       <Feature />
       <Latestnotics />
       <Weserve />
-      {/* <Pricing /> */}
       <Faq />
       <Testimonial />
       <Footer />

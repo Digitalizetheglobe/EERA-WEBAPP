@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import steimg from "../assets/banner/steps image.png";
 import bgimg1 from "../assets/banner/Backgroundimage.png";
 import WebFooter from "../Webapp/Notices/WebFooter";
-import Homeheader from "../Webapp/Notices/Homewebheader";
+import Header from "../Webapp/Home/HomeHeader";
 import { useNavigate } from "react-router-dom";
 import Warn from '../assets/warn.gif';
 
@@ -107,7 +107,7 @@ const PostNotices = () => {
 
   return (
     <>
-      <Homeheader />
+      <Header />
       <div
         className="flex justify-center items-center h-full min-h-screen p-4"
         style={{

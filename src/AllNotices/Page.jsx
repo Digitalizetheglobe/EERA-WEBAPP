@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { AlertCircle } from 'lucide-react';
 import { NoticeCard } from './NoticeCard';
 import Filters from './Filters';
-import Header from '../Header/Header';
 import Webheader from '../Webapp/Notices/Webheader';
-import Homeheader from '../Webapp/Notices/Homewebheader';
+import Header from '../Webapp/Home/HomeHeader';
 
 function AllNotices() {
   const [notices, setNotices] = useState([]);
   const [allNotices, setAllNotices] = useState([]);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({ search: '', category: '', location: '', newspaper: '', date: '' });
   const [sortBy, setSortBy] = useState('date-desc');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,7 +25,7 @@ function AllNotices() {
         }
         const data = await response.json();
         setAllNotices(data);
-        applyFiltersAndSort(data);
+        applyFiltersAndSort(data, filters, sortBy);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -37,40 +36,40 @@ function AllNotices() {
     fetchNotices();
   }, []);
   
-  const applyFiltersAndSort = (data) => {
+  const applyFiltersAndSort = (data, currentFilters, currentSortBy) => {
     let filteredNotices = [...data];
 
-    if (filters.search) {
+    if (currentFilters.search) {
       filteredNotices = filteredNotices.filter(notice =>
-        notice.title.toLowerCase().includes(filters.search.toLowerCase())
+        notice.notice_title?.toLowerCase().includes(currentFilters.search.toLowerCase())
       );
     }
 
-    if (filters.category) {
-      filteredNotices = filteredNotices.filter(notice => notice.category === filters.category);
+    if (currentFilters.category) {
+      filteredNotices = filteredNotices.filter(notice => notice.category === currentFilters.category);
     }
 
-    if (filters.location) {
+    if (currentFilters.location) {
       filteredNotices = filteredNotices.filter(notice =>
-        notice.location.toLowerCase().includes(filters.location.toLowerCase())
+        notice.location?.toLowerCase().includes(currentFilters.location.toLowerCase())
       );
     }
 
-    if (filters.newspaper) {
+    if (currentFilters.newspaper) {
       filteredNotices = filteredNotices.filter(notice =>
-        notice.newspaper.toLowerCase().includes(filters.newspaper.toLowerCase())
+        notice.newspaper?.toLowerCase().includes(currentFilters.newspaper.toLowerCase())
       );
     }
 
-    if (filters.date) {
+    if (currentFilters.date) {
       filteredNotices = filteredNotices.filter(notice =>
-        new Date(notice.date).toISOString().split('T')[0] === filters.date
+        new Date(notice.date).toISOString().split('T')[0] === currentFilters.date
       );
     }
 
-    if (sortBy === 'date-desc') {
+    if (currentSortBy === 'date-desc') {
       filteredNotices.sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else if (sortBy === 'date-asc') {
+    } else if (currentSortBy === 'date-asc') {
       filteredNotices.sort((a, b) => new Date(a.date) - new Date(b.date));
     }
 
@@ -81,14 +80,14 @@ function AllNotices() {
   const handleFilterChange = (newFilters) => {
     setFilters(prev => {
       const updatedFilters = { ...prev, ...newFilters };
-      applyFiltersAndSort(allNotices);
+      applyFiltersAndSort(allNotices, updatedFilters, sortBy);
       return updatedFilters;
     });
   };
 
   const handleSortChange = (sort) => {
     setSortBy(sort);
-    applyFiltersAndSort(allNotices);
+    applyFiltersAndSort(allNotices, filters, sort);
   };
 
   const loadMore = () => {
@@ -97,11 +96,10 @@ function AllNotices() {
     setNotices(allNotices.slice(0, newVisibleCount));
   };
   
-
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
-      <Homeheader/>
-      <main className="mt-24 max-w-7xl mx-auto px-6 sm:px-8">
+      <Header/>
+      <main className="mt-10 max-w-7xl mx-auto px-6 sm:px-8">
         <h1 className="text-4xl font-semibold text-[#001A3B] mb-6 text-center">
           All Notices
         </h1>

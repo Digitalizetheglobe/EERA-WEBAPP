@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Homeheader from "./Notices/Homewebheader";
+import Header from "./Home/HomeHeader";
 import WebFooter from "./Notices/WebFooter";
 
 const SearchNotices = () => {
@@ -57,7 +57,7 @@ const SearchNotices = () => {
 
   return (
     <>
-      <Homeheader />
+      <Header />
 
       <div className="max-w-5xl items-center mx-auto p-8 gap-8 mt-24 mb-20">
         <div className="mb-10">

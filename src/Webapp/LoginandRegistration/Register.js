@@ -6,7 +6,7 @@ import WebFooter from "../Notices/WebFooter";
 import coverImage from "../../assets/banner/groupdiscussion.jpg";
 import Google from "../../assets/google.png";
 import Facebook from "../../assets/facebook.png";
-import Homeheader from "../Notices/Homewebheader";
+import Header from "../Home/HomeHeader";
 
 const Register = () => {
   const [userType, setUserType] = useState("personal");
@@ -78,8 +78,8 @@ const Register = () => {
   };
   return (
     <>
-      <Homeheader/>
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 mt-16">
+      <Header/>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">
           <div
             className="hidden md:block md:w-1/2 bg-cover bg-center"

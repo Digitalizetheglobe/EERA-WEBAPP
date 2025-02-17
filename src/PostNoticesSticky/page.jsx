@@ -7,8 +7,8 @@ const StickyNotice = () => {
                    writing-vertical transition-transform hover:scale-105 hover:bg-[#00172E]"
         style={{
           writingMode: "vertical-rl",
-          borderTopLeftRadius: "9px", 
-          borderBottomLeftRadius: "9px", 
+          borderTopRightRadius: "9px", 
+          borderBottomRightRadius: "9px", 
         }}
       >
         Post Notice Now

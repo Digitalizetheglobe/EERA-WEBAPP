@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Homeheader from "../Notices/Homewebheader";
+import Header from "../Home/HomeHeader";
 import banner1 from "../../assets/banner/3AvzPg1jSKKvKcHh6YfTfw 1.svg";
 import AllNotices from "./AllNotices";
 import RecentLatestNotice from "./Recentlatestnotice";
 import Faq from "../../LandingPage/Faq";
-import Testimonial from "../../LandingPage/Testimonial";
 import WebFooter from "./WebFooter";
 import Webtestimonial from "./Webtestimonial";
-import PostNotices from "../../PostNotices/PostNotices";
 import CTA from "../CTA";
 import SearchBar from '../SearchBar/SearchBar';
 import StickyNotice from "../../PostNoticesSticky/page";
-
 
 const Home = () => {
   const [keyword, setKeyword] = useState("");
@@ -37,8 +34,6 @@ const Home = () => {
     fetchSuggestions();
   }, []);
 
-  // Filter suggestions based on keyword input
-
   useEffect(() => {
     if (keyword) {
       setFilteredSuggestions(
@@ -58,7 +53,6 @@ const Home = () => {
     });
   };
 
-
   const handleSuggestionClick = (title) => {
     setKeyword(title);
     setFilteredSuggestions([]);
@@ -66,66 +60,26 @@ const Home = () => {
 
   return (
     <>
-      <section className="relative">
-
-        <Homeheader />
-        <StickyNotice/>
+      <Header />
+      <StickyNotice />
+      
+      {/* Banner Section with Centered Content */}
+      <section className="relative w-full h-[80vh] sm:h-screen">
         <img
           src={banner1}
           alt="banner"
-          className="w-full h-[80vh] sm:h-full object-cover"
+          className="w-full h-full object-cover"
         />
-        {/* Search Bar */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center p-8 sm:p-20 text-white">
-          <h1 className="text-3xl sm:text-4xl lg:text-4xl text-center font-bold mt-4 mb-4 leading-tight sm:leading-normal max-w-xs sm:max-w-2xl">
+        
+        {/* Centered Heading & Search Bar */}
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center px-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold mb-6 leading-tight sm:leading-normal max-w-xs sm:max-w-2xl">
             All Your Essential Notices in One Place
           </h1>
-          {/* <div className="w-full max-w-2xl mt-6 flex items-center bg-gray-200 bg-opacity-40 p-4 rounded-lg space-x-2">
-            <div className="relative w-full">
-
-              <input
-                type="text"
-                placeholder="Title or keyword"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
-              />
-             
-              {filteredSuggestions.length > 0 && (
-                <ul className="absolute z-10 bg-white border border-gray-300 rounded-md w-full mt-1 max-h-40 overflow-y-auto">
-                  {filteredSuggestions.map((suggestion) => (
-                    <li
-                      key={suggestion.id}
-                      className=" text-black p-2 bg-gray-200 cursor-pointer"
-                      onClick={() => handleSuggestionClick(suggestion.notice_title)}
-                    >
-                      {suggestion.notice_title}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className="relative w-full">
-              <input
-                type="text"
-                placeholder="Select Location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
-              />
-            </div>
-            <button
-              className="bg-[#004B80] text-white px-6 py-3 rounded-md shadow-md hover:bg-[#003B65] transition whitespace-nowrap"
-              onClick={handleSearch}
-            >
-
-              Search Notice
-            </button>
-          </div> */}
-
           <SearchBar onSearch={handleSearch} />
         </div>
       </section>
+
       <AllNotices />
       <RecentLatestNotice />
       <CTA />

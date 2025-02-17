@@ -7,7 +7,7 @@ import WebFooter from "../Notices/WebFooter";
 import Google from "../../assets/google.png";
 import Facebook from "../../assets/facebook.png"
 import coverImage from "../../assets/banner/groupdiscussion.jpg"
-import Homeheader from "../Notices/Homewebheader";
+import Header from "../Home/HomeHeader";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -50,7 +50,7 @@ const Login = () => {
 
   return (
     <>
-      <Homeheader/>
+      <Header/>
       <ToastContainer />
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">

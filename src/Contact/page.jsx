@@ -1,20 +1,20 @@
 import React from 'react';
-import Homeheader from '../Webapp/Notices/Homewebheader'; // Import your header component
+import Header from '../Webapp/Home/HomeHeader';
 import Footer from "../LandingPage/Footer"; // Import your footer component
 import { Facebook, Twitter, Instagram, Phone, Mail, MapPin } from "lucide-react";
 
 const ContactUs = () => {
   return (
     <>
-      <Homeheader /> {/* Include your header */}
-      <div className="w-full min-h-screen flex flex-col mt-5">
+      <Header /> {/* Include your header */}
+      <div className="w-full min-h-screen flex flex-col">
 
         {/* Banner Section */}
         <div
-          className="mt-12 h-64 bg-cover bg-center flex items-center justify-center relative overflow-hidden transition-transform duration-500"
+          className=" h-64 bg-cover bg-center flex items-center justify-center relative overflow-hidden  duration-500"
           style={{ backgroundImage: "url('/Testimonial.png')" }}
         >
-          <div className="absolute inset-0 bg-black/50 hover:bg-black/30 transition-colors duration-300" />
+          <div className="absolute inset-0" />
           <h1 className="text-white text-4xl font-bold relative z-10 tracking-wide hover:text-[#A99067] transition-colors duration-300">
             Contact Us
           </h1>

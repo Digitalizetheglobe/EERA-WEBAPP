@@ -62,7 +62,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className="w-full max-w-4xl">
+    <div className="w-full max-w-4xl border border-white rounded-lg">
       {/* Main Search Bar */}
       <div className="bg-gray-200 bg-opacity-40 p-4 rounded-lg">
         <div className="flex flex-col md:flex-row gap-2">
