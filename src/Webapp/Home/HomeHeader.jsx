@@ -1,7 +1,14 @@
 import React from 'react';
 import { Search } from 'lucide-react';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
 const Header = () => {
+  const location = useLocation(); // Get current route
+
+  // Function to check if the link is active and apply styles
+  const isActive = (path) =>
+    location.pathname === path ? "text-[#A99067] border-b-2 border-[#A99067] pb-1" : "text-white";
+
   return (
     <header className="relative">
       {/* Top border line */}
@@ -13,7 +20,6 @@ const Header = () => {
           <div className="flex-shrink-0 pl-2">
             <div className="flex items-center space-x-2">
               <img src="/logo.svg" alt="EERA Logo" className="h-14 w-auto" />
-
             </div>
           </div>
 
@@ -21,27 +27,29 @@ const Header = () => {
           <nav className="flex-grow flex flex-col items-center justify-center px-3">
             <div className="w-[650px] h-[0.5px] bg-white mb-3" />
             <div className="flex items-center justify-center space-x-16">
-              <a href="/home" className="text-white font-semibold text-lg">Home</a>
-              <a href="/about" className="text-white font-semibold text-lg">About</a>
-              <a href="/all-notices" className="text-white font-semibold text-lg">All Notices</a>
-              <a href="/contact" className="text-white font-semibold text-lg">Contact</a>
+              <Link to="/home2" className={`font-semibold text-lg ${isActive('/home2')}`}>Home</Link>
+              <Link to="/about" className={`font-semibold text-lg ${isActive('/about')}`}>About</Link>
+              <Link to="/all-notices" className={`font-semibold text-lg ${isActive('/all-notices')}`}>All Notices</Link>
+              <Link to="/contact" className={`font-semibold text-lg ${isActive('/contact')}`}>Contact</Link>
               <div className="flex items-center space-x-2">
-                <a href="/all-notices" className="text-white flex flex-row font-semibold items-center text-lg">
+                <Link to="/all-notices" className="flex flex-row font-semibold items-center text-lg text-white">
                   <Search className="h-5 w-5 text-white mr-1" />
-                  Search</a>
+                  Search
+                </Link>
+
               </div>
             </div>
             <div className="w-[650px] h-[0.5px] bg-white mt-3" />
           </nav>
 
           {/* Auth Buttons - Extreme Right */}
-          <div className="flex-shrink-0  flex items-center space-x-4">
-          <button className="px-3 py-1 text-white border rounded-md border-white hover:text-[#021A39] hover:bg-white transition text-lg">
-  <Link to="/register">Sign Up</Link>
-</button>
-<button className="px-3 py-1 bg-white text-[#021A39] rounded-md hover:bg-[#021A39] hover:text-white border border-white transition text-lg">
-  <Link to="/login">Log In</Link>
-</button>
+          <div className="flex-shrink-0 flex items-center space-x-4 mr-2">
+            <button className="px-3 py-1 text-white border rounded-md border-white hover:text-[#021A39] hover:bg-white transition text-lg">
+              <Link to="/register">Sign Up</Link>
+            </button>
+            <button className="px-3 py-1 bg-white text-[#021A39] rounded-md hover:bg-[#021A39] hover:text-white border border-white transition text-lg">
+              <Link to="/login">Log In</Link>
+            </button>
           </div>
         </div>
       </div>

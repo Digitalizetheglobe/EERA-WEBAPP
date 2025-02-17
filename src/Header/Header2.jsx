@@ -21,7 +21,7 @@ const Header = () => {
           <nav className="flex-grow flex flex-col items-center justify-center px-3">
             <div className="w-[650px] h-[0.5px] bg-white mb-3" />
             <div className="flex items-center justify-center space-x-16">
-              <a href="/home" className="text-white font-semibold text-lg">Home</a>
+              <a href="/home2" className="text-white font-semibold text-lg">Home</a>
               <a href="/about" className="text-white font-semibold text-lg">About</a>
               <a href="/all-notices" className="text-white font-semibold text-lg">All Notices</a>
               <a href="/contact" className="text-white font-semibold text-lg">Contact</a>
@@ -35,10 +35,10 @@ const Header = () => {
           </nav>
 
           {/* Auth Buttons - Extreme Right */}
-          <div className="flex-shrink-0  flex items-center space-x-4">
+          <div className="flex-shrink-0  flex items-center space-x-4 mr-2">
           
 <button className="px-3 py-1 bg-white text-[#021A39] rounded-md hover:bg-[#021A39] hover:text-white border border-white transition text-lg">
-  <Link to="/home">Get Started</Link>
+  <Link to="/home2">Get Started</Link>
 </button>
           </div>
         </div>

@@ -1,13 +1,55 @@
 "use client"
-
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { Search, MapPin, Newspaper, Layers, Calendar } from "lucide-react"
+import SearchBar from "../SearchBar/SearchBar";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Search, MapPin, Newspaper, Layers, Calendar } from "lucide-react";
 
 export default function NoticeHeader() {
-    const [activeTab, setActiveTab] = useState("read")
-    const [showAdvanced, setShowAdvanced] = useState(false)
-    const navigate = useNavigate()
+    const [activeTab, setActiveTab] = useState("read");
+    const [showAdvanced, setShowAdvanced] = useState(false);
+    const [keyword, setKeyword] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchSuggestions = async () => {
+            try {
+                const response = await fetch("https://api.epublicnotices.in/notices");
+                if (response.ok) {
+                    const data = await response.json();
+                    setSuggestions(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch notices:", error);
+            }
+        };
+
+        fetchSuggestions();
+    }, []);
+
+    useEffect(() => {
+        if (keyword) {
+            setFilteredSuggestions(
+                suggestions.filter((notice) =>
+                    notice.notice_title.toLowerCase().includes(keyword.toLowerCase())
+                )
+            );
+        } else {
+            setFilteredSuggestions([]);
+        }
+    }, [keyword, suggestions]);
+    const handleSearch = (searchData) => {
+        const { keyword, location, layerName, newspaperName, date } = searchData;
+        navigate("/search-notices", {
+          state: { keyword, location, layerName, newspaperName, date },
+        });
+      };
+
+    const handleSuggestionClick = (title) => {
+        setKeyword(title);
+        setFilteredSuggestions([]);
+    };
 
     return (
         <div className="min-h-[600px] w-full bg-[#e4ecfb] px-4 py-8 relative overflow-hidden">
@@ -36,15 +78,31 @@ export default function NoticeHeader() {
                     <p className="text-3xl text-black">- Accessible Anytime, Anywhere.</p>
                 </div>
 
-                <div className="max-w-3xl mx-auto">
-                    <div className="flex flex-col md:flex-row gap-2 mb-2 bg-white p-3 rounded-lg transition-all duration-300">
+                <div className="max-w-4xl mx-auto">
+                <SearchBar onSearch={handleSearch} />
+                    {/* <div className="flex flex-col md:flex-row gap-2 mb-2 bg-white p-3 rounded-lg transition-all duration-300">
                         <div className="flex-1 relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                             <input
                                 type="text"
                                 placeholder="Title or keyword"
+                                value={keyword}
+                                onChange={(e) => setKeyword(e.target.value)}
                                 className="w-full pl-10 py-2 rounded-md focus:ring-2 focus:ring-blue-500"
                             />
+                            {filteredSuggestions.length > 0 && (
+                                <ul className="absolute z-10 bg-white border border-gray-300 rounded-md w-full mt-1 max-h-40 overflow-y-auto">
+                                    {filteredSuggestions.map((suggestion) => (
+                                        <li
+                                            key={suggestion.id}
+                                            className="text-black p-2 hover:bg-gray-100 cursor-pointer"
+                                            onClick={() => handleSuggestionClick(suggestion.notice_title)}
+                                        >
+                                            {suggestion.notice_title}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                         <div className="h-5 w-px mt-2 bg-gray-400"></div>
 
@@ -67,56 +125,9 @@ export default function NoticeHeader() {
                         >
                             {showAdvanced ? 'Hide Advanced Search' : 'Advanced Search'}
                         </button>
-                    </div>
-
-                    <div
-                        className={`grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-3 rounded-lg transition-all duration-300 overflow-hidden ${showAdvanced ? "max-h-[150px] opacity-100 scale-y-100 mt-1" : "max-h-0 opacity-0 scale-y-0 mt-0"}`}
-                    >
-                        <div className="relative">
-                            <Layers className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                            <input
-                                type="text"
-                                placeholder="Layer Name"
-                                className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                            />
-                        </div>
-
-                        <div className="relative">
-                            <Newspaper className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                            <input
-                                type="text"
-                                placeholder="Newspaper Name"
-                                className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                            />
-                        </div>
-
-                        <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                            <input
-                                type="date"
-                                className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Increased margin-top to create more space */}
-                    <div className={`flex items-center justify-center transition-all duration-300 ${showAdvanced ? "mt-8" : "mt-4"}`}>
-                        <div className="flex items-center gap-2 p-3 border border-white rounded-full">
-                            <div className="flex -space-x-2">
-                                {["/news3.png", "/news1.png", "/news2.png", "/news2.png"].map((src, i) => (
-                                    <img
-                                        key={i}
-                                        src={src}
-                                        alt={`Newspaper ${i + 1}`}
-                                        className="w-8 h-8 rounded-full border-2 border-white"
-                                    />
-                                ))}
-                            </div>
-                            <span className="text-gray-600">From 36 Newspapers</span>
-                        </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
-    )
+    );
 }

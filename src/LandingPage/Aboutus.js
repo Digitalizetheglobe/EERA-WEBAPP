@@ -3,7 +3,7 @@ import React from "react";
 const Aboutus = () => {
   return (
     <div>
-      
+
       <div className="p-6 md:p-14">
 
         {/* Responsive grid with a single-column layout on mobile */}
@@ -32,12 +32,15 @@ const Aboutus = () => {
               documents, ensuring compliance and operational efficiency.
             </p>
 
-            <button
-              type="button"
-              className="mt-4 text-[#A99067] text-md tracking-wider font-medium relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[1.5px] after:bg-[#A99067] after:scale-x-0 after:origin-left after:transition-transform after:duration-200 hover:after:scale-x-100 hover:opacity-95 hover:scale-105"
-            >
-              Read More
-            </button>
+            <a href="/about">
+              <button
+                type="button"
+                className="mt-4 text-[#A99067] text-md tracking-wider font-medium relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[1.5px] after:bg-[#A99067] after:scale-x-0 after:origin-left after:transition-transform after:duration-200 hover:after:scale-x-100 hover:opacity-95 hover:scale-105"
+              >
+                Read More
+              </button>
+            </a>
+
           </div>
         </div>
       </div>

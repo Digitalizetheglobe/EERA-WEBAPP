@@ -45,15 +45,40 @@ const BannerSection = () => {
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <div className="flex space-x-0 sm:space-x-4 sm:flex-row flex-col">
+          <a
+                  className="group relative inline-flex items-center overflow-hidden rounded border border-current px-8 py-3 bg-[#A99067] text-[#001A3B] focus:outline-none focus:ring active:text-[#001A3B] hover:bg-[#dfbc8c] hover:text-[#001A3B]"
+                  href="/home2"
+                >
+                  <span className="absolute -end-full transition-all group-hover:end-4">
+                    <svg
+                      className="size-6 rtl:rotate-180"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </span>
+                  <span className="text-lg transition-all group-hover:me-4 font-bold">
+                    {" "}
+                    Explore Notices{" "}
+                  </span>
+                </a>
+            {/* <div className="flex space-x-0 sm:space-x-4 sm:flex-row flex-col">
               <Link to="/Home">
                 <button className="px-6 py-3 bg-[#A99067] text-[#001A3B] font-semibold rounded hover:bg-white hover:text-black transition mt-4 sm:mt-0">
                   Explore Notices
                 </button>
               </Link>
-            </div>
+            </div> */}
 
-            <div className="w-32 sm:w-40 h-12 sm:h-20 mr-auto flex items-center justify-start">
+            {/* <div className="w-32 sm:w-40 h-12 sm:h-20 mr-auto flex items-center justify-start">
               <Link to="/about">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +95,7 @@ const BannerSection = () => {
                   <path d="m12 16 4-4-4-4" />
                 </svg>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

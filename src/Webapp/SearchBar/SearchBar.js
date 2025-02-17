@@ -62,10 +62,10 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className="w-full max-w-4xl border border-white rounded-lg">
+    <div className="max-w-[1200px] border border-white rounded-lg">
       {/* Main Search Bar */}
-      <div className="bg-gray-200 bg-opacity-40 p-4 rounded-lg">
-        <div className="flex flex-col md:flex-row gap-2">
+      <div className="bg-white px-4 py-2 rounded-lg">
+        <div className="flex flex-col md:flex-row gap-6">
           {/* Keyword Search */}
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -91,7 +91,7 @@ const SearchBar = ({ onSearch }) => {
               </ul>
             )}
           </div>
-
+          <div className="h-8 w-px mt-2 bg-gray-400"></div>
           {/* Location Search */}
           <div className="relative flex-1">
             <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -106,22 +106,29 @@ const SearchBar = ({ onSearch }) => {
 
           {/* Search Button */}
           <button
-            className="bg-[#004B80] text-white px-6 py-3 rounded-md shadow-md hover:bg-[#003B65] transition whitespace-nowrap"
+            className="bg-[#004f8b] text-white px-6 py-3 rounded-sm shadow-md  transition whitespace-nowrap"
             onClick={handleSearch}
           >
             Search Notice
           </button>
+          <button
+            className="text-[#004f8b]  text-sm font-bold  underline transition-colors"
+            onClick={() => setShowAdvanced(!showAdvanced)}
+          >
+            {showAdvanced ? 'Hide Advanced Search' : 'Advanced Search'}
+          </button>
+
         </div>
 
         {/* Advanced Search Toggle */}
-        <div className="flex justify-end mt-2">
+        {/* <div className="flex justify-end mt-2">
           <button
             className="text-white hover:text-gray-200 text-sm font-medium transition-colors"
             onClick={() => setShowAdvanced(!showAdvanced)}
           >
             {showAdvanced ? 'Hide Advanced Search' : 'Advanced Search'}
           </button>
-        </div>
+        </div> */}
 
         {/* Advanced Search Fields */}
         {showAdvanced && (
