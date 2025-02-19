@@ -3,27 +3,27 @@ import { useEffect, useState } from "react";
 const NoticesDashboard = () => {
     const [totalNotices, setTotalNotices] = useState(null);
     const [todaysNotices, setTodaysNotices] = useState(null);
-  
+
     useEffect(() => {
-      const fetchNotices = async () => {
-        try {
-          const response = await fetch("https://api.epublicnotices.in/notices");
-          const data = await response.json();
-          
-          setTotalNotices(data.length);
-  
-          const today = new Date().toISOString().split("T")[0];
-          const todayCount = data.filter((notice) =>
-            notice.date && notice.date.startsWith(today)
-          ).length;
-          setTodaysNotices(todayCount);
-        } catch (error) {
-          console.error("Error fetching notices:", error);
-        }
-      };
-  
-      fetchNotices();
-    }, []);    
+        const fetchNotices = async () => {
+            try {
+                const response = await fetch("https://api.epublicnotices.in/notices");
+                const data = await response.json();
+
+                setTotalNotices(data.length);
+
+                const today = new Date().toISOString().split("T")[0];
+                const todayCount = data.filter((notice) =>
+                    notice.date && notice.date.startsWith(today)
+                ).length;
+                setTodaysNotices(todayCount);
+            } catch (error) {
+                console.error("Error fetching notices:", error);
+            }
+        };
+
+        fetchNotices();
+    }, []);
     return (
         <div className="p-8 bg-white min-h-screen flex flex-col items-center">
             <h1 className="text-4xl font-bold text-center mb-20">Notices at Lightning Speed</h1>
@@ -47,9 +47,9 @@ const NoticesDashboard = () => {
                         <p className="text-gray-600 text-lg">Total Notices Available</p>
                     </div>
                     <a href="/all-notices">
-                        <button className="w-full gap-4 bg-[#004B80] text-white text-lg font-bold py-2 px-4 rounded-3xl flex items-center  mt-2 hover:bg-blue-700 justify-between">
+                        <button className="w-full gap-4 bg-[#004B80] text-white text-lg font-bold  rounded-3xl flex items-center   hover:bg-[#A99067] justify-between mt-6">
                             <span className="flex-grow text-center">View All Notices</span>
-                            <img src="/arrow.png" alt="Personalized Recommendations" className="w-12 h-12" />
+                            <img src="/arrow.png" alt="Personalized Recommendations" className="w-16 h-auto" />
                         </button>
                     </a>
                 </div>
@@ -57,45 +57,61 @@ const NoticesDashboard = () => {
                 {/* Second Div - Browse & Access + Recommendations (2/3 width) */}
                 <div className="col-span-2 flex flex-col gap-6">
                     <div className="bg-white rounded-3xl flex flex-row gap-4">
-                        <div className="bg-[#F6F9FE] p-4 border border-[#c8daf9] rounded-3xl flex flex-col items-center">
-                            <img src="/image3.png" alt="Browse Notices" className="w-[150px] h-auto translate-x-[100px]" />
-                            <h2 className="font-semibold text-3xl">Browse and Access Notices Instantly</h2>
-                            <p className="text-gray-600 text-md">Quickly browse the latest legal and corporate updates.</p>
+                        <div className="flex-1 relative bg-[#F6F9FE] py-7 px-5 border border-[#c8daf9] rounded-3xl flex flex-col overflow-hidden">
+                            <img
+                                src="/frame1.png"
+                                alt="Browse Notices"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                            <h2 className="font-semibold text-2xl relative z-10 mt-28">Browse and Access </h2>
+                            <h2 className="font-semibold text-2xl relative z-10 "> Notices Instantly</h2>
+                            <p className="text-gray-600 text-md relative z-10 mt-4">Quickly browse the latest legal and corporate updates.</p>
                         </div>
-                        <div className="bg-[#E4ECFB] border border-[#b8cdf4] p-4 rounded-3xl flex flex-col items-center">
-                            <div className="flex flex-row">
-                            <img src="/image 13.png" alt="Personalized Recommendations2" className="w-[130px] h-auto translate-x-[-60px] translate-y-[-20px]" />
-                            <img src="/image4.png" alt="Personalized Recommendations" className="w-[130px] h-auto translate-x-[50px] translate-y-[-20px] " />
-                            </div>
-                            <h2 className="font-semibold text-3xl translate-y-[-20px]">Personalized Notice Recommendations</h2>
-                            <p className="text-gray-600 text-md translate-y-[-20px]">Tailored recommendations based on location, interests, and history.</p>
+
+                        <div className="flex-1 relative bg-[#E4ECFB] border border-[#b8cdf4] py-10 px-6 rounded-3xl flex flex-col   overflow-hidden">
+                            <img
+                                src="/frame3.png"
+                                alt="Personalized Recommendations"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                            <h2 className="font-semibold text-2xl relative z-10 mt-20">Personalized Notice Recommendations</h2>
+                            <p className="text-gray-600 text-md relative z-10 mt-4">Tailored recommendations based on location, interests, and history.</p>
                         </div>
                     </div>
 
+
                     {/* Third Div - Download + Post Notices */}
                     <div className="bg-white rounded-2xl flex flex-row gap-4">
-                        <div className="bg-[#E4ECFB] border border-[#b8cdf4] p-4 rounded-3xl flex flex-col  flex-[2]">
-                            <div className="flex flex-row">
-                            <img src="/Group.png" alt="Download Notices" className="w-20 h-20" />
-                            <img src="/image5.png" alt="Download Notices" className="w-[130px] h-auto translate-x-[250px]" />
-                            </div>
-                            <h2 className="font-semibold text-2xl">Download and Enquire Anytime</h2>
-                            <p className="text-gray-600 text-md">Download detailed notices or make inquiries with just one click. Always stay ahead of deadlines and legal requirements.</p>
+                        <div className="relative bg-[#E4ECFB] border border-[#b8cdf4] px-2 py-24 rounded-3xl flex flex-col  overflow-hidden flex-[2]">
+                            <img
+                                src="/frame2.png"
+                                alt="Download Notices"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                            <h2 className="font-semibold text-2xl px-4 relative z-10 translate-y-16">Download and Enquire Anytime</h2>
+                            <p className="text-gray-600 text-md px-4 relative z-10 translate-y-20">Download detailed notices or make inquiries with just one click. Always stay ahead of deadlines and legal requirements.</p>
                         </div>
-                        <div className="bg-[#B8D7F4] border border-[#8cbeed] p-4 rounded-3xl flex flex-col flex-[1]">
-                            <img src="/image6.png" alt="Post Notices" className="w-[200px] h-auto translate-x-[20px]" />  
-                            <div className="flex flex-row">
-                            <div>
-                                <h2 className="font-semibold text-2xl">Post Notices</h2>
-                                <p className="text-gray-600 text-sm">Share important notices instantly.</p>
-                            </div>
-                            
-                            <a className="translate-x-[20px] translate-y-[40px]" href="post-notices">
-                                <img src="/arrow.png" alt="Personalized Recommendations" />
-                            </a>
+
+                        <div className="relative bg-[#B8D7F4] border border-[#8cbeed] px-2 rounded-3xl flex flex-col justify-between overflow-hidden flex-[1]">
+                            <img
+                                src="/frame4.png"
+                                alt="Post Notices"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                            <div className="relative z-10 w-full flex flex-col justify-between  h-full">
+                                <div className="mt-28">
+                                    <h2 className="font-semibold text-2xl mt-8">Post Notices</h2>
+                                    <p className="text-gray-600 text-md mt-2">Share important notices</p>
+                                    <p className="text-gray-600 text-md">Instantly</p>
+                                </div>
+                               
+                                <a href="post-notices" className="relative z-10 self-end ">
+                                    <img src="/arrow.png" alt="Go to Post Notices" className="w-16 h-auto" />
+                                </a>
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>
