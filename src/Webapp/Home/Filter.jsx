@@ -38,6 +38,8 @@ const Filter = () => {
     { label: "Corporate Disclosures" },
     { label: "Government Notices" },
     { label: "Public Safety alerts" },
+    { label: "Financial Notices" },
+    { label: "Environmental Notices" },
     
   ].sort((a, b) => a.label.localeCompare(b.label));
 

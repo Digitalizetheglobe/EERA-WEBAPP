@@ -14,7 +14,7 @@ const Header = () => {
       {/* Top border line */}
       <div className="h-0.5 bg-gray-600" />
 
-      <div className="bg-[#021A39] px-2 py-3">
+      <div className="bg-[#004B80] px-2 py-3">
         <div className="flex items-center w-full h-16">
           {/* Logo - Extreme Left */}
           <div className="flex-shrink-0 pl-2">
