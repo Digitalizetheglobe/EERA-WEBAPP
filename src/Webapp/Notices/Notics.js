@@ -203,6 +203,9 @@ const [notices, setNotices] = useState([]);
               <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 ml-2 text-md font-medium">
                 {notice.newspaper_name}
               </span>
+              {/* <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 ml-2 text-md font-medium">
+                {notice.SelectedCategory}
+              </span> */}
             </div>
 
 

@@ -22,20 +22,46 @@ const SearchNotices = () => {
       }
       const data = await response.json();
   
-      // Filter based on keyword, location, and newspaperName
+      // Function to remove special characters and replace with space
+      const sanitizeText = (text) => text.replace(/[^a-zA-Z0-9 ]/g, " ");
+  
+      // Filter notices based on keyword, location, newspaperName, and category
       const filtered = data.filter((notice) => {
-        const title = notice.notice_title || "";
-        const description = notice.notice_description || "";
-        const noticeLocation = notice.location || "";
-        const newspaper = notice.newspaper_name || "";
+        const title = sanitizeText(notice.notice_title || "").toLowerCase();
+        const description = sanitizeText(notice.notice_description || "").toLowerCase();
+        const noticeLocation = sanitizeText(notice.location || "").toLowerCase();
+        const newspaper = sanitizeText(notice.newspaper_name || "").toLowerCase();
+        const lawyer = sanitizeText(notice.lawyer_name || "").toLowerCase();
+        const category = sanitizeText(notice.SelectedCategory || "").toLowerCase();
+        const operator = sanitizeText(notice.DataentryOperator || "").toLowerCase();
+        const date = new Date(notice.date || "1970-01-01"); // Default to old date if missing
   
         return (
-          (!keyword ||
-            title.toLowerCase().includes(keyword.toLowerCase()) ||
-            description.toLowerCase().includes(keyword.toLowerCase())) &&
-          (!location || noticeLocation.toLowerCase().includes(location.toLowerCase())) &&
-          (!newspaperName || newspaper.toLowerCase().includes(newspaperName.toLowerCase()))
+          (!keyword || 
+            newspaper.includes(keyword.toLowerCase()) ||
+            noticeLocation.includes(keyword.toLowerCase()) ||
+            title.includes(keyword.toLowerCase()) ||
+            lawyer.includes(keyword.toLowerCase()) ||
+            description.includes(keyword.toLowerCase()) ||
+            category.includes(keyword.toLowerCase()) ||
+            operator.includes(keyword.toLowerCase())
+          ) &&
+          (!location || noticeLocation.includes(location.toLowerCase())) &&
+          (!newspaperName || newspaper.includes(newspaperName.toLowerCase()))
         );
+      });
+  
+      // Sort by priority (newspaper, location, title, lawyer first) and then by latest date
+      filtered.sort((a, b) => {
+        const aPriority = [
+          a.newspaper_name, a.location, a.notice_title, a.lawyer_name
+        ].some(field => sanitizeText(field || "").toLowerCase().includes(keyword?.toLowerCase() || "")) ? 1 : 0;
+        const bPriority = [
+          b.newspaper_name, b.location, b.notice_title, b.lawyer_name
+        ].some(field => sanitizeText(field || "").toLowerCase().includes(keyword?.toLowerCase() || "")) ? 1 : 0;
+        
+        if (bPriority !== aPriority) return bPriority - aPriority;
+        return new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01"); // Sort by latest date
       });
   
       setNotices(filtered);
@@ -46,14 +72,15 @@ const SearchNotices = () => {
     }
   };
   
-
   useEffect(() => {
     fetchFilteredNotices();
   }, []);
-
+  
   const handleSearch = () => {
     fetchFilteredNotices();
   };
+  
+  
 
   return (
     <>

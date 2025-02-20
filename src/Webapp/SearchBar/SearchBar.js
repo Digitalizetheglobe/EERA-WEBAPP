@@ -35,14 +35,25 @@ const SearchBar = ({ onSearch }) => {
   useEffect(() => {
     if (keyword) {
       setFilteredSuggestions(
-        suggestions.filter((notice) =>
-          notice.notice_title.toLowerCase().includes(keyword.toLowerCase())
-        )
+        suggestions.filter((notice) => {
+          const searchFields = [
+            notice.notice_title,
+            notice.notice_description,
+            notice.location,
+            notice.newspaper_name,
+            notice.lawyer_name,
+            notice.SelectedCategory,
+            notice.DataentryOperator
+          ].join(" ").toLowerCase();
+  
+          return searchFields.includes(keyword.toLowerCase());
+        })
       );
     } else {
       setFilteredSuggestions([]);
     }
   }, [keyword, suggestions]);
+  
 
   const handleSuggestionClick = (title) => {
     setKeyword(title);

@@ -6,50 +6,15 @@ import { Search, MapPin, Newspaper, Layers, Calendar } from "lucide-react";
 
 export default function NoticeHeader() {
     const [activeTab, setActiveTab] = useState("read");
-    const [showAdvanced, setShowAdvanced] = useState(false);
-    const [keyword, setKeyword] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
-    const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchSuggestions = async () => {
-            try {
-                const response = await fetch("https://api.epublicnotices.in/notices");
-                if (response.ok) {
-                    const data = await response.json();
-                    setSuggestions(data);
-                }
-            } catch (error) {
-                console.error("Failed to fetch notices:", error);
-            }
-        };
-
-        fetchSuggestions();
-    }, []);
-
-    useEffect(() => {
-        if (keyword) {
-            setFilteredSuggestions(
-                suggestions.filter((notice) =>
-                    notice.notice_title.toLowerCase().includes(keyword.toLowerCase())
-                )
-            );
-        } else {
-            setFilteredSuggestions([]);
-        }
-    }, [keyword, suggestions]);
     const handleSearch = (searchData) => {
         const { keyword, location, layerName, newspaperName, date } = searchData;
         navigate("/search-notices", {
           state: { keyword, location, layerName, newspaperName, date },
         });
       };
-
-    const handleSuggestionClick = (title) => {
-        setKeyword(title);
-        setFilteredSuggestions([]);
-    };
 
     return (
         <div className="min-h-[600px] w-full bg-[#e4ecfb] px-4 py-8 relative overflow-hidden">
