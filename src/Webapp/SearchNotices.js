@@ -12,7 +12,21 @@ const SearchNotices = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newspaperName, setNewspaperName] = useState('');
-  
+  const [allLocations, setAllLocations] = useState([]);
+  const [allNewspapers, setAllNewspapers] = useState([]);
+  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+  const [isNewspaperDropdownOpen, setIsNewspaperDropdownOpen] = useState(false);
+
+  // Filter locations based on input
+  const filteredLocations = allLocations.filter(loc => 
+    loc.toLowerCase().includes(location.toLowerCase())
+  );
+
+  // Filter newspapers based on input
+  const filteredNewspapers = allNewspapers.filter(paper => 
+    paper.toLowerCase().includes(newspaperName.toLowerCase())
+  );
+
   const fetchFilteredNotices = async () => {
     try {
       setLoading(true);
@@ -21,10 +35,28 @@ const SearchNotices = () => {
         throw new Error("Failed to fetch notices");
       }
       const data = await response.json();
-  
+
+      // Extract unique locations and newspapers
+      const uniqueLocations = [...new Set(data
+        .map(notice => notice.location)
+        .filter(location => location)
+        .map(location => location.trim())
+        .sort()
+      )];
+      
+      const uniqueNewspapers = [...new Set(data
+        .map(notice => notice.newspaper_name)
+        .filter(newspaper => newspaper)
+        .map(newspaper => newspaper.trim())
+        .sort()
+      )];
+
+      setAllLocations(uniqueLocations);
+      setAllNewspapers(uniqueNewspapers);
+
       // Function to remove special characters and replace with space
       const sanitizeText = (text) => text.replace(/[^a-zA-Z0-9 ]/g, " ");
-  
+
       // Filter notices based on keyword, location, newspaperName, and category
       const filtered = data.filter((notice) => {
         const title = sanitizeText(notice.notice_title || "").toLowerCase();
@@ -34,8 +66,8 @@ const SearchNotices = () => {
         const lawyer = sanitizeText(notice.lawyer_name || "").toLowerCase();
         const category = sanitizeText(notice.SelectedCategory || "").toLowerCase();
         const operator = sanitizeText(notice.DataentryOperator || "").toLowerCase();
-        const date = new Date(notice.date || "1970-01-01"); // Default to old date if missing
-  
+        const date = new Date(notice.date || "1970-01-01");
+
         return (
           (!keyword || 
             newspaper.includes(keyword.toLowerCase()) ||
@@ -50,8 +82,8 @@ const SearchNotices = () => {
           (!newspaperName || newspaper.includes(newspaperName.toLowerCase()))
         );
       });
-  
-      // Sort by priority (newspaper, location, title, lawyer first) and then by latest date
+
+      // Sort by priority and date
       filtered.sort((a, b) => {
         const aPriority = [
           a.newspaper_name, a.location, a.notice_title, a.lawyer_name
@@ -61,9 +93,9 @@ const SearchNotices = () => {
         ].some(field => sanitizeText(field || "").toLowerCase().includes(keyword?.toLowerCase() || "")) ? 1 : 0;
         
         if (bPriority !== aPriority) return bPriority - aPriority;
-        return new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01"); // Sort by latest date
+        return new Date(b.date || "1970-01-01") - new Date(a.date || "1970-01-01");
       });
-  
+
       setNotices(filtered);
       setLoading(false);
     } catch (err) {
@@ -71,16 +103,39 @@ const SearchNotices = () => {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchFilteredNotices();
   }, []);
-  
+
   const handleSearch = () => {
     fetchFilteredNotices();
   };
-  
-  
+
+  const handleLocationSelect = (selectedLocation) => {
+    setLocation(selectedLocation);
+    setIsLocationDropdownOpen(false);
+    setTimeout(() => fetchFilteredNotices(), 0);
+  };
+
+  const handleNewspaperSelect = (selectedNewspaper) => {
+    setNewspaperName(selectedNewspaper);
+    setIsNewspaperDropdownOpen(false);
+    setTimeout(() => fetchFilteredNotices(), 0);
+  };
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.location-dropdown') && !event.target.closest('.newspaper-dropdown')) {
+        setIsLocationDropdownOpen(false);
+        setIsNewspaperDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -104,29 +159,63 @@ const SearchNotices = () => {
               />
             </div>
 
-            {/* Location Input */}
-            <div className="relative w-full">
+            {/* Location Dropdown */}
+            <div className="relative w-full location-dropdown">
               <i className="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
               <input
                 type="text"
                 placeholder="Select Location"
                 value={location}
-                onChange={(e) => setLocation(e.target.value)}
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                  setIsLocationDropdownOpen(true);
+                }}
+                onClick={() => setIsLocationDropdownOpen(true)}
                 className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
               />
+              {isLocationDropdownOpen && filteredLocations.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                  {filteredLocations.map((loc, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700"
+                      onClick={() => handleLocationSelect(loc)}
+                    >
+                      {loc}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-            <div className="relative w-full">
+
+            {/* Newspaper Dropdown */}
+            <div className="relative w-full newspaper-dropdown">
               <i className="fas fa-newspaper absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
               <input
                 type="text"
                 placeholder="Newspaper Name"
                 value={newspaperName}
-                onChange={(e) => setNewspaperName(e.target.value)}
+                onChange={(e) => {
+                  setNewspaperName(e.target.value);
+                  setIsNewspaperDropdownOpen(true);
+                }}
+                onClick={() => setIsNewspaperDropdownOpen(true)}
                 className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
               />
+              {isNewspaperDropdownOpen && filteredNewspapers.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                  {filteredNewspapers.map((paper, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700"
+                      onClick={() => handleNewspaperSelect(paper)}
+                    >
+                      {paper}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-
-
 
             {/* Search Button */}
             <button
@@ -156,7 +245,7 @@ const SearchNotices = () => {
             notices.map((notice) => (
               <div
                 key={notice.id}
-                className="bg-[#E7EBEE80] p-6 rounded-lg sm:mx-auto mb-6 "
+                className="bg-[#E7EBEE80] p-6 rounded-lg sm:mx-auto mb-6"
               >
                 <h3 className="text-lg font-semibold text-[#334862] mb-2">
                   {notice.notice_title}
