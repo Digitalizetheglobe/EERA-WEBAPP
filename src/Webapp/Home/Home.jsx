@@ -5,6 +5,11 @@ import ReadNotice from "./ReadNotice";
 import NoticesComponent from "./Dashboard";
 import NoticesDashboard from "./Dashboard";
 import Filter from "./Filter";
+import LatestNotices from "../../LandingPage/Latestnotics";
+import CTA from "../CTA";
+import Faq from "../../LandingPage/Faq";
+import Webtestimonial from "../Notices/Webtestimonial";
+import WebFooter from "../Notices/WebFooter";
 const Home2 = () => {
   return (
     <div>
@@ -12,6 +17,11 @@ const Home2 = () => {
       <ReadNotice/>
       <Filter/>
       <NoticesDashboard/>
+      <LatestNotices />
+      <CTA/>
+      <Faq/>
+      <Webtestimonial/>
+      <WebFooter/>
     </div>
   );
 };
