@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Header from "./Home/HomeHeader";
 import WebFooter from "./Notices/WebFooter";
+import { locations } from "./SearchBar/locations";
+import { newspapers } from "./SearchBar/newspapers";
 
 const SearchNotices = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -11,19 +13,17 @@ const SearchNotices = () => {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [newspaperName, setNewspaperName] = useState('');
-  const [allLocations, setAllLocations] = useState([]);
-  const [allNewspapers, setAllNewspapers] = useState([]);
+  const [newspaperName, setNewspaperName] = useState(state?.newspaperName || "");
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [isNewspaperDropdownOpen, setIsNewspaperDropdownOpen] = useState(false);
 
   // Filter locations based on input
-  const filteredLocations = allLocations.filter(loc => 
+  const filteredLocations = locations.filter(loc => 
     loc.toLowerCase().includes(location.toLowerCase())
   );
 
   // Filter newspapers based on input
-  const filteredNewspapers = allNewspapers.filter(paper => 
+  const filteredNewspapers = newspapers.filter(paper => 
     paper.toLowerCase().includes(newspaperName.toLowerCase())
   );
 
@@ -35,24 +35,6 @@ const SearchNotices = () => {
         throw new Error("Failed to fetch notices");
       }
       const data = await response.json();
-
-      // Extract unique locations and newspapers
-      const uniqueLocations = [...new Set(data
-        .map(notice => notice.location)
-        .filter(location => location)
-        .map(location => location.trim())
-        .sort()
-      )];
-      
-      const uniqueNewspapers = [...new Set(data
-        .map(notice => notice.newspaper_name)
-        .filter(newspaper => newspaper)
-        .map(newspaper => newspaper.trim())
-        .sort()
-      )];
-
-      setAllLocations(uniqueLocations);
-      setAllNewspapers(uniqueNewspapers);
 
       // Function to remove special characters and replace with space
       const sanitizeText = (text) => text.replace(/[^a-zA-Z0-9 ]/g, " ");
@@ -66,7 +48,6 @@ const SearchNotices = () => {
         const lawyer = sanitizeText(notice.lawyer_name || "").toLowerCase();
         const category = sanitizeText(notice.SelectedCategory || "").toLowerCase();
         const operator = sanitizeText(notice.DataentryOperator || "").toLowerCase();
-        const date = new Date(notice.date || "1970-01-01");
 
         return (
           (!keyword || 
@@ -269,7 +250,6 @@ const SearchNotices = () => {
             ))}
         </div>
       </div>
-
       <WebFooter />
     </>
   );

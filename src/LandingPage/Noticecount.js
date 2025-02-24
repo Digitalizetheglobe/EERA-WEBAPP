@@ -9,7 +9,7 @@ const NoticesSection = () => {
       try {
         const response = await fetch("https://api.epublicnotices.in/notices");
         const data = await response.json();
-        
+
         setTotalNotices(data.length);
 
         const today = new Date().toISOString().split("T")[0];
@@ -26,20 +26,39 @@ const NoticesSection = () => {
   }, []);
 
   return (
-    <div className="mt-10 mb-10 border border-[#001A3B] p-6 rounded-lg shadow-md w-full max-w-md mx-auto">
-      <h2 className="text-center text-4xl font-bold mb-4 text-[#A99067]">Notices Overview</h2>
-      <div className="flex justify-between items-center">
-        <div>
-          <p className="mt-3 text-xl font-bold">Total Notices:</p>
-          <p className="mt-3 text-center text-2xl font-bold">{totalNotices ?? "Loading..."}</p>
+    <div className="p-8 bg-white flex flex-col items-center">
+    <div className="flex flex-row gap-6 w-full max-w-2xl justify-center">
+        {/* Today's Notices */}
+        <div className="bg-[#b8d7f4] p-3 rounded-3xl shadow-lg flex flex-col items-center w-1/2">
+            <div className="bg-white px-10 py-8 rounded-3xl flex flex-col items-center">
+                <div className="flex items-center">
+                    <p className="text-5xl font-bold ">{todaysNotices}</p>
+                    <img src="/image1.png" alt="Notices Uploaded" className="w-full h-[95px] z-10 " />
+                </div>
+                <p className="text-gray-600 text-lg">Notices Uploaded Today</p>
+            </div>
         </div>
-        
-        <div>
-          <p className="mt-3 text-xl font-bold">Today's Notices:</p>
-          <p className="mt-3 text-center text-2xl font-bold">{todaysNotices ?? "Loading..."}</p>
+
+        {/* Total Notices */}
+        <div className="bg-[#b8d7f4] p-3 rounded-3xl shadow-lg flex flex-col items-center w-1/2">
+            <div className="bg-white px-5 py-8 rounded-3xl flex flex-col items-center">
+                <div className="flex items-center">
+                    <img src="/image2.jpeg" alt="Total Notices" className="w-[100px] h-auto z-10 " />
+                    <p className="text-5xl font-bold">{totalNotices}+</p>
+                </div>
+                <p className="text-gray-600 text-lg">Total Notices Available</p>
+            </div>
         </div>
-      </div>
     </div>
+
+    {/* View All Notices Button */}
+    <a href="/all-notices" className="w-full max-w-xl mt-6">
+        <button className="w-full bg-[#004B80] text-white text-lg font-bold py-4 rounded-3xl flex items-center justify-center hover:bg-[#A99067]">
+            View All Notices
+            <img src="/arrow.png" alt="Go to Notices" className="w-10 h-auto ml-2" />
+        </button>
+    </a>
+</div>
   );
 };
 

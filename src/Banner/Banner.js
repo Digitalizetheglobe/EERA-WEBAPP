@@ -3,7 +3,7 @@ import banner from "../assets/banner/1HIMW2VTQLimGQKOEOzmaw 1.png";
 import readmore from "../assets/banner/Group 2.png";
 // import Header from "../Header/Header";
 import Feature from "../LandingPage/Feature";
-import Aboutus from "../LandingPage/Aboutus";
+//import Aboutus from "../LandingPage/Aboutus";
 import Weserve from "../LandingPage/Weserve";
 import Latestnotics from "../LandingPage/Latestnotics";
 import Faq from "../LandingPage/Faq";
@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import NoticesSection from "../LandingPage/Noticecount";
 import StickyNotice from "../PostNoticesSticky/page";
 import Header from "../Header/Header2";
+import Aboutus from "../LandingPage/Aboutus2";
 const BannerSection = () => {
   return (
     <>
@@ -102,8 +103,8 @@ const BannerSection = () => {
 
       {/* Main Content Sections */}
       <StickyNotice />
-      <Aboutus />
-      <NoticesSection />
+      <Aboutus/>
+      {/* <NoticesSection /> */}
       <Feature />
       <Latestnotics />
       <Weserve />
