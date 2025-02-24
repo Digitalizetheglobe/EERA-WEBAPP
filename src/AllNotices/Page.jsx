@@ -99,8 +99,8 @@ function AllNotices() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <Header/>
-      <main className="mt-10 max-w-7xl mx-auto px-6 sm:px-8">
-        <h1 className="text-4xl font-semibold text-[#001A3B] mb-6 text-center">
+      <main className="mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl sm:text-4xl font-semibold text-[#001A3B] mb-6 text-center">
           All Notices
         </h1>
         <Filters onFilterChange={handleFilterChange} onSortChange={handleSortChange} />
@@ -118,7 +118,7 @@ function AllNotices() {
           </div>
         ) : (
           <>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {notices.map((notice) => (
                 <NoticeCard key={notice.id} notice={notice} />
               ))}

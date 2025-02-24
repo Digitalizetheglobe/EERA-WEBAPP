@@ -72,37 +72,45 @@ const Register = () => {
       setLoading(false);
     }
   };
+
   const closeModal = () => {
     setShowModal(false);
     navigate("/login");
   };
+
   return (
     <>
-      <Header/>
+      <Header />
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">
-          <div
-            className="hidden md:block md:w-1/2 bg-cover bg-center"
-            style={{ backgroundImage: `url(${coverImage})` }}
-          >
-            <div className="h-full flex items-center justify-center bg-black bg-opacity-40 text-white p-8">
-              <h2 className="text-4xl font-bold">EERA Notices</h2>
+          {/* Cover Image Section - Hidden on mobile, visible on md and up */}
+          <div className="hidden md:block md:w-1/2 bg-cover bg-center relative">
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${coverImage})` }}
+            >
+              <div className="h-full flex items-center justify-center bg-black bg-opacity-40 text-white p-8">
+                <h2 className="text-4xl font-bold">EERA Notices</h2>
+              </div>
             </div>
           </div>
 
-          <div className="bg-white md:w-1/2 p-8">
-            <h3 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+          {/* Form Section */}
+          <div className="bg-white w-full md:w-1/2 p-4 md:p-8">
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 text-center">
               Create Your Account
             </h3>
-            <p className="text-center text-gray-600 mb-3">
+            <p className="text-center text-gray-600 mb-3 text-sm md:text-base">
               Please select your registration category:
             </p>
-            <div className="flex justify-center gap-4 mb-6">
+
+            {/* User Type Selection */}
+            <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-6">
               {["personal", "corporate", "government"].map((type) => (
                 <button
                   key={type}
                   onClick={() => setUserType(type)}
-                  className={`px-4 py-2 rounded-lg ${
+                  className={`px-3 md:px-4 py-2 rounded-lg text-sm md:text-base ${
                     userType === type ? "bg-[#A99067] text-white" : "bg-gray-200 text-gray-700"
                   }`}
                 >
@@ -117,115 +125,110 @@ const Register = () => {
                 e.preventDefault();
                 handleSignUp();
               }}
-              className="max-w-md w-full"
+              className="w-full max-w-md mx-auto"
             >
-              <div className="space-y-4">
-                {/* Name */}
+              <div className="space-y-3 md:space-y-4">
+                {/* Common Fields */}
                 <div>
-                  <label className="block text-gray-700 font-medium">Name</label>
+                  <label className="block text-gray-700 text-sm md:text-base font-medium">Name</label>
                   <input
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
                     placeholder="Enter your name"
                   />
                 </div>
 
-                {/* Phone Number */}
                 <div>
-                  <label className="block text-gray-700 font-medium">Phone Number</label>
+                  <label className="block text-gray-700 text-sm md:text-base font-medium">Phone Number</label>
                   <input
                     name="number"
                     value={formData.number}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
                     placeholder="Enter your phone number"
                   />
                 </div>
 
-                {/* Email */}
                 <div>
-                  <label className="block text-gray-700 font-medium">Email</label>
+                  <label className="block text-gray-700 text-sm md:text-base font-medium">Email</label>
                   <input
                     name="email"
-                    value={formData.email}
                     type="email"
+                    value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
                     placeholder="Enter your email"
                   />
                 </div>
 
-                {/* Location */}
                 <div>
-                  <label className="block text-gray-700 font-medium">Location</label>
+                  <label className="block text-gray-700 text-sm md:text-base font-medium">Location</label>
                   <input
                     name="location"
                     value={formData.location}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
                     placeholder="Enter your location"
                   />
                 </div>
 
-                {/* Corporate Fields */}
+                {/* Conditional Fields */}
                 {userType === "corporate" && (
                   <>
                     <div>
-                      <label className="block text-gray-700 font-medium">Company Name</label>
+                      <label className="block text-gray-700 text-sm md:text-base font-medium">Company Name</label>
                       <input
                         name="companyName"
                         value={formData.companyName}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border rounded-lg text-sm"
+                        className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
                         placeholder="Enter company name"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 font-medium">UIN Number</label>
+                      <label className="block text-gray-700 text-sm md:text-base font-medium">UIN Number</label>
                       <input
                         name="uinNumber"
                         value={formData.uinNumber}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border rounded-lg text-sm"
+                        className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
                         placeholder="Enter UIN number"
                       />
                     </div>
                   </>
                 )}
 
-                {/* Government Fields */}
                 {userType === "government" && (
                   <div>
-                    <label className="block text-gray-700 font-medium">Department</label>
+                    <label className="block text-gray-700 text-sm md:text-base font-medium">Department</label>
                     <input
                       name="department"
                       value={formData.department}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border rounded-lg text-sm"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
                       placeholder="Enter department"
                     />
                   </div>
                 )}
 
-                {/* Password */}
                 <div>
-                  <label className="block text-gray-700 font-medium">Password</label>
+                  <label className="block text-gray-700 text-sm md:text-base font-medium">Password</label>
                   <input
                     name="password"
-                    value={formData.password}
                     type="password"
+                    value={formData.password}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
                     placeholder="Enter your password"
                   />
                 </div>
@@ -235,14 +238,16 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white mt-4 ${
+                className={`w-full shadow-xl py-2 md:py-2.5 px-4 text-sm font-semibold rounded text-white mt-4 ${
                   loading ? "bg-blue-400" : "bg-[#001A3B] hover:bg-[#1A3B5C]"
                 }`}
               >
                 {loading ? "Signing up..." : "Sign Up"}
               </button>
             </form>
-            <div className="mt-6 text-center text-sm text-gray-600">
+
+            {/* Login Link */}
+            <div className="mt-4 md:mt-6 text-center text-sm text-gray-600">
               <p>
                 Already have an account?{" "}
                 <a
@@ -255,12 +260,13 @@ const Register = () => {
               </p>
             </div>
 
-            <div className="flex items-center justify-center gap-4 mt-6">
-              <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
+            {/* Social Login Buttons */}
+            <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 mt-4 md:mt-6">
+              <button className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
                 <img src={Google} alt="Google" className="h-5 w-5" />
                 Google
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
+              <button className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
                 <img src={Facebook} alt="Facebook" className="h-5 w-5" />
                 Facebook
               </button>
@@ -268,7 +274,6 @@ const Register = () => {
           </div>
         </div>
       </div>
-
       <WebFooter />
     </>
   );

@@ -105,7 +105,6 @@ const SearchNotices = () => {
     setTimeout(() => fetchFilteredNotices(), 0);
   };
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest('.location-dropdown') && !event.target.closest('.newspaper-dropdown')) {
@@ -122,12 +121,12 @@ const SearchNotices = () => {
     <>
       <Header />
 
-      <div className="max-w-5xl items-center mx-auto p-8 gap-8 mt-24 mb-20">
-        <div className="mb-10">
-          <h2 className="text-xl font-semibold text-[#334862] mb-4">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-24 mb-20">
+        <div className="mb-8 sm:mb-10">
+          <h2 className="text-lg sm:text-xl font-semibold text-[#334862] mb-4">
             Search Notices
           </h2>
-          <div className="w-full mt-6 flex items-center justify-center bg-gray-200 bg-opacity-40 p-4 rounded-lg space-x-2">
+          <div className="w-full mt-4 sm:mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-center bg-gray-200 bg-opacity-40 p-3 sm:p-4 rounded-lg space-y-2 sm:space-y-0 sm:space-x-2">
             {/* Title or Keyword Input */}
             <div className="relative w-full">
               <i className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
@@ -200,7 +199,7 @@ const SearchNotices = () => {
 
             {/* Search Button */}
             <button
-              className="bg-[#004B80] text-white px-6 py-3 rounded-md shadow-md hover:bg-[#003B65] transition whitespace-nowrap"
+              className="w-full sm:w-auto bg-[#004B80] text-white px-6 py-3 rounded-md shadow-md hover:bg-[#003B65] transition whitespace-nowrap"
               onClick={handleSearch}
             >
               Search Notice
@@ -209,15 +208,15 @@ const SearchNotices = () => {
         </div>
 
         {/* Main Notices Section */}
-        <div className="max-w-5xl mx-auto p-8 gap-8 mt-10 mb-20">
-          <h2 className="text-4xl font-bold text-[#334862] mb-4">
+        <div className="w-full mx-auto">
+          <h2 className="text-2xl sm:text-4xl font-bold text-[#334862] mb-4">
             Search Result
           </h2>
 
-          {loading && <p>Loading notices...</p>}
-          {error && <p className="text-red-500">{error}</p>}
+          {loading && <p className="text-center">Loading notices...</p>}
+          {error && <p className="text-red-500 text-center">{error}</p>}
           {!loading && notices.length === 0 && (
-            <p className="text-gray-500">
+            <p className="text-gray-500 text-center">
               No notices found for your search criteria.
             </p>
           )}
@@ -226,13 +225,13 @@ const SearchNotices = () => {
             notices.map((notice) => (
               <div
                 key={notice.id}
-                className="bg-[#E7EBEE80] p-6 rounded-lg sm:mx-auto mb-6"
+                className="bg-[#E7EBEE80] p-4 sm:p-6 rounded-lg mx-auto mb-4 sm:mb-6"
               >
-                <h3 className="text-lg font-semibold text-[#334862] mb-2">
+                <h3 className="text-base sm:text-lg font-semibold text-[#334862] mb-2">
                   {notice.notice_title}
                 </h3>
-                <p className="text-sm text-gray-500 mb-4">{notice.location}</p>
-                <p className="text-gray-500">
+                <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">{notice.location}</p>
+                <p className="text-sm text-gray-500">
                   {notice.notice_description
                     ? notice.notice_description
                       .split(" ")
@@ -242,7 +241,7 @@ const SearchNotices = () => {
                 </p>
                 <Link
                   to={`/notices/${notice.id}`}
-                  className="text-[#A99067] font-semibold hover:underline mt-5"
+                  className="inline-block text-[#A99067] font-semibold hover:underline mt-3 sm:mt-5"
                 >
                   Read More...
                 </Link>

@@ -4,25 +4,22 @@ import { locations } from './locations';
 import { newspapers } from './newspapers';
 
 const SearchBar = ({ onSearch }) => {
-  // Search states
+  // State declarations remain the same
   const [keyword, setKeyword] = useState('');
   const [location, setLocation] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [layerName, setLayerName] = useState('');
   const [newspaperName, setNewspaperName] = useState('');
   const [date, setDate] = useState('');
-
-  // Dropdown states
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [isNewspaperDropdownOpen, setIsNewspaperDropdownOpen] = useState(false);
   const [filteredLocations, setFilteredLocations] = useState(locations);
   const [filteredNewspapers, setFilteredNewspapers] = useState(newspapers);
-
-  // Suggestions states
   const [suggestions, setSuggestions] = useState([]);
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Filter locations based on input
+  // All useEffects and handlers remain exactly the same
   useEffect(() => {
     setFilteredLocations(
       locations.filter(loc => 
@@ -31,7 +28,6 @@ const SearchBar = ({ onSearch }) => {
     );
   }, [location]);
 
-  // Filter newspapers based on input
   useEffect(() => {
     setFilteredNewspapers(
       newspapers.filter(paper => 
@@ -40,7 +36,6 @@ const SearchBar = ({ onSearch }) => {
     );
   }, [newspaperName]);
 
-  // Fetch suggestions
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
@@ -57,7 +52,6 @@ const SearchBar = ({ onSearch }) => {
     fetchSuggestions();
   }, []);
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest('.location-dropdown')) {
@@ -72,7 +66,16 @@ const SearchBar = ({ onSearch }) => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  // Filter suggestions based on keyword
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   useEffect(() => {
     if (keyword) {
       setFilteredSuggestions(
@@ -124,109 +127,121 @@ const SearchBar = ({ onSearch }) => {
     });
   };
 
+  // Updated input and icon styles
+  const iconStyle = "absolute top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5";
+  const inputStyle = "w-60 ml-5 sm:p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500 text-sm sm:text-base bg-transparent";
+
   return (
     <div className="max-w-[1200px] border border-white rounded-lg">
-      <div className="bg-white px-4 py-2 rounded-lg">
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Keyword Search */}
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-            <input
-              type="text"
-              placeholder="Title or keyword"
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
-            />
-            {filteredSuggestions.length > 0 && (
-              <ul className="absolute z-10 bg-white border border-gray-300 rounded-md w-full mt-1 max-h-40 overflow-y-auto">
-                {filteredSuggestions.map((suggestion) => (
-                  <li
-                    key={suggestion.id}
-                    className="text-black p-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => handleSuggestionClick(suggestion.notice_title)}
-                  >
-                    {suggestion.notice_title}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          
-          <div className="h-8 w-px mt-2 bg-gray-400"></div>
-          
-          {/* Location Dropdown */}
-          <div className="relative flex-1 location-dropdown">
-            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-            <input
-              type="text"
-              placeholder="Select Location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              onClick={() => setIsLocationDropdownOpen(true)}
-              className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
-            />
-            {isLocationDropdownOpen && filteredLocations.length > 0 && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                {filteredLocations.map((loc, index) => (
-                  <div
-                    key={index}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700"
-                    onClick={() => handleLocationSelect(loc)}
-                  >
-                    {loc}
-                  </div>
-                ))}
-              </div>
-            )}
+      <div className="bg-white px-3 sm:px-4 py-3 sm:py-2 rounded-lg">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+          {/* Main search section */}
+          <div className="flex flex-col md:flex-row gap-10 md:gap-6 flex-1">
+            {/* Keyword Search */}
+            <div className="relative flex-1">
+              <Search className={iconStyle} />
+              <input
+                type="text"
+                placeholder="Title or keyword"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                className={inputStyle}
+              />
+              {filteredSuggestions.length > 0 && (
+                <ul className="absolute z-10 bg-white border border-gray-300 rounded-md w-full mt-1 max-h-40 overflow-y-auto">
+                  {filteredSuggestions.map((suggestion) => (
+                    <li
+                      key={suggestion.id}
+                      className="text-black p-2 hover:bg-gray-100 cursor-pointer text-sm sm:text-base"
+                      onClick={() => handleSuggestionClick(suggestion.notice_title)}
+                    >
+                      {suggestion.notice_title}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Vertical divider - hidden on mobile */}
+            <div className="hidden md:block h-8 w-px bg-gray-400 self-center"></div>
+            
+            {/* Horizontal divider - shown only on mobile */}
+            <div className="block md:hidden h-px w-full bg-gray-400"></div>
+
+            {/* Location Dropdown */}
+            <div className="relative flex-1 location-dropdown">
+              <MapPin className={iconStyle} />
+              <input
+                type="text"
+                placeholder="Select Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                onClick={() => setIsLocationDropdownOpen(true)}
+                className={inputStyle}
+              />
+              {isLocationDropdownOpen && filteredLocations.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                  {filteredLocations.map((loc, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700 text-sm sm:text-base"
+                      onClick={() => handleLocationSelect(loc)}
+                    >
+                      {loc}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Search Button */}
-          <button
-            className="bg-[#004f8b] text-white px-6 py-3 rounded-sm shadow-md transition whitespace-nowrap"
-            onClick={handleSearch}
-          >
-            Search Notice
-          </button>
-          <button
-            className="text-[#004f8b] text-sm font-bold underline transition-colors"
-            onClick={() => setShowAdvanced(!showAdvanced)}
-          >
-            {showAdvanced ? 'Hide Advanced Search' : 'Advanced Search'}
-          </button>
+          {/* Buttons container */}
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+            <button
+              className="bg-[#004f8b] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-sm shadow-md transition whitespace-nowrap text-sm sm:text-base"
+              onClick={handleSearch}
+            >
+              Search Notice
+            </button>
+            <button
+              className="text-[#004f8b] text-sm font-bold underline transition-colors"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+            >
+              {showAdvanced ? 'Hide Advanced Search' : 'Advanced Search'}
+            </button>
+          </div>
         </div>
 
         {/* Advanced Search Fields */}
         {showAdvanced && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div className="relative">
-              <Layers className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Layers className={iconStyle} />
               <input
                 type="text"
                 placeholder="Layer Name"
                 value={layerName}
                 onChange={(e) => setLayerName(e.target.value)}
-                className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
+                className={inputStyle}
               />
             </div>
 
-            {/* Newspaper Dropdown */}
             <div className="relative newspaper-dropdown">
-              <Newspaper className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Newspaper className={iconStyle} />
               <input
                 type="text"
                 placeholder="Select Newspaper"
                 value={newspaperName}
                 onChange={(e) => setNewspaperName(e.target.value)}
                 onClick={() => setIsNewspaperDropdownOpen(true)}
-                className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
+                className={inputStyle}
               />
               {isNewspaperDropdownOpen && filteredNewspapers.length > 0 && (
                 <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
                   {filteredNewspapers.map((paper, index) => (
                     <div
                       key={index}
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700"
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700 text-sm sm:text-base"
                       onClick={() => handleNewspaperSelect(paper)}
                     >
                       {paper}
@@ -237,12 +252,12 @@ const SearchBar = ({ onSearch }) => {
             </div>
 
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Calendar className={iconStyle} />
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full pl-10 p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#A99067] placeholder-gray-500"
+                className={inputStyle}
               />
             </div>
           </div>

@@ -5,8 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Webheader from "../Notices/Webheader";
 import WebFooter from "../Notices/WebFooter";
 import Google from "../../assets/google.png";
-import Facebook from "../../assets/facebook.png"
-import coverImage from "../../assets/banner/groupdiscussion.jpg"
+import Facebook from "../../assets/facebook.png";
+import coverImage from "../../assets/banner/groupdiscussion.jpg";
 import Header from "../Home/HomeHeader";
 
 const Login = () => {
@@ -32,11 +32,8 @@ const Login = () => {
       const result = await response.json();
 
       if (response.ok) {
-        // Save token to local storage
         localStorage.setItem("authToken", result.token);
         toast.success("Login successful!");
-
-        // Navigate to home
         navigate("/home");
       } else {
         toast.error(result.message || "Login failed. Please try again.");
@@ -49,106 +46,123 @@ const Login = () => {
   };
 
   return (
-    <>
-      <Header/>
+    <div className="flex flex-col min-h-screen">
+      <Header />
       <ToastContainer />
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">
-          {/* Left Side - Image/Intro */}
-          <div
-            className="hidden md:block md:w-1/2 bg-cover bg-center"
-            style={{ backgroundImage: `url(${coverImage})` }}
-          >
-            <div className="h-full flex items-center justify-center bg-black bg-opacity-40 text-white p-8">
-              <div>
-                <h2 className="text-4xl font-bold mb-4">EERA Notices</h2>
+      
+      <main className="flex-grow bg-gray-100 px-4 py-8 sm:py-12">
+        <div className="container mx-auto max-w-5xl">
+          <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden bg-white">
+            {/* Left Side - Image/Intro */}
+            <div className="md:w-1/2 relative">
+              {/* Mobile view banner */}
+              <div className="md:hidden bg-[#004b80] text-white p-6 text-center">
+                <h2 className="text-2xl font-bold mb-2">EERA Notices</h2>
                 <p className="text-sm">All Your Essential Notices in One Place.</p>
               </div>
-            </div>
-          </div>
-
-          {/* Right Side - Form */}
-          <div className="bg-white md:w-1/2 p-8">
-            <h3 className="text-3xl font-bold text-gray-800 mb-6 text-center">Welcome Back!</h3>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleLogin();
-              }}
-              className="space-y-5"
-            >
-              <div>
-                <label htmlFor="email" className="text-sm font-semibold text-gray-600 block mb-2">
-                  Email Address
-                </label>
-                <input
-                  value={email}
-                  onChange={handleEmailChange}
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  placeholder="Enter your email"
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="text-sm font-semibold text-gray-600 block mb-2">
-                  Password
-                </label>
-                <input
-                  value={password}
-                  onChange={handlePasswordChange}
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  placeholder="Enter your password"
-                />
-              </div>
-              <div className="flex items-center justify-between text-sm text-gray-600">
-                <label className="flex items-center">
-                  <input type="checkbox" className="form-checkbox h-4 w-4 text-blue-600" />
-                  <span className="ml-2">Remember me</span>
-                </label>
-                {/* <a href="/forgot-password" className="text-blue-500 hover:underline">
-                  Forgot Password?
-                </a> */}
-              </div>
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-full py-3 rounded-lg text-white text-sm font-semibold transition ${loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
-                  }`}
+              
+              {/* Desktop view background image */}
+              <div
+                className="hidden md:block absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${coverImage})` }}
               >
-                {loading ? "Logging in..." : "Log In"}
-              </button>
-            </form>
-
-            <div className="mt-6 text-center text-sm text-gray-600">
-              <p>
-                Don’t have an account?{" "}
-                <a href="/register" className="text-blue-500 hover:underline font-semibold">
-                  Register here
-                </a>
-              </p>
+                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                  <div className="text-white p-8 text-center">
+                    <h2 className="text-4xl font-bold mb-4">EERA Notices</h2>
+                    <p className="text-sm">All Your Essential Notices in One Place.</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Social Media Login */}
-            <div className="flex items-center justify-center gap-4 mt-6">
-              <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
-                <img src={Google} alt="Google" className="h-5 w-5" />
-                Google
-              </button>
-              <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
-                <img src={Facebook} alt="Apple" className="h-5 w-5" />
-                Facebook
-              </button>
+            {/* Right Side - Form */}
+            <div className="md:w-1/2 p-6 sm:p-8">
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">
+                Welcome Back!
+              </h3>
+              
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleLogin();
+                }}
+                className="space-y-4 sm:space-y-5"
+              >
+                <div>
+                  <label className="text-sm font-semibold text-gray-600 block mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    value={email}
+                    onChange={handleEmailChange}
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="Enter your email"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-gray-600 block mb-2">
+                    Password
+                  </label>
+                  <input
+                    value={password}
+                    onChange={handlePasswordChange}
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="Enter your password"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600">
+                  <label className="flex items-center">
+                    <input type="checkbox" className="form-checkbox h-4 w-4 text-blue-600" />
+                    <span className="ml-2">Remember me</span>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-2.5 sm:py-3 rounded-lg text-white text-sm font-semibold transition ${
+                    loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
+                  }`}
+                >
+                  {loading ? "Logging in..." : "Log In"}
+                </button>
+              </form>
+
+              <div className="mt-6 text-center text-xs sm:text-sm text-gray-600">
+                <p>
+                  Don't have an account?{" "}
+                  <a href="/register" className="text-blue-500 hover:underline font-semibold">
+                    Register here
+                  </a>
+                </p>
+              </div>
+
+              {/* Social Media Login */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6">
+                <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md transition">
+                  <img src={Google} alt="Google" className="h-5 w-5" />
+                  <span>Google</span>
+                </button>
+                <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md transition">
+                  <img src={Facebook} alt="Facebook" className="h-5 w-5" />
+                  <span>Facebook</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
+      
       <WebFooter />
-    </>
+    </div>
   );
 };
 
