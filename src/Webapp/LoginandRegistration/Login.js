@@ -10,9 +10,9 @@ import coverImage from "../../assets/banner/groupdiscussion.jpg";
 import Header from "../Home/HomeHeader";
 
 const Login = () => {
-  const [identifier, setIdentifier] = useState(""); // Can be email or mobile number
+  const [identifier, setIdentifier] = useState(""); 
   const [password, setPassword] = useState("");
-  const [loginMethod, setLoginMethod] = useState("email"); // Default to email login
+  const [loginMethod, setLoginMethod] = useState("email"); 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 

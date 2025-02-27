@@ -64,7 +64,7 @@ const Register = () => {
         toast.success("Registration successful! Redirecting to login...", { autoClose: 3000 });
         setTimeout(() => {
           navigate("/login");
-        }, 3000); // Navigate to login page after 3 seconds
+        }, 3000); 
       } else {
         const error = await response.json();
         toast.error(`Registration failed: ${error.message || "Please try again"}`);
