@@ -90,7 +90,6 @@ const BannerSection = () => {
         <StickyNotice />
         <Aboutus />
         <Feature />
-        {/* <Latestnotics /> */}
         <LatestNotices/>
         <Weserve />
         <Faq />

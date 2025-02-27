@@ -39,8 +39,8 @@ const Webheader = () => {
       <header className="tracking-wide relative z-50">
         <section className="flex items-center justify-between py-3 lg:px-10 px-4 border-b bg-white lg:min-h-[80px] max-lg:min-h-[60px]">
           {/* Logo */}
-          <Link to="/home" className="shrink-0" onClick={scrollToTop}>
-            <img src={logo} alt="logo" className="w-10 sm:w-14" />
+          <Link to="/home2" className="shrink-0" onClick={scrollToTop}>
+            <img src={logo} alt="logo" className="w-15 sm:w-22" />
           </Link>
           <button onClick={toggleMenu} className="lg:hidden p-2">
             <svg
@@ -98,7 +98,7 @@ const Webheader = () => {
                 <div className="flex items-center gap-4" onClick={scrollToTop}>
                   <a
                     className="group relative inline-flex items-center overflow-hidden rounded bg-[#A99067] hover:bg-[#001A3B] hover:border-[#A99067] border hover:text-[#A99067] px-8 py-3 text-white"
-                    href="#"
+                    href="/login"
                   >
                     <span className="absolute -end-full transition-all group-hover:end-4">
                     <svg
@@ -123,7 +123,7 @@ const Webheader = () => {
                   </a>
                   <a
                     className="group relative inline-flex items-center overflow-hidden rounded bg-[#A99067] hover:bg-[#001A3B] hover:border-[#A99067] border hover:text-[#A99067] px-8 py-3 text-white"
-                    href="#"
+                    href="/register"
                   >
                     <span className="absolute -end-full transition-all group-hover:end-4">
                       <svg
@@ -193,7 +193,7 @@ const Webheader = () => {
                     <Link to="/login" className="bg-[#004B80] text-white px-4 py-2 rounded">
                       Login
                     </Link>
-                    <Link to="/signup" className="bg-[#004B80] text-white px-4 py-2 rounded">
+                    <Link to="/register" className="bg-[#004B80] text-white px-4 py-2 rounded">
                       Sign Up
                     </Link>
                   </>
