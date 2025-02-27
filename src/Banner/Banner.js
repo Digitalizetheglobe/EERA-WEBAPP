@@ -16,6 +16,7 @@ import NoticesSection from "../LandingPage/Noticecount";
 import StickyNotice from "../PostNoticesSticky/page";
 import Header from "../Header/Header2";
 import Aboutus from "../LandingPage/Aboutus2";
+import LatestNotices from "../LandingPage/Latestnotices2";
 
 const BannerSection = () => {
   return (
@@ -54,30 +55,30 @@ const BannerSection = () => {
 
               {/* Responsive Button Container */}
               <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                <Link
-                  to="/home2"
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded px-6 py-3 bg-[#A99067] text-[#001A3B] hover:bg-[#dfbc8c] transition-all duration-300 w-full sm:w-auto"
-                >
-                  <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-4">
-                    <svg
-                      className="h-5 w-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </span>
-                  <span className="text-base sm:text-lg font-bold group-hover:translate-x-[-1rem] transition-transform duration-300">
-                    Explore Notices
-                  </span>
-                </Link>
+              <Link
+  to="/home2"
+  className="group relative inline-flex items-center justify-center overflow-hidden rounded px-6 py-3 bg-[#A99067] text-[#001A3B] hover:bg-[#dfbc8c] transition-all duration-300 w-full sm:w-auto"
+>
+  <span className="absolute right-3 max-w-[30%] transition-transform duration-300 group-hover:translate-x-[50%] transform-origin-right">
+    <svg
+      className="h-5 w-5"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M17 8l4 4m0 0l-4 4m4-4H3"
+      />
+    </svg>
+  </span>
+  <span className="text-base sm:text-lg font-bold group-hover:translate-x-[-1rem] transition-transform duration-300 pr-8">
+    Explore Notices
+  </span>
+</Link>
               </div>
             </div>
           </div>
@@ -89,7 +90,8 @@ const BannerSection = () => {
         <StickyNotice />
         <Aboutus />
         <Feature />
-        <Latestnotics />
+        {/* <Latestnotics /> */}
+        <LatestNotices/>
         <Weserve />
         <Faq />
         <Testimonial />

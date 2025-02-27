@@ -20,6 +20,9 @@ import AllNotices from './AllNotices/Page.jsx';
 import PrivacyPolicy from './PrivacyPolicy/page.jsx';
 import ContactPage from './Contact/page.jsx';
 import Home2 from './Webapp/Home/Home.jsx';
+import Adv from './Webapp/Adv/Adv.jsx';
+import { Contact2 } from 'lucide-react';
+import HelpDeskContactPage from './Contact/page2.jsx';
 function App() {
   return (
     <Router>
@@ -43,6 +46,8 @@ function App() {
         <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
         <Route path='/contact' element={<ContactPage/>} />
         <Route path='/Home2' element={<Home2/>} />
+        <Route path='/Adv' element={<Adv/>} />
+        <Route path='/helpdesk' element={<HelpDeskContactPage/>} />
       </Routes>
     </Router>
 

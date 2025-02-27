@@ -14,7 +14,9 @@ const Header = () => {
         <div className="flex items-center justify-between w-full h-16">
           {/* Logo - Left */}
           <div className="flex-shrink-0">
+            <a href="/home2">
             <img src="/logo.svg" alt="EERA Logo" className="h-14 w-auto" />
+            </a>
           </div>
 
           {/* Navigation - Desktop */}

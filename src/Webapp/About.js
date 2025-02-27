@@ -3,17 +3,23 @@ import groupdiscussion from "../assets/banner/groupdiscussion.jpg";
 import Webheader from "./Notices/Webheader";
 import Header from "./Home/HomeHeader";
 import WebFooter from "./Notices/WebFooter";
+import Post from "./PostNotice/post";
 
 const About = () => {
   return (
     <>
       <Header />
-      <section className="flex mb-8 mt-2 px-4 md:px-6">
+      <section 
+        className="flex mb-8 mt-2 px-4 md:px-6"
+        style={{ 
+          fontFamily: "'PT Serif', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif" 
+        }}
+      >
         <div className="w-full max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
             {/* About Us Title and Get Started Button */}
             <div className="md:col-span-2 p-4">
-              <p className="text-[#001A3BCC] text-3xl md:text-4xl font-bold mb-2">
+              <p className="text-[#001A3BCC] text-4xl md:text-5xl font-bold mb-2">
                 About Us
               </p>
               <h2 className="text-lg md:text-xl text-[#001A3BCC] font-semibold mb-2">
@@ -23,7 +29,7 @@ const About = () => {
 
             {/* Introductory Text */}
             <div className="md:col-span-3 p-4 font-semibold text-[#001A3BCC] md:mt-12">
-              <p className="text-sm md:text-md">
+              <p className="text-md md:text-lg">
                 We are committed to fostering transparency, accountability, and informed citizenship across India. Our platform serves as a centralized hub for accessing a wide range of public notices, ensuring that vital information reaches every corner of our diverse nation.
               </p>
             </div>
@@ -39,7 +45,7 @@ const About = () => {
               <div className="absolute inset-0 bg-black opacity-50 rounded-lg"></div>
 
               <div className="absolute bottom-0 left-0 w-full p-4 rounded-b-lg text-white">
-                <h3 className="font-semibold text-2xl md:text-3xl mb-2 md:mb-4">
+                <h3 className="font-semibold text-3xl md:text-4xl mb-2 md:mb-4">
                   Our Story
                 </h3>
                 <p className="text-sm md:text-md mb-4 md:mb-6">
@@ -51,7 +57,7 @@ const About = () => {
             {/* Mission and Vision Cards Container */}
             <div className="md:col-span-2 grid grid-cols-1 gap-6">
               {/* Mission Card */}
-              <div className="bg-[#A9906766] p-4 rounded-lg transition-transform hover:scale-105 hover:shadow-lg">
+              <div className="bg-[#A9906766] p-4 rounded-lg transition-transform hover:scale-105 hover:shadow-lg my-4">
                 <h3 className="text-xl md:text-2xl font-semibold mb-3">
                   Our Mission
                 </h3>
@@ -61,7 +67,7 @@ const About = () => {
               </div>
 
               {/* Vision Card */}
-              <div className="bg-[#001A3B] p-4 rounded-lg text-white transition-transform hover:scale-105 hover:shadow-lg">
+              <div className="bg-[#001A3B] p-4 rounded-lg text-white transition-transform hover:scale-105 hover:shadow-lg my-4">
                 <h3 className="text-xl md:text-2xl font-semibold mb-3">
                   Our Vision
                 </h3>
@@ -73,7 +79,7 @@ const About = () => {
           </div>
         </div>
       </section>
-
+      <Post/>
       <WebFooter />
     </>
   );

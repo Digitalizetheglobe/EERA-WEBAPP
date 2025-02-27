@@ -13,12 +13,14 @@ const Header = () => {
     <header className="relative w-full">
       {/* Top border line */}
       <div className="h-0.5 bg-gray-600" />
-      
+
       <div className="bg-[#004B80] px-4 py-3 md:px-2">
         <div className="flex items-center justify-between h-16 w-full">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <img src="/logo.svg" alt="EERA Logo" className="h-12 w-auto" />
+            <a href="/home2">
+              <img src="/logo.svg" alt="EERA Logo" className="h-12 w-auto" />
+            </a>
           </div>
 
           {/* Hamburger Menu for Mobile */}
@@ -47,7 +49,7 @@ const Header = () => {
           {/* Auth Buttons - Desktop */}
           <div className="hidden md:flex space-x-4">
             <Link to="/register" className="px-3 py-1 text-white border rounded-md border-white hover:text-[#021A39] hover:bg-white transition text-lg">Sign Up</Link>
-            <Link to="/login" className="px-3 py-1 bg-white text-[#021A39] rounded-md hover:bg-[#021A39] hover:text-white border border-white transition text-lg">Log In</Link>
+            <Link to="/login" className="px-3 py-1 bg-white text-[#021A39] rounded-md hover:bg-[#004B80] hover:text-white border border-white transition text-lg">Log In</Link>
           </div>
         </div>
       </div>
