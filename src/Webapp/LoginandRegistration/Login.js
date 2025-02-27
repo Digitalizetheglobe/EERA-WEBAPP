@@ -29,15 +29,17 @@ const Login = () => {
         },
         body: JSON.stringify({ identifier, password }),
       });
-
+  
       const result = await response.json();
-
+  
       if (response.ok) {
-        localStorage.setItem("authToken", result.token);
+        localStorage.setItem("authToken", result.token); // Store the token
+        localStorage.setItem("user", JSON.stringify(result.user)); // Store user details (optional)
+        
         toast.success("Login successful!");
-        navigate("/home");
+        navigate("/home"); // Redirect after login
       } else {
-        toast.error(result.message || "Login failed. Please try again.");
+        toast.error(result.error || "Login failed. Please try again.");
       }
     } catch (error) {
       toast.error("An error occurred. Please check your connection.");
@@ -45,6 +47,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex flex-col min-h-screen">

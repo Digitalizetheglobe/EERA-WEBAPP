@@ -1,10 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Menu, X } from 'lucide-react';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profilePic, setProfilePic] = useState("/default-profile.png"); // Default profile picture
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (token) {
+      setIsLoggedIn(true);
+      if (user && user.profilePic) {
+        setProfilePic(user.profilePic); // Set profile pic from user data if available
+      }
+    }
+  }, []);
+
+  const handleProfileClick = () => {
+    navigate("/Adv");
+  };
 
   const isActive = (path) =>
     location.pathname === path ? "text-[#A99067] border-b-2 border-[#A99067] pb-1" : "text-white";
@@ -46,10 +65,25 @@ const Header = () => {
             <div className="w-[650px] h-[0.5px] bg-white mt-3" />
           </nav>
 
-          {/* Auth Buttons - Desktop */}
+          {/* Auth/Profile - Desktop */}
           <div className="hidden md:flex space-x-4">
-            <Link to="/register" className="px-3 py-1 text-white border rounded-md border-white hover:text-[#021A39] hover:bg-white transition text-lg">Sign Up</Link>
-            <Link to="/login" className="px-3 py-1 bg-white text-[#021A39] rounded-md hover:bg-[#004B80] hover:text-white border border-white transition text-lg">Log In</Link>
+            {isLoggedIn ? (
+              <img
+                src={profilePic}
+                alt="Profile"
+                className="h-10 w-10 rounded-full cursor-pointer border border-white"
+                onClick={handleProfileClick}
+              />
+            ) : (
+              <>
+                <Link to="/register" className="px-3 py-1 text-white border rounded-md border-white hover:text-[#021A39] hover:bg-white transition text-lg">
+                  Sign Up
+                </Link>
+                <Link to="/login" className="px-3 py-1 bg-white text-[#021A39] rounded-md hover:bg-[#004B80] hover:text-white border border-white transition text-lg">
+                  Log In
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -65,9 +99,28 @@ const Header = () => {
             <Search className="h-5 w-5 text-white mr-1" />
             Search
           </Link>
+          
           <div className="flex flex-col space-y-2">
-            <Link to="/register" className="px-4 py-2 text-white border rounded-md border-white hover:text-[#021A39] hover:bg-white transition text-lg" onClick={() => setMenuOpen(false)}>Sign Up</Link>
-            <Link to="/login" className="px-4 py-2 bg-white text-[#021A39] rounded-md hover:bg-[#021A39] hover:text-white border border-white transition text-lg" onClick={() => setMenuOpen(false)}>Log In</Link>
+            {isLoggedIn ? (
+              <img
+                src={profilePic}
+                alt="Profile"
+                className="h-10 w-10 rounded-full cursor-pointer border border-white"
+                onClick={() => {
+                  setMenuOpen(false);
+                  handleProfileClick();
+                }}
+              />
+            ) : (
+              <>
+                <Link to="/register" className="px-4 py-2 text-white border rounded-md border-white hover:text-[#021A39] hover:bg-white transition text-lg" onClick={() => setMenuOpen(false)}>
+                  Sign Up
+                </Link>
+                <Link to="/login" className="px-4 py-2 bg-white text-[#021A39] rounded-md hover:bg-[#021A39] hover:text-white border border-white transition text-lg" onClick={() => setMenuOpen(false)}>
+                  Log In
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

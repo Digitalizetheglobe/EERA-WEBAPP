@@ -10,7 +10,7 @@ function Badge({ children, className = "" }) {
   )
 }
 
-// Button Component
+// Button Component 
 function Button({ variant = "default", size = "default", children, className = "", ...props }) {
   const baseStyles =
     "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 disabled:pointer-events-none disabled:opacity-50"
@@ -102,8 +102,8 @@ export default function LibraryDashboard() {
   return (
     <div className="flex min-h-screen bg-purple-50">
       {/* Left Sidebar */}
-      <div className="w-64 bg-white p-6 flex flex-col h-screen sticky top-0">
-        {/* Brand Logo */}
+      {/* <div className="w-64 bg-white p-6 flex flex-col h-screen sticky top-0">
+        
         <div className="flex items-center gap-2 mb-10">
           <div className="h-8 w-8 bg-purple-500 rounded flex items-center justify-center">
             <BookOpen className="h-5 w-5 text-white" />
@@ -111,7 +111,6 @@ export default function LibraryDashboard() {
           <h1 className="text-xl font-bold">EERA</h1>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 space-y-1">
           <NavItem icon={Home} label="Home" />
           <NavItem icon={Users} label="Students" />
@@ -124,7 +123,6 @@ export default function LibraryDashboard() {
           <NavItem icon={AlertTriangle} label="Reports" />
         </nav>
 
-        {/* Upgrade Section */}
         <div className="mt-auto">
           <div className="bg-gray-100 p-4 rounded-lg text-center">
             <p className="text-sm text-gray-600 mb-2">Publish Your Own Notice Now!</p>
@@ -134,7 +132,7 @@ export default function LibraryDashboard() {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Content */}
       <div className="flex-1">
@@ -167,9 +165,6 @@ export default function LibraryDashboard() {
             <p className="text-purple-100 mb-6">
               The library serves as a welcoming home for knowledge seekers and avid readers alike
             </p>
-            <Button variant="ghost" className="bg-white text-purple-500 hover:bg-gray-100">
-              Learn more
-            </Button>
           </div>
         </section>
 
@@ -218,7 +213,9 @@ export default function LibraryDashboard() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Achievements */}
-            <Card>
+           
+           
+            {/* <Card>
               <CardContent>
                 <h2 className="text-xl font-bold mb-4">Unlocks achievement</h2>
                 <p className="text-sm text-gray-500 mb-4">Goal achieved success unlocked.</p>
@@ -245,7 +242,7 @@ export default function LibraryDashboard() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Best Sales */}
             <Card>
