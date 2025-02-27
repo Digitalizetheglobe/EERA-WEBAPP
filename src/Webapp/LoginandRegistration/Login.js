@@ -10,23 +10,24 @@ import coverImage from "../../assets/banner/groupdiscussion.jpg";
 import Header from "../Home/HomeHeader";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState(""); // Can be email or mobile number
   const [password, setPassword] = useState("");
+  const [loginMethod, setLoginMethod] = useState("email"); // Default to email login
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handleIdentifierChange = (e) => setIdentifier(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await fetch("https://api.epublicnotices.in/api/webapp/login", {
+      const response = await fetch("http://localhost:8000/api/webuser/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ identifier, password }),
       });
 
       const result = await response.json();
@@ -81,6 +82,26 @@ const Login = () => {
                 Welcome Back!
               </h3>
               
+              {/* Login Method Toggle */}
+              <div className="flex justify-center gap-4 mb-6">
+                <button
+                  onClick={() => setLoginMethod("email")}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold ${
+                    loginMethod === "email" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+                  }`}
+                >
+                  Login with Email
+                </button>
+                <button
+                  onClick={() => setLoginMethod("mobile")}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold ${
+                    loginMethod === "mobile" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+                  }`}
+                >
+                  Login with Mobile
+                </button>
+              </div>
+
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -90,16 +111,18 @@ const Login = () => {
               >
                 <div>
                   <label className="text-sm font-semibold text-gray-600 block mb-2">
-                    Email Address
+                    {loginMethod === "email" ? "Email Address" : "Mobile Number"}
                   </label>
                   <input
-                    value={email}
-                    onChange={handleEmailChange}
-                    type="email"
-                    autoComplete="email"
+                    value={identifier}
+                    onChange={handleIdentifierChange}
+                    type={loginMethod === "email" ? "email" : "text"}
+                    autoComplete={loginMethod === "email" ? "email" : "tel"}
                     required
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Enter your email"
+                    placeholder={
+                      loginMethod === "email" ? "Enter your email" : "Enter your mobile number"
+                    }
                   />
                 </div>
 

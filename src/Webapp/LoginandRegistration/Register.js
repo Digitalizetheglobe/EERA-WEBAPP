@@ -21,7 +21,6 @@ const Register = () => {
     uinNumber: "",
   });
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -34,34 +33,38 @@ const Register = () => {
   const handleSignUp = async () => {
     setLoading(true);
 
-    let apiUrl;
-    switch (userType) {
-      case "personal":
-        apiUrl = "https://api.example1.com/register";
-        break;
-      case "corporate":
-        apiUrl = "https://api.example2.com/register";
-        break;
-      case "government":
-        apiUrl = "https://api.example3.com/register";
-        break;
-      default:
-        toast.error("Invalid user type selected.");
-        setLoading(false);
-        return;
+    const apiUrl = "http://localhost:8000/api/webuser/register";
+
+    // Prepare request payload based on userType
+    const userPayload = {
+      name: formData.name,
+      phone: formData.number,
+      email: formData.email,
+      location: formData.location,
+      password: formData.password,
+      userType,
+    };
+
+    if (userType === "corporate") {
+      userPayload.companyName = formData.companyName;
+      userPayload.uinNumber = formData.uinNumber;
+    } else if (userType === "government") {
+      userPayload.department = formData.department;
     }
 
     try {
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, userType }),
+        body: JSON.stringify(userPayload),
       });
 
       if (response.ok) {
         const data = await response.json();
-        toast.success("Registration successful!", { autoClose: 3000 });
-        setShowModal(true);
+        toast.success("Registration successful! Redirecting to login...", { autoClose: 3000 });
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000); // Navigate to login page after 3 seconds
       } else {
         const error = await response.json();
         toast.error(`Registration failed: ${error.message || "Please try again"}`);
@@ -73,17 +76,12 @@ const Register = () => {
     }
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    navigate("/login");
-  };
-
   return (
     <>
       <Header />
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">
-          {/* Cover Image Section - Hidden on mobile, visible on md and up */}
+          {/* Cover Image Section */}
           <div className="hidden md:block md:w-1/2 bg-cover bg-center relative">
             <div
               className="absolute inset-0 bg-cover bg-center"
@@ -234,43 +232,14 @@ const Register = () => {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full shadow-xl py-2 md:py-2.5 px-4 text-sm font-semibold rounded text-white mt-4 ${
-                  loading ? "bg-blue-400" : "bg-[#001A3B] hover:bg-[#1A3B5C]"
-                }`}
+                className="w-full py-2 text-sm font-semibold rounded text-white bg-[#001A3B] hover:bg-[#1A3B5C] mt-4"
               >
                 {loading ? "Signing up..." : "Sign Up"}
               </button>
             </form>
-
-            {/* Login Link */}
-            <div className="mt-4 md:mt-6 text-center text-sm text-gray-600">
-              <p>
-                Already have an account?{" "}
-                <a
-                  href="/Login"
-                  className="text-blue-500 hover:underline font-semibold"
-                  onClick={closeModal}
-                >
-                  Login here
-                </a>
-              </p>
-            </div>
-
-            {/* Social Login Buttons */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 mt-4 md:mt-6">
-              <button className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
-                <img src={Google} alt="Google" className="h-5 w-5" />
-                Google
-              </button>
-              <button className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md">
-                <img src={Facebook} alt="Facebook" className="h-5 w-5" />
-                Facebook
-              </button>
-            </div>
           </div>
         </div>
       </div>
