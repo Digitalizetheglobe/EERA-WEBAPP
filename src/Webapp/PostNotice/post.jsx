@@ -28,12 +28,14 @@ const Post = () => {
                             <img src="/curvearrow.png" alt="Post Notices" className="w-60 -rotate-[0.6rad]" />
                         </div>
                     </div>
+                    <a href="/post-notices">
                         <button
                             className="px-6 py-3 mt-15 rounded-full text-[#004b80] font-bold transition-transform hover:scale-105"
                             style={{ backgroundColor: 'white' }}
                         >
                             Post Now
                         </button>
+                        </a>
                     
                 </div>
             </div>
