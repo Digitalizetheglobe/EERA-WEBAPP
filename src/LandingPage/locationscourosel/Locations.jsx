@@ -3,6 +3,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 const LocationsCarousel = () => {
   const [locations, setLocations] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);

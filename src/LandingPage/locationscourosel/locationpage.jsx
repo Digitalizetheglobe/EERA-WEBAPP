@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FiArrowLeft, FiMapPin, FiCalendar } from "react-icons/fi";
 import defaultImage from "../../assets/banner/latestnotics1.png";
+import Header from "../../Webapp/Home/HomeHeader";
 
 const LocationNotices = () => {
   const { location } = useParams();
@@ -73,6 +74,8 @@ const LocationNotices = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="bg-gray-50 min-h-screen">
       {/* Header Section */}
       <div className="bg-[#001A3B] text-white py-8 px-4 sm:px-6 lg:px-8">
@@ -179,6 +182,7 @@ const LocationNotices = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

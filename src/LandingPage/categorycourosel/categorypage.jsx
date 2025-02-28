@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FiArrowLeft, FiTag, FiCalendar, FiUser } from "react-icons/fi";
 import defaultImage from "../../assets/banner/latestnotics1.png";
+import Header from "../../Webapp/Home/HomeHeader";
 
 const CategoryNotices = () => {
   const { category } = useParams();
@@ -62,8 +63,12 @@ const CategoryNotices = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="bg-gray-50 min-h-screen">
+        
       <div className="bg-[#001A3B] text-white py-8 px-4 sm:px-6 lg:px-8">
+        
         <div className="container mx-auto">
           <button onClick={() => navigate(-1)} className="flex items-center text-sm font-medium mb-4 hover:text-[#A99067] transition-colors">
             <FiArrowLeft className="mr-2" /> Back
@@ -132,6 +137,7 @@ const CategoryNotices = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
