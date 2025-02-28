@@ -25,8 +25,8 @@ function Avatar({ fallback, className = "" }) {
 
 export default function LibraryDashboard() {
   const [user, setUser] = useState(null);
-  const [savedNotices, setSavedNotices] = useState([]); 
-  const [downloadedNotices, setDownloadedNotices] = useState([]); 
+  const [savedNotices, setSavedNotices] = useState([]);
+  const [downloadedNotices, setDownloadedNotices] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -44,9 +44,9 @@ export default function LibraryDashboard() {
         console.log("Fetched User Data:", response.data);
 
         if (response.data && response.data.user) {
-          setUser(response.data.user); 
-          setSavedNotices(response.data.savedNotices || []); 
-          setDownloadedNotices(response.data.downloadedNotices || []); 
+          setUser(response.data.user);
+          setSavedNotices(response.data.savedNotices || []);
+          setDownloadedNotices(response.data.downloadedNotices || []);
         } else {
           console.error("Invalid API response format");
         }
@@ -72,12 +72,13 @@ export default function LibraryDashboard() {
         </header>
 
         {/* Hero Section */}
-        <section className="bg-purple-500 text-white p-12 rounded-3xl mx-4 mt-4 relative overflow-hidden">
+        <section className="bg-[#E4ECFB] text-white p-12 rounded-3xl mx-4 mt-4 relative overflow-hidden">
           <div className="max-w-2xl">
-            <h1 className="text-4xl font-bold mb-4">Hi, {user?.name || "Loading..."}</h1>
-            <p className="text-purple-100 mb-6">
-              The library serves as a welcoming home for knowledge seekers and avid readers alike.
+            <h1 className="text-4xl text-black font-bold mb-4">Hi, {user?.name || "Loading..."}</h1>
+            <p className="text-gray-500 mb-6">
+              The EERA dashboard helps you manage public notices efficiently. You can save and download notices, track your saved notices, and even post new ones as per your rights. Stay organized and in control with EERA.
             </p>
+
           </div>
         </section>
 
