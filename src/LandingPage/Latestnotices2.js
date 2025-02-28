@@ -29,7 +29,7 @@ const LatestNotices = () => {
                 const sortedNotices = response.data.sort(
                     (a, b) => new Date(b.date) - new Date(a.date)
                 );
-                setNotices(sortedNotices.slice(0, 6));
+                setNotices(sortedNotices.slice(0, 8)); // Increased to 8 to have enough cards
             } catch (error) {
                 console.error("Error fetching notices:", error);
             }
@@ -38,8 +38,8 @@ const LatestNotices = () => {
         fetchNotices();
     }, []);
 
-    // Responsive cards per slide
-    const cardsPerSlide = isMobile ? 1 : 3;
+    // Responsive cards per slide - changed from 3 to 4 for desktop
+    const cardsPerSlide = isMobile ? 1 : 4;
     const totalSlides = Math.ceil(notices.length / cardsPerSlide);
 
     const handleNext = () => {
@@ -55,7 +55,7 @@ const LatestNotices = () => {
     };
 
     // Fixed height based on device
-    const cardHeight = isMobile ? "400px" : "500px";
+    const cardHeight = isMobile ? "400px" : "400px";
 
     // Calculate the correct slide percentage
     const calculateSlideTransform = () => {
@@ -81,8 +81,9 @@ const LatestNotices = () => {
                 <button
                     onClick={handlePrev}
                     disabled={currentSlide === 0}
-                    className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full shadow transition-opacity hover:bg-gray-50 ${currentSlide === 0 ? "opacity-50 cursor-not-allowed" : "hover:opacity-80"
-                        }`}
+                    className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full shadow transition-opacity hover:bg-gray-50 ${
+                        currentSlide === 0 ? "opacity-50 cursor-not-allowed" : "hover:opacity-80"
+                    }`}
                     aria-label="Previous slide"
                 >
                     <FiChevronLeft className="text-[#A99067] text-xl sm:text-2xl" />
@@ -90,8 +91,9 @@ const LatestNotices = () => {
                 <button
                     onClick={handleNext}
                     disabled={currentSlide === totalSlides - 1}
-                    className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full shadow transition-opacity hover:bg-gray-50 ${currentSlide === totalSlides - 1 ? "opacity-50 cursor-not-allowed" : "hover:opacity-80"
-                        }`}
+                    className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full shadow transition-opacity hover:bg-gray-50 ${
+                        currentSlide === totalSlides - 1 ? "opacity-50 cursor-not-allowed" : "hover:opacity-80"
+                    }`}
                     aria-label="Next slide"
                 >
                     <FiChevronRight className="text-[#A99067] text-xl sm:text-2xl" />
@@ -104,13 +106,13 @@ const LatestNotices = () => {
                     className="flex transition-transform duration-500 ease-in-out"
                     style={{
                         transform: `translateX(-${calculateSlideTransform()}%)`,
-                        width: isMobile ? '600%' : '200%' // Adjust width based on device
+                        width: isMobile ? '800%' : '200%' // Adjusted for 8 cards total
                     }}
                 >
                     {notices.map((notice, index) => (
                         <div
                             key={index}
-                            style={{ width: isMobile ? '16.666%' : '16.666%' }}
+                            style={{ width: isMobile ? '12.5%' : '12.5%' }} // Adjusted for 4 cards (100% ÷ 8 = 12.5%)
                             className="px-2"
                         >
                             <Link to={`/notices/${notice.id}`} className="block">

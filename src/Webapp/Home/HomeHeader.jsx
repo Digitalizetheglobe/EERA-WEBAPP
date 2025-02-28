@@ -37,7 +37,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 w-full">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/home2">
+            <a href="/home">
               <img src="/logo.svg" alt="EERA Logo" className="h-12 w-auto" />
             </a>
           </div>
@@ -53,7 +53,7 @@ const Header = () => {
           <nav className="hidden md:flex flex-col items-center justify-center px-3 flex-grow">
             <div className="w-[650px] h-[0.5px] bg-white mb-3" />
             <div className="flex items-center justify-center space-x-10">
-              <Link to="/home2" className={`font-semibold text-lg ${isActive('/home2')}`}>Home</Link>
+              <Link to="/home" className={`font-semibold text-lg ${isActive('/home')}`}>Home</Link>
               <Link to="/about" className={`font-semibold text-lg ${isActive('/about')}`}>About</Link>
               <Link to="/all-notices" className={`font-semibold text-lg ${isActive('/all-notices')}`}>All Notices</Link>
               <Link to="/contact" className={`font-semibold text-lg ${isActive('/contact')}`}>Contact</Link>
@@ -91,7 +91,7 @@ const Header = () => {
       {/* Mobile Navigation */}
       {menuOpen && (
         <div className="md:hidden bg-[#004B80] flex flex-col items-center space-y-4 py-4">
-          <Link to="/home2" className={`text-lg ${isActive('/home2')}`} onClick={() => setMenuOpen(false)}>Home</Link>
+          <Link to="/home" className={`text-lg ${isActive('/home')}`} onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/about" className={`text-lg ${isActive('/about')}`} onClick={() => setMenuOpen(false)}>About</Link>
           <Link to="/all-notices" className={`text-lg ${isActive('/all-notices')}`} onClick={() => setMenuOpen(false)}>All Notices</Link>
           <Link to="/contact" className={`text-lg ${isActive('/contact')}`} onClick={() => setMenuOpen(false)}>Contact</Link>

@@ -39,7 +39,7 @@ const Webheader = () => {
       <header className="tracking-wide relative z-50">
         <section className="flex items-center justify-between py-3 lg:px-10 px-4 border-b bg-white lg:min-h-[80px] max-lg:min-h-[60px]">
           {/* Logo */}
-          <Link to="/home2" className="shrink-0" onClick={scrollToTop}>
+          <Link to="/home" className="shrink-0" onClick={scrollToTop}>
             <img src={logo} alt="logo" className="w-15 sm:w-22" />
           </Link>
           <button onClick={toggleMenu} className="lg:hidden p-2">

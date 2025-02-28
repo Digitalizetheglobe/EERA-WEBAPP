@@ -89,6 +89,7 @@ const Notice = () => {
       });
     }
   };
+  const cardHeight = isMobile ? "400px" : "400px";
   const calculateSlideTransform = () => {
     if (isMobile) {
         // For mobile, slide 100% each time

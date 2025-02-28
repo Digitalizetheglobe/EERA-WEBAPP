@@ -40,26 +40,77 @@ const ChatIcon = () => (
     </svg>
 );
 
+const MessageIcon = () => (
+    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+    </svg>
+);
 
-
+const UserIcon = () => (
+    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+);
 
 const HelpDeskContactPage = () => {
     const [openIndex, setOpenIndex] = useState(0);
     const toggleFAQ = (index) => {
         setOpenIndex(openIndex === index ? null : index);
     };
+
+    // Form state
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+        department: 'general'
+    });
+
+    const [formSubmitted, setFormSubmitted] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Form submission logic would go here
+        console.log("Form data:", formData);
+        setFormSubmitted(true);
+
+        // Reset form after 3 seconds
+        setTimeout(() => {
+            setFormSubmitted(false);
+            setFormData({
+                name: '',
+                email: '',
+                phone: '',
+                subject: '',
+                message: '',
+                department: 'general'
+            });
+        }, 3000);
+    };
+
     return (
         <div className="min-h-screen bg-[#e3ecfb] text-[#004b80]">
             <Header />
             {/* Header */}
             <div className=" py-6 px-4 text-center ">
-                <h1 className="text-6xl font-bold">Help Desk</h1>
+                <h1 className="text-6xl font-bold">Contact Us</h1>
                 <p className="mt-2">We're here to assist you!</p>
             </div>
 
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-4 py-8 md:px-8">
-                <h2 className="text-3xl font-bold pb-2 border-b-4 border-[#b8d7f4] inline-block">Contact Us</h2>
+                <h2 className="text-3xl font-bold pb-2 border-b-4 border-[#b8d7f4] inline-block">Help Desk</h2>
 
                 {/* Contact Info and Map Section */}
                 <div className="flex flex-col lg:flex-row gap-8 mt-8">
@@ -75,8 +126,7 @@ const HelpDeskContactPage = () => {
                             </h3>
                             <p className="ml-8 text-gray-700 leading-relaxed">
                                 Kohinoor World Tower, <br />
-                                Pune, Maharashtra<br />
-                                411018
+                                Pune, Maharashtra, 411018<br />
                             </p>
                         </div>
 
@@ -106,8 +156,6 @@ const HelpDeskContactPage = () => {
                                 Call Us
                             </h3>
                             <p className="ml-8 text-gray-700">+91 7391092093</p>
-                            <p className="ml-8 text-gray-700">+91 7391092093</p>
-                            <p className="ml-8 text-gray-700">+91 7391092093</p>
                         </div>
 
                         {/* Hours Section */}
@@ -124,24 +172,173 @@ const HelpDeskContactPage = () => {
                         </div>
                     </div>
 
-                    {/* Map Container */}
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-lg lg:w-2/3 h-full min-h-96">
-                        {/* Placeholder for map - in a real app, you would use a map component here */}
-                        <div className="w-full h-full min-h-96 bg-gray-200 flex items-center justify-center">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3780.650343622792!2d73.79664587519447!3d18.6347903824811!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b92d986822d9%3A0x13b0437cbf911d4a!2sKohinoor%20World%20Towers!5e0!3m2!1sen!2sin!4v1739359789161!5m2!1sen!2sin&z=15"
-                                width="100%"
-                                height="350"
-                                style={{ border: 0 }}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                            ></iframe>
+                    {/* Contact Form Section - MOVED HERE FROM BELOW */}
+                    <div className="lg:w-2/3">
+                        <h2 className="text-3xl font-bold pb-2 border-b-4 border-[#b8d7f4] inline-block mb-6">
+                            Send Us a Message
+                        </h2>
+
+                        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg">
+                            {formSubmitted ? (
+                                <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 text-center">
+                                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-xl font-bold text-green-800 mb-2">Message Sent Successfully!</h3>
+                                    <p className="text-green-700">Thank you for reaching out. Our team will get back to you shortly.</p>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleSubmit} className="space-y-6">
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        {/* Left column */}
+                                        <div className="space-y-6">
+                                            {/* Name field */}
+                                            <div>
+                                                <label htmlFor="name" className="flex items-center text-base font-medium text-[#001A3B] mb-2">
+                                                    <UserIcon />
+                                                    Your Name
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    name="name"
+                                                    value={formData.name}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#b8d7f4] focus:border-[#004b80] transition-colors"
+                                                    placeholder="John Doe"
+                                                />
+                                            </div>
+
+                                            {/* Email field */}
+                                            <div>
+                                                <label htmlFor="email" className="flex items-center text-base font-medium text-[#001A3B] mb-2">
+                                                    <EmailIcon />
+                                                    Your Email
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#b8d7f4] focus:border-[#004b80] transition-colors"
+                                                    placeholder="john.doe@example.com"
+                                                />
+                                            </div>
+
+                                            {/* Phone field */}
+                                            <div>
+                                                <label htmlFor="phone" className="flex items-center text-base font-medium text-[#001A3B] mb-2">
+                                                    <PhoneIcon />
+                                                    Phone Number
+                                                </label>
+                                                <input
+                                                    type="tel"
+                                                    id="phone"
+                                                    name="phone"
+                                                    value={formData.phone}
+                                                    onChange={handleChange}
+                                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#b8d7f4] focus:border-[#004b80] transition-colors"
+                                                    placeholder="+91 1234567890"
+                                                />
+                                            </div>
+
+                                            {/* Department field */}
+                                            <div>
+                                                <label htmlFor="department" className="flex items-center text-base font-medium text-[#001A3B] mb-2">
+                                                    Department
+                                                </label>
+                                                <select
+                                                    id="department"
+                                                    name="department"
+                                                    value={formData.department}
+                                                    onChange={handleChange}
+                                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#b8d7f4] focus:border-[#004b80] transition-colors"
+                                                >
+                                                    <option value="general">General Inquiry</option>
+                                                    <option value="technical">Technical Support</option>
+                                                    <option value="billing">Billing & Payments</option>
+                                                    <option value="notices">Notice Publishing</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {/* Right column */}
+                                        <div className="space-y-6">
+                                            {/* Subject field */}
+                                            <div>
+                                                <label htmlFor="subject" className="flex items-center text-base font-medium text-[#001A3B] mb-2">
+                                                    Subject
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="subject"
+                                                    name="subject"
+                                                    value={formData.subject}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#b8d7f4] focus:border-[#004b80] transition-colors"
+                                                    placeholder="How can we help you?"
+                                                />
+                                            </div>
+
+                                            {/* Message field */}
+                                            <div>
+                                                <label htmlFor="message" className="flex items-center text-base font-medium text-[#001A3B] mb-2">
+                                                    <MessageIcon />
+                                                    Your Message
+                                                </label>
+                                                <textarea
+                                                    id="message"
+                                                    name="message"
+                                                    rows="9"
+                                                    value={formData.message}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#b8d7f4] focus:border-[#004b80] transition-colors resize-none"
+                                                    placeholder="Please describe your inquiry in detail..."
+                                                ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Submit button */}
+                                    <div className="flex justify-end">
+                                        <button
+                                            type="submit"
+                                            className="px-8 py-3 bg-[#004b80] text-white font-semibold rounded-lg shadow-md hover:bg-[#003b66] transform transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#b8d7f4] focus:ring-opacity-50"
+                                        >
+                                            Send Message
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
                         </div>
                     </div>
                 </div>
-                
-                {/* FAQ Section - Now placed below the map and contact info */}
+
+                {/* Map Section - MOVED HERE FROM ABOVE */}
+                <div className="mt-12">
+                    <h2 className="text-3xl font-bold pb-2 border-b-4 border-[#b8d7f4] inline-block mb-6">Our Location</h2>
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-lg h-full min-h-96">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3780.650343622792!2d73.79664587519447!3d18.6347903824811!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b92d986822d9%3A0x13b0437cbf911d4a!2sKohinoor%20World%20Towers!5e0!3m2!1sen!2sin!4v1739359789161!5m2!1sen!2sin&z=15"
+                            width="100%"
+                            height="400"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </div>
+                </div>
+
+                {/* FAQ Section */}
                 <div className="mt-12">
                     <h2 className="text-3xl font-bold pb-2 border-b-4 border-[#b8d7f4] inline-block mb-6">Frequently Asked Questions</h2>
                     <div className="bg-white rounded-2xl p-6 shadow-lg">
@@ -240,46 +437,9 @@ const HelpDeskContactPage = () => {
                         </div>
                     </div>
                 </div>
-
-
-                
-                <div className="grid md:grid-cols-3 gap-6 mt-12">
-                    {/* Technical Support Card */}
-                    {/* <div className="bg-[#b8d7f4] rounded-xl p-6 text-center shadow-md transition-all duration-300 hover:scale-103 hover:bg-[#004b80] hover:text-white">
-                        <h3 className="text-xl font-bold mb-4">Technical Support</h3>
-                        <p className="mb-4">Get help with product issues and technical difficulties</p>
-                        <a href="#" className="inline-block px-4 py-2 bg-white text-[#004b80] font-semibold rounded hover:bg-[#e3ecfb] transition-colors">
-                            Get Help
-                        </a>
-                    </div> */}
-
-                    {/* Billing Inquiries Card */}
-                    {/* <div className="bg-[#b8d7f4] rounded-xl p-6 text-center shadow-md transition-all duration-300 hover:scale-103 hover:bg-[#004b80] hover:text-white">
-                        <h3 className="text-xl font-bold mb-4">Billing Inquiries</h3>
-                        <p className="mb-4">Questions about your invoice or payment options</p>
-                        <a href="#" className="inline-block px-4 py-2 bg-white text-[#004b80] font-semibold rounded hover:bg-[#e3ecfb] transition-colors">
-                            Inquire Now
-                        </a>
-                    </div> */}
-
-                    {/* General Information Card */}
-                    {/* <div className="bg-[#b8d7f4] rounded-xl p-6 text-center shadow-md transition-all duration-300 hover:scale-103 hover:bg-[#004b80] hover:text-white">
-                        <h3 className="text-xl font-bold mb-4">General Information</h3>
-                        <p className="mb-4">Learn more about our services and offerings</p>
-                        <a href="#" className="inline-block px-4 py-2 bg-white text-[#004b80] font-semibold rounded hover:bg-[#e3ecfb] transition-colors">
-                            Learn More
-                        </a>
-                    </div> */}
-                </div>
             </div>
-
-            {/* Floating Chat Button */}
-            {/* <div className="fixed bottom-8 right-8 w-16 h-16 bg-[#004b80] rounded-full flex justify-center items-center text-white shadow-lg cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-blue-700">
-                <ChatIcon />
-            </div> */}
             <Footer />
         </div>
-
     );
 };
 

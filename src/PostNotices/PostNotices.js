@@ -144,7 +144,7 @@ const PostNotices = () => {
             <div>
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-5 group">
-                <input
+                  <input
                     type="text"
                     name="name"
                     value={formData.name}
@@ -161,7 +161,7 @@ const PostNotices = () => {
                   </label>
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
-                <input
+                  <input
                     type="email"
                     name="email"
                     value={formData.email}
@@ -196,17 +196,36 @@ const PostNotices = () => {
                     Phone Number
                   </label>
                 </div>
-                <input
-                  type="text"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300"
-                  placeholder="City"
-                  required
-                />
+                <div className="relative z-0 w-full mb-5 group">
+                  <input
 
-                <div class="relative z-0 w-full mb-5 group">
+                    type="text"
+
+                    name="city"
+
+                    value={formData.city}
+
+                    onChange={handleInputChange}
+
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+
+                    placeholder="City"
+
+                    required
+
+                  />
+                  <label
+                    for="floating_first_name"
+                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    
+                  </label>
+                </div>
+
+
+              </div>
+              <div className="grid md:grid-cols md:gap-6">
+                <div class="relative z-0 w-full  group">
                   <input
                     type="text"
                     name="location"
@@ -223,8 +242,6 @@ const PostNotices = () => {
                     Location
                   </label>
                 </div>
-              </div>
-              <div className="grid md:grid-cols md:gap-6">
                 <div className="relative z-0 w-full mb-5 group">
                   <input
                     name="description"
@@ -310,37 +327,37 @@ const PostNotices = () => {
       )}
       {/* Login Modal */}
       {isLoginModalOpen && (
-         <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
-         <div className="bg-white p-8 rounded-md w-96 shadow-lg">
-           {/* GIF Display */}
-           <div className="flex justify-center mb-4">
-             <img src={Warn} alt="Warning" className="w-20 h-20" />
-           </div>
-     
-           {/* Heading */}
-           <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
-             Login Required
-           </h2>
-     
-           {/* Description */}
-           <p className="text-center text-gray-600">
-             Sorry, you need to log in first to use this feature.
-           </p>
-     
-           {/* Button */}
-           <div className="mt-6 flex justify-center">
-             <button
-               className="bg-[#A99067] hover:bg-[#8a7c5b] text-white px-6 py-2 rounded-md transition duration-300"
-               onClick={() => {
-                 setIsLoginModalOpen(false);
-                 navigate("/login");
-               }}
-             >
-               Login
-             </button>
-           </div>
-         </div>
-       </div>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-md w-96 shadow-lg">
+            {/* GIF Display */}
+            <div className="flex justify-center mb-4">
+              <img src={Warn} alt="Warning" className="w-20 h-20" />
+            </div>
+
+            {/* Heading */}
+            <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
+              Login Required
+            </h2>
+
+            {/* Description */}
+            <p className="text-center text-gray-600">
+              Sorry, you need to log in first to use this feature.
+            </p>
+
+            {/* Button */}
+            <div className="mt-6 flex justify-center">
+              <button
+                className="bg-[#A99067] hover:bg-[#8a7c5b] text-white px-6 py-2 rounded-md transition duration-300"
+                onClick={() => {
+                  setIsLoginModalOpen(false);
+                  navigate("/login");
+                }}
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
       )}
       <WebFooter />
     </>

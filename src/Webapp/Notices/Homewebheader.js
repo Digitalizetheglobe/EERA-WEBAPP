@@ -33,7 +33,7 @@ const Homeheader = () => {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 tracking-wide bg-opacity-80 bg-[#001A3BCC] py-3 lg:px-10 px-7 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/home2" className="shrink-0">
+        <Link to="/home" className="shrink-0">
           <img src={logo} alt="logo" className="w-10 sm:w-14" />
         </Link>
 

@@ -21,8 +21,9 @@ import PrivacyPolicy from './PrivacyPolicy/page.jsx';
 import ContactPage from './Contact/page.jsx';
 import Home2 from './Webapp/Home/Home.jsx';
 import Adv from './Webapp/Adv/Adv.jsx';
-import { Contact2 } from 'lucide-react';
 import HelpDeskContactPage from './Contact/page2.jsx';
+import LocationNotices from './LandingPage/locationscourosel/locationpage.jsx';
+import CategoryNotices from './LandingPage/categorycourosel/categorypage.jsx';
 function App() {
   return (
     <Router>
@@ -31,7 +32,7 @@ function App() {
         <Route path='/header' element={<Header />} />
         <Route path='/webheader' element={<Webheader />} />
         <Route path='/homwebheader' element={<Homeheader />} />
-        <Route path='/home' element={<Home />} />
+        {/* <Route path='/home' element={<Home />} /> */}
         <Route path='/about' element={<About />} />
         <Route path='/login-modal' element={<LoginModal />} />
         <Route path='/OtpDialog' element={<OtpDialog />} />
@@ -44,10 +45,12 @@ function App() {
         <Route path='/Register' element={<Register/>} />
         <Route path='/all-notices' element={<AllNotices/>} />
         <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
-        <Route path='/contact' element={<ContactPage/>} />
-        <Route path='/Home2' element={<Home2/>} />
+        {/* <Route path='/contact' element={<ContactPage/>} /> */}
+        <Route path='/Home' element={<Home2/>} />
         <Route path='/Adv' element={<Adv/>} />
-        <Route path='/helpdesk' element={<HelpDeskContactPage/>} />
+        <Route path='/contact' element={<HelpDeskContactPage/>} />
+        <Route path="/locations/:location" element={<LocationNotices />} />
+        <Route path="/categories/:category" element={<CategoryNotices/>} />  
       </Routes>
     </Router>
 
