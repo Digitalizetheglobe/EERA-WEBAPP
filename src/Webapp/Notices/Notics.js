@@ -11,6 +11,8 @@ import WebFooter from "./WebFooter";
 import Webheader from "./Webheader";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import axios from "axios";
+import defaultImage from "../../assets/banner/latestnotics1.png"
+import Header from "../../Header/Header2";
 const Notice = () => {
   const { id } = useParams();
   const [notice, setNotice] = useState(null);
@@ -25,6 +27,7 @@ const Notice = () => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [notices, setNotices] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   useEffect(() => {
     const fetchNotices = async () => {
       try {
@@ -86,7 +89,15 @@ const Notice = () => {
       });
     }
   };
-
+  const calculateSlideTransform = () => {
+    if (isMobile) {
+        // For mobile, slide 100% each time
+        return currentSlide * 100;
+    } else {
+        // For desktop, slide by the width of cards visible
+        return currentSlide * (100 / Math.floor(notices.length / cardsPerSlide));
+    }
+};
   const downloadAsPDF = () => {
     if (notice && notice.notices_images) {
       const pdf = new jsPDF();
@@ -182,7 +193,7 @@ const Notice = () => {
 
   return (
     <>
-      <Webheader />
+      <Webheader/>
       <ToastContainer />
       <nav className="bg-gray-100 py-2 px-4 text-sm flex items-center space-x-2">
         <div className="flex items-center space-x-2 mr-6">
@@ -283,9 +294,9 @@ const Notice = () => {
         {/* Similar Notices Section */}
         <div className="bg-[#E5EAEE] px-10 py-8">
           {/* Heading */}
-          <div className="flex items-center space-x-2 font-bold ">
-            <h1 className="text-4xl text-[#001A3B]">Similar</h1>
-            <h1 className="text-4xl text-[#A99067]">Notices</h1>
+          <div className="flex items-center space-x-2 font-bold mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl text-[#001A3B]">Similar</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl text-[#A99067]">Notices</h1>
           </div>
 
           {/* Navigation buttons */}
@@ -293,18 +304,20 @@ const Notice = () => {
             <button
               onClick={handlePrev}
               disabled={currentSlide === 0}
-              className={`flex items-center justify-center w-10 h-10 bg-white rounded-full shadow cursor-pointer ${currentSlide === 0 ? "opacity-50 cursor-not-allowed" : ""
+              className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full shadow transition-opacity hover:bg-gray-50 ${currentSlide === 0 ? "opacity-50 cursor-not-allowed" : "hover:opacity-80"
                 }`}
+              aria-label="Previous slide"
             >
-              <FiChevronLeft className="text-[#A99067] text-2xl" />
+              <FiChevronLeft className="text-[#A99067] text-xl sm:text-2xl" />
             </button>
             <button
               onClick={handleNext}
               disabled={currentSlide === totalSlides - 1}
-              className={`flex items-center justify-center w-10 h-10 bg-white rounded-full shadow cursor-pointer ${currentSlide === totalSlides - 1 ? "opacity-50 cursor-not-allowed" : ""
+              className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full shadow transition-opacity hover:bg-gray-50 ${currentSlide === totalSlides - 1 ? "opacity-50 cursor-not-allowed" : "hover:opacity-80"
                 }`}
+              aria-label="Next slide"
             >
-              <FiChevronRight className="text-[#A99067] text-2xl" />
+              <FiChevronRight className="text-[#A99067] text-xl sm:text-2xl" />
             </button>
           </div>
 
@@ -312,37 +325,63 @@ const Notice = () => {
           <div className="overflow-hidden">
             <div
               className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              style={{
+                transform: `translateX(-${calculateSlideTransform()}%)`,
+                width: isMobile ? '600%' : '200%' // Adjust width based on device
+              }}
             >
               {notices.map((notice, index) => (
-                <div key={index} className="w-full md:w-1/3 flex-shrink-0 px-2">
-                  <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
-                    <img
-                      src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
-                      alt={notice.notice_title || "Default Notice"}
-                      className="w-full h-40 object-cover"
-                    />
-                    <div className="p-6 flex flex-col flex-grow">
-                      <h2 className="text-xl font-semibold text-[#001A3B] mb-2">
-                        {notice.notice_title}
-                      </h2>
-                      <div className="flex items-center text-sm text-gray-500 space-x-4 mb-4">
-                        <span>{new Date(notice.date).toLocaleDateString()}</span>
-                        <span>{notice.location}</span>
+                <div
+                  key={index}
+                  style={{ width: isMobile ? '16.666%' : '16.666%' }}
+                  className="px-2"
+                >
+                  <Link to={`/notices/${notice.id}`} className="block">
+                    <div
+                      className="bg-white rounded-lg shadow-lg overflow-hidden relative group"
+                      style={{ height: cardHeight }}
+                    >
+                      {/* Image takes up the entire card - object-top ensures cropping from the top */}
+                      <div className="h-full w-full relative">
+                        <img
+                          src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                          alt={notice.notice_title || "Notice image"}
+                          className="w-full h-full object-cover object-top"
+                          onError={(e) => {
+                            e.target.src = defaultImage;
+                          }}
+                        />
+                        {/* Full-image overlay with black background on hover (desktop only) */}
+                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300 hidden md:block"></div>
                       </div>
-                      <p className="text-gray-600 mb-6">
-                        {notice.notice_description
-                          ? notice.notice_description.split(' ').slice(0, 40).join(' ') + '...'
-                          : ''}
-                      </p>
 
-                      <div className="flex justify-between mt-auto">
-                        <Link to={`/notices/${notice.id}`} className="bg-[#001A3B] text-white px-4 py-2 rounded">
-                          Read Notice
-                        </Link>
+                      {/* Desktop: Overlay content that appears on hover */}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 sm:p-6 
+                                  transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out
+                                  hidden md:block z-10">
+                        <h2 className="text-lg sm:text-xl font-semibold text-white mb-2 line-clamp-2">
+                          {notice.notice_title}
+                        </h2>
+                        <div className="flex flex-wrap items-center text-xs sm:text-sm text-gray-200 gap-2 sm:gap-4">
+                          <span>{new Date(notice.date).toLocaleDateString()}</span>
+                          {notice.location && <span>{notice.location}</span>}
+                        </div>
+                        <Link to={`/notices/${notice.id}`} className="mt-2 inline-block bg-[#A99067] text-white px-4 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">Read More</Link>
+                      </div>
+
+                      {/* Mobile: Always visible overlay at bottom */}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4
+                                  md:hidden">
+                        <h2 className="text-base font-semibold text-white mb-1 line-clamp-2">
+                          {notice.notice_title}
+                        </h2>
+                        <div className="flex flex-wrap items-center text-xs text-gray-200 gap-2">
+                          <span>{new Date(notice.date).toLocaleDateString()}</span>
+                          {notice.location && <span>{notice.location}</span>}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               ))}
             </div>

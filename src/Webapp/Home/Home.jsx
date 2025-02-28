@@ -4,7 +4,7 @@ import Header from "./HomeHeader";
 import ReadNotice from "./ReadNotice";
 import NoticesDashboard from "./Dashboard";
 import Filter from "./Filter";
-import LatestNotices from "../../LandingPage/Latestnotics";
+import LatestNotices from "../../LandingPage/Latestnotices2";
 import CTA from "../CTA";
 import Faq from "../../LandingPage/Faq";
 import Webtestimonial from "../Notices/Webtestimonial";
