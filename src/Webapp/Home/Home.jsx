@@ -9,6 +9,8 @@ import CTA from "../CTA";
 import Faq from "../../LandingPage/Faq";
 import Webtestimonial from "../Notices/Webtestimonial";
 import WebFooter from "../Notices/WebFooter";
+import LocationsCarousel from "../../LandingPage/locationscourosel/Locations";
+import CategoryCarousel from "../../LandingPage/categorycourosel/categories";
 const Home2 = () => {
   return (
     <div>
@@ -17,6 +19,8 @@ const Home2 = () => {
       <Filter/>
       <NoticesDashboard/>
       <LatestNotices />
+      <LocationsCarousel/>
+      <CategoryCarousel/>
       <CTA/>
       <Faq/>
       <Webtestimonial/>
