@@ -38,6 +38,7 @@ export default function LeftSidebar() {
     return (
         <div className="w-64 bg-white p-6 flex flex-col h-screen sticky top-0">
             {/* Logo Section */}
+            <a href="/home">
             <div className="flex items-center gap-2 mb-10">
                 <div className="h-12 w-12 bg-purple-500 rounded-lg flex items-center justify-center overflow-hidden">
                     <img
@@ -48,6 +49,7 @@ export default function LeftSidebar() {
                 </div>
                 <span className="text-xl font-bold text-purple-800">EERA </span> {/* Optional: Add a text logo */}
             </div>
+            </a>
 
             {/* Navigation Links */}
             <nav className="flex-1 space-y-1">

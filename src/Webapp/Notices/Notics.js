@@ -29,6 +29,18 @@ const Notice = () => {
   const [notices, setNotices] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  
   useEffect(() => {
     const fetchNotices = async () => {
       try {
@@ -37,7 +49,7 @@ const Notice = () => {
         // Sort notices by date in descending order
         const sortedNotices = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        setNotices(sortedNotices.slice(0, 6)); // Keep only the latest 5 notices
+        setNotices(sortedNotices.slice(0, 12)); // Get more notices to have enough for slider
       } catch (error) {
         console.error("Error fetching notices:", error);
       }
@@ -90,16 +102,20 @@ const Notice = () => {
       });
     }
   };
+  
   const cardHeight = isMobile ? "400px" : "400px";
+  
+  // Define cards per slide
+  const cardsPerSlide = isMobile ? 1 : 4;
+  
+  // Calculate total number of possible slides
+  const totalSlides = Math.ceil(notices.length / cardsPerSlide);
+  
+  // Calculate how much to translate the slider
   const calculateSlideTransform = () => {
-    if (isMobile) {
-        // For mobile, slide 100% each time
-        return currentSlide * 100;
-    } else {
-        // For desktop, slide by the width of cards visible
-        return currentSlide * (100 / Math.floor(notices.length / cardsPerSlide));
-    }
-};
+    return currentSlide * (100 / (notices.length / cardsPerSlide));
+  };
+  
   const downloadAsPDF = () => {
     if (notice && notice.notices_images) {
       const pdf = new jsPDF();
@@ -135,8 +151,6 @@ const Notice = () => {
       transformOrigin: `${zoomPoint.x * 100}% ${zoomPoint.y * 100}%`
     };
   };
-  const cardsPerSlide = 3;
-  const totalSlides = Math.ceil(notices.length / cardsPerSlide);
 
   // Handle navigation
   const handleNext = () => {
@@ -150,6 +164,7 @@ const Notice = () => {
       setCurrentSlide((prev) => prev - 1);
     }
   };
+  
   if (loading)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -159,8 +174,6 @@ const Notice = () => {
 
   if (error) return <p className="text-red-500">{error}</p>;
   if (!notice) return <p>Notice not found</p>;
-
-
 
   const handleSaveNotice = async () => {
     const user = JSON.parse(localStorage.getItem("user")); // Assuming user data is stored in localStorage
@@ -249,13 +262,7 @@ const Notice = () => {
               <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 ml-2 text-md font-medium">
                 {notice.newspaper_name}
               </span>
-              {/* <span className="text-[#A99067] border border-[#A99067] rounded-full px-3 py-1 ml-2 text-md font-medium">
-                {notice.SelectedCategory}
-              </span> */}
             </div>
-
-
-
 
             <section className=" max-w-6xl mx-auto bg-white space-y-6">
               <div className="border-t border-gray-300 pt-4 space-y-3">
@@ -287,7 +294,6 @@ const Notice = () => {
                 >
                   Save Notice
                 </button>
-
               </div>
             </section>
           </div>
@@ -328,14 +334,14 @@ const Notice = () => {
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{
-                transform: `translateX(-${calculateSlideTransform()}%)`,
-                width: isMobile ? '600%' : '200%' // Adjust width based on device
+                transform: `translateX(-${currentSlide * (100 / Math.ceil(notices.length / cardsPerSlide))}%)`,
+                width: isMobile ? `${notices.length * 100}%` : `${notices.length * 25}%` // Each card takes 25% width on desktop (4 cards visible)
               }}
             >
               {notices.map((notice, index) => (
                 <div
                   key={index}
-                  style={{ width: isMobile ? '16.666%' : '16.666%' }}
+                  style={{ width: isMobile ? '100%' : '25%' }} // 25% width means 4 cards visible at once
                   className="px-2"
                 >
                   <Link to={`/notices/${notice.id}`} className="block">
