@@ -23,7 +23,7 @@ const Notice = () => {
   const imageRef = useRef(null);
   const scrollContainerRef = useRef(null);
   const [showFullDescription, setShowFullDescription] = useState(false);
-const [notices, setNotices] = useState([]); 
+  const [notices, setNotices] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   useEffect(() => {
     const fetchNotices = async () => {
@@ -143,9 +143,42 @@ const [notices, setNotices] = useState([]);
         <div className="w-8 h-8 border-4 border-t-transparent border-[#001A3B] rounded-full animate-spin"></div>
       </div>
     );
-  
+
   if (error) return <p className="text-red-500">{error}</p>;
   if (!notice) return <p>Notice not found</p>;
+
+
+
+  const handleSaveNotice = async () => {
+    const user = JSON.parse(localStorage.getItem("user")); // Assuming user data is stored in localStorage
+
+    if (!user) {
+      toast.error("You need to log in to save notices!");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://api.epublicnotices.in/api/webuser/save-notice",
+        { notice_id: id, user_id: user.id }, // Send notice ID and user ID
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`, // Assuming token is stored
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success("Notice saved successfully!");
+      } else {
+        toast.error(response.data.message || "Failed to save notice.");
+      }
+    } catch (error) {
+      console.error("Error saving notice:", error);
+      toast.error("Something went wrong! Please try again.");
+    }
+  };
 
   return (
     <>
@@ -235,79 +268,86 @@ const [notices, setNotices] = useState([]);
                 <button onClick={downloadAsPDF} className="border border-[#A99067] px-4 py-2 rounded-md hover:bg-gray-100 transition">
                   <img src={download} className="w-4 h-4" alt="Download" />
                 </button>
+                <button
+                  onClick={handleSaveNotice}
+                  className="bg-[#A99067] text-white px-6 py-2 rounded-md font-medium hover:bg-[#8c6f42] transition"
+                >
+                  Save Notice
+                </button>
+
               </div>
             </section>
           </div>
         </div>
 
         {/* Similar Notices Section */}
-          <div className="bg-[#E5EAEE] px-10 py-8">
-              {/* Heading */}
-              <div className="flex items-center space-x-2 font-bold ">
-                <h1 className="text-4xl text-[#001A3B]">Similar</h1>
-                <h1 className="text-4xl text-[#A99067]">Notices</h1>
-              </div>
-        
-              {/* Navigation buttons */}
-              <div className="flex justify-end items-center mb-4 space-x-2">
-                <button
-                  onClick={handlePrev}
-                  disabled={currentSlide === 0}
-                  className={`flex items-center justify-center w-10 h-10 bg-white rounded-full shadow cursor-pointer ${currentSlide === 0 ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                >
-                  <FiChevronLeft className="text-[#A99067] text-2xl" />
-                </button>
-                <button
-                  onClick={handleNext}
-                  disabled={currentSlide === totalSlides - 1}
-                  className={`flex items-center justify-center w-10 h-10 bg-white rounded-full shadow cursor-pointer ${currentSlide === totalSlides - 1 ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                >
-                  <FiChevronRight className="text-[#A99067] text-2xl" />
-                </button>
-              </div>
-        
-              {/* Card Slider */}
-              <div className="overflow-hidden">
-                <div
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-                >
-                  {notices.map((notice, index) => (
-                    <div key={index} className="w-full md:w-1/3 flex-shrink-0 px-2">
-                      <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
-                        <img
-                          src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`} 
-                          alt={notice.notice_title || "Default Notice"}
-                          className="w-full h-40 object-cover"
-                        />
-                        <div className="p-6 flex flex-col flex-grow">
-                          <h2 className="text-xl font-semibold text-[#001A3B] mb-2">
-                            {notice.notice_title}
-                          </h2>
-                          <div className="flex items-center text-sm text-gray-500 space-x-4 mb-4">
-                            <span>{new Date(notice.date).toLocaleDateString()}</span>
-                            <span>{notice.location}</span>
-                          </div>
-                          <p className="text-gray-600 mb-6">
-                            {notice.notice_description
-                              ? notice.notice_description.split(' ').slice(0, 40).join(' ') + '...'
-                              : ''}
-                          </p>
-        
-                          <div className="flex justify-between mt-auto">
-                            <Link to={`/notices/${notice.id}`} className="bg-[#001A3B] text-white px-4 py-2 rounded">
-                              Read Notice
-                            </Link>
-                          </div>
-                        </div>
+        <div className="bg-[#E5EAEE] px-10 py-8">
+          {/* Heading */}
+          <div className="flex items-center space-x-2 font-bold ">
+            <h1 className="text-4xl text-[#001A3B]">Similar</h1>
+            <h1 className="text-4xl text-[#A99067]">Notices</h1>
+          </div>
+
+          {/* Navigation buttons */}
+          <div className="flex justify-end items-center mb-4 space-x-2">
+            <button
+              onClick={handlePrev}
+              disabled={currentSlide === 0}
+              className={`flex items-center justify-center w-10 h-10 bg-white rounded-full shadow cursor-pointer ${currentSlide === 0 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+            >
+              <FiChevronLeft className="text-[#A99067] text-2xl" />
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={currentSlide === totalSlides - 1}
+              className={`flex items-center justify-center w-10 h-10 bg-white rounded-full shadow cursor-pointer ${currentSlide === totalSlides - 1 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+            >
+              <FiChevronRight className="text-[#A99067] text-2xl" />
+            </button>
+          </div>
+
+          {/* Card Slider */}
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {notices.map((notice, index) => (
+                <div key={index} className="w-full md:w-1/3 flex-shrink-0 px-2">
+                  <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
+                    <img
+                      src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                      alt={notice.notice_title || "Default Notice"}
+                      className="w-full h-40 object-cover"
+                    />
+                    <div className="p-6 flex flex-col flex-grow">
+                      <h2 className="text-xl font-semibold text-[#001A3B] mb-2">
+                        {notice.notice_title}
+                      </h2>
+                      <div className="flex items-center text-sm text-gray-500 space-x-4 mb-4">
+                        <span>{new Date(notice.date).toLocaleDateString()}</span>
+                        <span>{notice.location}</span>
+                      </div>
+                      <p className="text-gray-600 mb-6">
+                        {notice.notice_description
+                          ? notice.notice_description.split(' ').slice(0, 40).join(' ') + '...'
+                          : ''}
+                      </p>
+
+                      <div className="flex justify-between mt-auto">
+                        <Link to={`/notices/${notice.id}`} className="bg-[#001A3B] text-white px-4 py-2 rounded">
+                          Read Notice
+                        </Link>
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
+          </div>
+        </div>
       </section>
 
       {/* Zoom Modal */}
