@@ -47,7 +47,7 @@ function App() {
         <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
         {/* <Route path='/contact' element={<ContactPage/>} /> */}
         <Route path='/Home' element={<Home2/>} />
-        <Route path='/Adv' element={<Adv/>} />
+        <Route path='/Dashboard' element={<Adv/>} />
         <Route path='/contact' element={<HelpDeskContactPage/>} />
         <Route path="/locations/:location" element={<LocationNotices />} />
         <Route path="/categories/:category" element={<CategoryNotices/>} />  

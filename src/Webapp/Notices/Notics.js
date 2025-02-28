@@ -8,11 +8,12 @@ import download from "../../assets/logo/download.png";
 import arrow from "../../assets/logo/arrow.png";
 import Footer from "../../LandingPage/Footer";
 import WebFooter from "./WebFooter";
-import Webheader from "./Webheader";
+
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import axios from "axios";
 import defaultImage from "../../assets/banner/latestnotics1.png"
-import Header from "../../Header/Header2";
+import Header from "../Home/HomeHeader";
+
 const Notice = () => {
   const { id } = useParams();
   const [notice, setNotice] = useState(null);
@@ -194,7 +195,7 @@ const Notice = () => {
 
   return (
     <>
-      <Webheader/>
+      <Header/>
       <ToastContainer />
       <nav className="bg-gray-100 py-2 px-4 text-sm flex items-center space-x-2">
         <div className="flex items-center space-x-2 mr-6">
