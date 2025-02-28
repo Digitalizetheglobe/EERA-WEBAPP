@@ -22,7 +22,7 @@ const Login = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/api/webuser/login", {
+      const response = await fetch("https://api.epublicnotices.in/api/webuser/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
