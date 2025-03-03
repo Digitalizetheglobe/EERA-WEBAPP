@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Homeheader from '../Webapp/Notices/Homewebheader';
 import Header from '../Webapp/Home/HomeHeader';
 import Footer from '../LandingPage/Footer';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
@@ -35,7 +34,7 @@ const CalendarIcon = () => (
 );
 
 const ChatIcon = () => (
-    <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
     </svg>
 );
@@ -113,10 +112,10 @@ const HelpDeskContactPage = () => {
                 <h2 className="text-3xl font-bold pb-2 border-b-4 border-[#b8d7f4] inline-block">Help Desk</h2>
 
                 {/* Contact Info and Map Section */}
-                <div className="flex flex-col lg:flex-row gap-8 mt-8">
+                <div className="flex flex-col lg:flex-row gap-8 mt-7">
 
                     {/* Contact Info Card */}
-                    <div className="bg-white rounded-2xl p-8 shadow-lg transition-transform duration-300 hover:-translate-y-1 lg:w-1/3">
+                    <div className="bg-white rounded-2xl pt-8 pl-8 shadow-lg transition-transform duration-300 hover:-translate-y-1 lg:w-1/3">
 
                         {/* Address Section */}
                         <div className="mb-8">
@@ -126,7 +125,9 @@ const HelpDeskContactPage = () => {
                             </h3>
                             <p className="ml-8 text-gray-700 leading-relaxed">
                                 Kohinoor World Tower, <br />
-                                Pune, Maharashtra, 411018<br />
+                                Pune, Maharashtra,<br />
+                                411018<br />
+
                             </p>
                         </div>
 
@@ -138,13 +139,7 @@ const HelpDeskContactPage = () => {
                             </h3>
                             <div className="ml-8">
                                 <a href="mailto:support@helpdesk.com" className="block mb-2 text-[#004b80] hover:text-blue-600 hover:underline transition-colors">
-                                    support@helpdesk.com
-                                </a>
-                                <a href="mailto:business@helpdesk.com" className="block mb-2 text-[#004b80] hover:text-blue-600 hover:underline transition-colors">
-                                    business@helpdesk.com
-                                </a>
-                                <a href="mailto:inquiries@helpdesk.com" className="block mb-2 text-[#004b80] hover:text-blue-600 hover:underline transition-colors">
-                                    inquiries@helpdesk.com
+                                    contact@epublicnotices.in
                                 </a>
                             </div>
                         </div>
@@ -159,7 +154,7 @@ const HelpDeskContactPage = () => {
                         </div>
 
                         {/* Hours Section */}
-                        <div className="mb-4">
+                        <div>
                             <h3 className="flex items-center text-xl font-semibold text-[#004b80] mb-2">
                                 <CalendarIcon />
                                 Hours
@@ -273,6 +268,7 @@ const HelpDeskContactPage = () => {
                                             {/* Subject field */}
                                             <div>
                                                 <label htmlFor="subject" className="flex items-center text-base font-medium text-[#001A3B] mb-2">
+                                                    <ChatIcon />
                                                     Subject
                                                 </label>
                                                 <input

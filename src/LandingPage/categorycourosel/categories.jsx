@@ -67,8 +67,15 @@ const CategoryCarousel = () => {
     navigate(`/categories/${encodeURIComponent(category)}`);
   };
 
+  // Updated to properly handle single card movement on mobile and 4 cards on web
   const calculateSlideTransform = () => {
-    return isMobile ? currentSlide * 100 : currentSlide * (100 / Math.ceil(categories.length / cardsPerSlide));
+    if (isMobile) {
+      // For mobile: move exactly one card at a time
+      return currentSlide * (100 / categories.length);
+    } else {
+      // For desktop: move exactly 4 cards at a time
+      return currentSlide * (400 / categories.length);
+    }
   };
 
   return (
@@ -102,21 +109,22 @@ const CategoryCarousel = () => {
         </button>
       </div>
 
-      {/* Card Slider */}
+      {/* Card Slider - Updated with slower transition */}
       {categories.length > 0 ? (
         <div className="overflow-hidden">
           <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{
               transform: `translateX(-${calculateSlideTransform()}%)`,
-              width: isMobile ? `${categories.length * 100}%` : `${Math.ceil(categories.length / 4) * 100}%`,
+              width: `${categories.length * (100 / cardsPerSlide)}%`,
+              transitionDuration: "500ms", // Slower transition (1.5 seconds)
             }}
           >
             {categories.map((category, index) => (
               <div
                 key={index}
                 style={{
-                  width: isMobile ? `${100 / categories.length}%` : `${100 / Math.max(categories.length, 4)}%`,
+                  width: `${100 / categories.length}%`,
                 }}
                 className="px-2"
               >

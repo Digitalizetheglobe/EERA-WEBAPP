@@ -3,7 +3,6 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 const LocationsCarousel = () => {
   const [locations, setLocations] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -67,8 +66,15 @@ const LocationsCarousel = () => {
     navigate(`/locations/${encodeURIComponent(location)}`);
   };
 
+  // Updated to properly handle single card movement on mobile and 4 cards on web
   const calculateSlideTransform = () => {
-    return isMobile ? currentSlide * 100 : currentSlide * (100 / Math.ceil(locations.length / cardsPerSlide));
+    if (isMobile) {
+      // For mobile: move exactly one card at a time
+      return currentSlide * (100 / locations.length);
+    } else {
+      // For desktop: move exactly 4 cards at a time
+      return currentSlide * (400 / locations.length);
+    }
   };
 
   return (
@@ -101,21 +107,22 @@ const LocationsCarousel = () => {
         </button>
       </div>
 
-      {/* Card Slider */}
+      {/* Card Slider - Updated with slower transition */}
       {locations.length > 0 ? (
         <div className="overflow-hidden">
           <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{
               transform: `translateX(-${calculateSlideTransform()}%)`,
-              width: isMobile ? `${locations.length * 100}%` : `${Math.ceil(locations.length / 4) * 100}%`,
+              width: `${locations.length * (100 / cardsPerSlide)}%`,
+              transitionDuration: "500ms", // Slower transition (1.5 seconds)
             }}
           >
             {locations.map((location, index) => (
               <div
                 key={index}
                 style={{
-                  width: isMobile ? `${100 / locations.length}%` : `${100 / Math.max(locations.length, 4)}%`,
+                  width: `${100 / locations.length}%`,
                 }}
                 className="px-2"
               >

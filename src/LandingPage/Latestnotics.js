@@ -54,6 +54,17 @@ const LatestNotices = () => {
     }
   };
 
+  // Updated to properly handle single card movement on mobile and 3 cards on web
+  const calculateSlideTransform = () => {
+    if (isMobile) {
+      // For mobile: move exactly one card at a time
+      return currentSlide * (100 / notices.length);
+    } else {
+      // For desktop: move exactly 3 cards at a time
+      return currentSlide * (300 / notices.length);
+    }
+  };
+
   return (
     <div className="bg-[#E5EAEE] px-4 sm:px-6 md:px-8 lg:px-10 py-6 sm:py-8">
       {/* Heading */}
@@ -86,13 +97,14 @@ const LatestNotices = () => {
         </button>
       </div>
 
-      {/* Card Slider */}
+      {/* Card Slider - Updated with slower transition */}
       <div className="overflow-hidden">
         <div
-          className="flex transition-transform duration-500 ease-in-out"
+          className="flex transition-transform ease-in-out"
           style={{
-            transform: `translateX(-${currentSlide * (16.5 / cardsPerSlide)}%)`,
-            width: `${(notices.length * 100) / cardsPerSlide}%`
+            transform: `translateX(-${calculateSlideTransform()}%)`,
+            width: `${notices.length * (100 / cardsPerSlide)}%`,
+            transitionDuration: "1500ms", // Slower transition (1.5 seconds)
           }}
         >
           {notices.map((notice, index) => (
@@ -125,14 +137,13 @@ const LatestNotices = () => {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-auto">
-                  <Link
-  to={`/notices/${notice.id}`}
-  className="flex-1 bg-[#001A3B] text-white px-4 py-2 rounded text-center text-sm sm:text-base 
-            hover:bg-[#002a5c] transition-transform transform hover:scale-105"
->
-  Read Notice
-</Link>
-
+                    <Link
+                      to={`/notices/${notice.id}`}
+                      className="flex-1 bg-[#001A3B] text-white px-4 py-2 rounded text-center text-sm sm:text-base 
+                                hover:bg-[#002a5c] transition-transform transform hover:scale-105"
+                    >
+                      Read Notice
+                    </Link>
                   </div>
                 </div>
               </div>

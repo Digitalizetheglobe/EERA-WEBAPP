@@ -29,7 +29,7 @@ const LatestNotices = () => {
                 const sortedNotices = response.data.sort(
                     (a, b) => new Date(b.date) - new Date(a.date)
                 );
-                setNotices(sortedNotices.slice(0, 8)); // Increased to 8 to have enough cards
+                setNotices(sortedNotices.slice(0, 8)); // Get 8 notices to have enough cards
             } catch (error) {
                 console.error("Error fetching notices:", error);
             }
@@ -38,9 +38,10 @@ const LatestNotices = () => {
         fetchNotices();
     }, []);
 
-    // Responsive cards per slide - changed from 3 to 4 for desktop
+    // Responsive cards per slide
     const cardsPerSlide = isMobile ? 1 : 4;
-    const totalSlides = Math.ceil(notices.length / cardsPerSlide);
+    // Calculate total slides properly based on cards per slide
+    const totalSlides = Math.max(1, Math.ceil(notices.length / cardsPerSlide));
 
     const handleNext = () => {
         if (currentSlide < totalSlides - 1) {
@@ -57,15 +58,23 @@ const LatestNotices = () => {
     // Fixed height based on device
     const cardHeight = isMobile ? "400px" : "400px";
 
-    // Calculate the correct slide percentage
+    // Calculate the correct transform percentage for sliding
     const calculateSlideTransform = () => {
-        if (isMobile) {
-            // For mobile, slide 100% each time
-            return currentSlide * 100;
-        } else {
-            // For desktop, slide by the width of cards visible
-            return currentSlide * (100 / Math.floor(notices.length / cardsPerSlide));
-        }
+        // Calculate percentage for each card
+        const cardWidthPercent = 100 / notices.length;
+        
+        // Move by number of cards per slide
+        return currentSlide * (cardWidthPercent * cardsPerSlide);
+    };
+
+    // Calculate correct width for the slider container
+    const calculateSliderWidth = () => {
+        return `${(notices.length / cardsPerSlide) * 100}%`;
+    };
+
+    // Calculate width for each card
+    const calculateCardWidth = () => {
+        return `${100 / notices.length}%`;
     };
 
     return (
@@ -103,16 +112,16 @@ const LatestNotices = () => {
             {/* Card Slider */}
             <div className="overflow-hidden">
                 <div
-                    className="flex transition-transform duration-500 ease-in-out"
+                    className="flex transition-transform duration-1000 ease-in-out" /* Increased duration from 500ms to 1000ms for slower movement */
                     style={{
                         transform: `translateX(-${calculateSlideTransform()}%)`,
-                        width: isMobile ? '800%' : '200%' // Adjusted for 8 cards total
+                        width: calculateSliderWidth()
                     }}
                 >
                     {notices.map((notice, index) => (
                         <div
                             key={index}
-                            style={{ width: isMobile ? '12.5%' : '12.5%' }} // Adjusted for 4 cards (100% ÷ 8 = 12.5%)
+                            style={{ width: calculateCardWidth() }}
                             className="px-2"
                         >
                             <Link to={`/notices/${notice.id}`} className="block">
@@ -120,7 +129,7 @@ const LatestNotices = () => {
                                     className="bg-white rounded-lg shadow-lg overflow-hidden relative group"
                                     style={{ height: cardHeight }}
                                 >
-                                    {/* Image takes up the entire card - object-top ensures cropping from the top */}
+                                    {/* Image takes up the entire card */}
                                     <div className="h-full w-full relative">
                                         <img
                                             src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}

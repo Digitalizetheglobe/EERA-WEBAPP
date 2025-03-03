@@ -24,6 +24,7 @@ import Adv from './Webapp/Adv/Adv.jsx';
 import HelpDeskContactPage from './Contact/page2.jsx';
 import LocationNotices from './LandingPage/locationscourosel/locationpage.jsx';
 import CategoryNotices from './LandingPage/categorycourosel/categorypage.jsx';
+import Profile from './Webapp/Adv/Profile.jsx';
 function App() {
   return (
     <Router>
@@ -50,7 +51,9 @@ function App() {
         <Route path='/Dashboard' element={<Adv/>} />
         <Route path='/contact' element={<HelpDeskContactPage/>} />
         <Route path="/locations/:location" element={<LocationNotices />} />
-        <Route path="/categories/:category" element={<CategoryNotices/>} />  
+        <Route path="/categories/:category" element={<CategoryNotices/>} /> 
+        <Route path='/Dashboard/profile' element={<Profile/>} />
+
       </Routes>
     </Router>
 
