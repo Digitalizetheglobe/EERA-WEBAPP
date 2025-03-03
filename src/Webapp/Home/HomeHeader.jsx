@@ -22,7 +22,7 @@ const Header = () => {
   }, []);
 
   const handleProfileClick = () => {
-    navigate("/Adv");
+    navigate("/dashboard");
   };
 
   const isActive = (path) =>

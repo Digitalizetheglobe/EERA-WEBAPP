@@ -86,7 +86,7 @@ export default function LibraryDashboard() {
   return (
     <div className="flex min-h-screen bg-white">
       <LeftSidebar />
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto ml-64">
         {/* Header */}
         <header className="p-4 flex items-center justify-between bg-white shadow-sm border-b border-[#b8d7f4]">
           <h1 className="text-5xl font-bold text-[#004B80]">Dashboard</h1>
@@ -200,7 +200,7 @@ export default function LibraryDashboard() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-6 mt-14">
             <Card className="bg-gradient-to-b from-white to-[#f0f7ff]">
               <CardContent>
                 <h3 className="font-semibold text-[#004B80] mb-4">Quick Actions</h3>

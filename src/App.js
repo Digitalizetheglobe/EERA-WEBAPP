@@ -25,6 +25,8 @@ import HelpDeskContactPage from './Contact/page2.jsx';
 import LocationNotices from './LandingPage/locationscourosel/locationpage.jsx';
 import CategoryNotices from './LandingPage/categorycourosel/categorypage.jsx';
 import Profile from './Webapp/Adv/Profile.jsx';
+import NoticeForm from './Webapp/Adv/Noticeform.jsx';
+import MyNotices from './Webapp/Adv/Mynotices.jsx';
 function App() {
   return (
     <Router>
@@ -53,6 +55,8 @@ function App() {
         <Route path="/locations/:location" element={<LocationNotices />} />
         <Route path="/categories/:category" element={<CategoryNotices/>} /> 
         <Route path='/Dashboard/profile' element={<Profile/>} />
+        <Route path='/template' element={<NoticeForm/>} />
+        <Route path='/mynotices' element={<MyNotices/>} />
 
       </Routes>
     </Router>
