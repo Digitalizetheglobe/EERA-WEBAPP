@@ -11,6 +11,7 @@ import Webtestimonial from "../Notices/Webtestimonial";
 import WebFooter from "../Notices/WebFooter";
 import LocationsCarousel from "../../LandingPage/locationscourosel/Locations";
 import CategoryCarousel from "../../LandingPage/categorycourosel/categories";
+import Post from "../PostNotice/post";
 const Home2 = () => {
   return (
     <div>
@@ -24,6 +25,7 @@ const Home2 = () => {
       <CTA/>
       <Faq/>
       <Webtestimonial/>
+      <Post />
       <WebFooter/>
     </div>
   );

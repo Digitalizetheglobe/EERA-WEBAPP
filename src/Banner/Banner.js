@@ -19,6 +19,7 @@ import Aboutus from "../LandingPage/Aboutus2";
 import LatestNotices from "../LandingPage/Latestnotices2";
 import LocationsCarousel from "../LandingPage/locationscourosel/Locations";
 import CategoryCarousel from "../LandingPage/categorycourosel/categories";
+import Post from "../Webapp/PostNotice/post";
 
 const BannerSection = () => {
   return (
@@ -98,6 +99,7 @@ const BannerSection = () => {
         <Weserve />
         <Faq />
         <Testimonial />
+        <Post />
         <Footer />
 
       </main>

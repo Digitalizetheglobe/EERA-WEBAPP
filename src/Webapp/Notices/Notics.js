@@ -116,21 +116,66 @@ const Notice = () => {
     return currentSlide * (100 / (notices.length / cardsPerSlide));
   };
   
-  const downloadAsPDF = () => {
-    if (notice && notice.notices_images) {
+  // const downloadAsPDF = () => {
+  //   if (notice && notice.notices_images) {
+  //     const pdf = new jsPDF();
+  //     const imgUrl = `https://api.epublicnotices.in/noticesimage/${notice.notices_images}`;
+  //     const imgWidth = 190;
+  //     const imgHeight = 160;
+
+  //     pdf.text("Source : - EERA epublicnotices.in", 10, 10);
+  //     pdf.addImage(imgUrl, "JPEG", 10, 20, imgWidth, imgHeight);
+  //     pdf.save("notice.pdf");
+  //     toast.success("Notice downloaded successfully!");
+  //   } else {
+  //     toast.error("Notice image not available");
+  //   }
+  // };
+
+  const downloadAsPDF = async () => {
+    if (!notice || !notice.id) {
+      toast.error("Invalid notice data");
+      return;
+    }
+  
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("authToken");
+  
+    if (!user || !token) {
+      toast.error("You need to log in to download notices!");
+      return;
+    }
+  
+    try {
+      // Call API to record the download
+      await axios.post(
+        "http://localhost:8080/api/webuser/download-notice",
+        { noticeId: notice.id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      // Proceed with PDF generation
       const pdf = new jsPDF();
       const imgUrl = `https://api.epublicnotices.in/noticesimage/${notice.notices_images}`;
       const imgWidth = 190;
       const imgHeight = 160;
-
+  
       pdf.text("Source : - EERA epublicnotices.in", 10, 10);
       pdf.addImage(imgUrl, "JPEG", 10, 20, imgWidth, imgHeight);
       pdf.save("notice.pdf");
+  
       toast.success("Notice downloaded successfully!");
-    } else {
-      toast.error("Notice image not available");
+    } catch (error) {
+      console.error("Error downloading notice:", error.response?.data || error.message);
+      toast.error("Failed to record notice download. Please try again.");
     }
   };
+  
 
   const handleImageClick = (e) => {
     if (!imageRef.current) return;
@@ -175,37 +220,55 @@ const Notice = () => {
   if (error) return <p className="text-red-500">{error}</p>;
   if (!notice) return <p>Notice not found</p>;
 
-  const handleSaveNotice = async () => {
-    const user = JSON.parse(localStorage.getItem("user")); // Assuming user data is stored in localStorage
-
-    if (!user) {
+  const handleSaveNotice = async (id) => { 
+    if (!id) {
+      toast.error("Invalid notice ID!");
+      return;
+    }
+  
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("authToken");
+  
+    if (!user || !token) {
       toast.error("You need to log in to save notices!");
       return;
     }
-
+  
+    console.log("Token being sent:", token);
+  
     try {
       const response = await axios.post(
-        "https://api.epublicnotices.in/api/webuser/save-notice",
-        { notice_id: id, user_id: user.id }, // Send notice ID and user ID
+        "http://localhost:8080/api/webuser/save-notice",
+        { noticeId: id, userId: user.id },
         {
           headers: {
-            Authorization: `Bearer ${user.token}`, // Assuming token is stored
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
       );
-
+  
+      console.log("Save Notice Response:", response.data);
+  
       if (response.data.success) {
         toast.success("Notice saved successfully!");
       } else {
         toast.error(response.data.message || "Failed to save notice.");
       }
     } catch (error) {
-      console.error("Error saving notice:", error);
-      toast.error("Something went wrong! Please try again.");
+      console.error("Error saving notice:", error.response?.data || error.message);
+  
+      if (error.response?.status === 401) {
+        toast.error("Unauthorized! Please log in again.");
+        localStorage.removeItem("authToken");
+      } else {
+        toast.error("Something went wrong! Please try again.");
+      }
     }
   };
-
+  
+  
+  
   return (
     <>
       <Header/>
@@ -288,12 +351,8 @@ const Notice = () => {
                 <button onClick={downloadAsPDF} className="border border-[#A99067] px-4 py-2 rounded-md hover:bg-gray-100 transition">
                   <img src={download} className="w-4 h-4" alt="Download" />
                 </button>
-                <button
-                  onClick={handleSaveNotice}
-                  className="bg-[#A99067] text-white px-6 py-2 rounded-md font-medium hover:bg-[#8c6f42] transition"
-                >
-                  Save Notice
-                </button>
+                <button onClick={() => handleSaveNotice(notice.id)}>Save Notice</button>
+
               </div>
             </section>
           </div>

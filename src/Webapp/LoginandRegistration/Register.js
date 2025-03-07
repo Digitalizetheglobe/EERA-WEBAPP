@@ -32,8 +32,9 @@ const Register = () => {
 
   const handleSignUp = async () => {
     setLoading(true);
-
-    const apiUrl = "https://api.epublicnotices.in/api/webuser/register";
+    //http://localhost:8080/
+    //https://api.epublicnotices.in
+    const apiUrl = "http://localhost:8080/api/webuser/register";
 
     // Prepare request payload based on userType
     const userPayload = {
@@ -64,7 +65,7 @@ const Register = () => {
         toast.success("Registration successful! Redirecting to login...", { autoClose: 3000 });
         setTimeout(() => {
           navigate("/login");
-        }, 3000); 
+        }, 3000);
       } else {
         const error = await response.json();
         toast.error(`Registration failed: ${error.message || "Please try again"}`);
@@ -108,9 +109,8 @@ const Register = () => {
                 <button
                   key={type}
                   onClick={() => setUserType(type)}
-                  className={`px-3 md:px-4 py-2 rounded-lg text-sm md:text-base ${
-                    userType === type ? "bg-[#A99067] text-white" : "bg-gray-200 text-gray-700"
-                  }`}
+                  className={`px-3 md:px-4 py-2 rounded-lg text-sm md:text-base ${userType === type ? "bg-[#A99067] text-white" : "bg-gray-200 text-gray-700"
+                    }`}
                 >
                   {type.charAt(0).toUpperCase() + type.slice(1)}
                 </button>

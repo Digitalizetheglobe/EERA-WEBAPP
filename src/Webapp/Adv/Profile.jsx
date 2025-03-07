@@ -34,8 +34,8 @@ export default function Profile() {
                 if (!token) {
                     throw new Error('Authentication token not found. Please log in again.');
                 }
-                
-                const response = await fetch('https://api.epublicnotices.in/api/webuser/profile', {
+                // https://api.epublicnotices.in
+                const response = await fetch('http://localhost:8080/api/webuser/profile', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
