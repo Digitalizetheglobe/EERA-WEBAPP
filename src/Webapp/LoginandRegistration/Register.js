@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Webheader from "../Notices/Webheader";
 import WebFooter from "../Notices/WebFooter";
-import coverImage from "../../assets/banner/groupdiscussion.jpg";
-import Google from "../../assets/google.png";
-import Facebook from "../../assets/facebook.png";
 import Header from "../Home/HomeHeader";
 
 const Register = () => {
@@ -16,6 +12,7 @@ const Register = () => {
     email: "",
     location: "",
     password: "",
+    confirmPassword: "",
     department: "",
     companyName: "",
     uinNumber: "",
@@ -32,6 +29,13 @@ const Register = () => {
 
   const handleSignUp = async () => {
     setLoading(true);
+
+    // Password validation
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      setLoading(false);
+      return;
+    }
 
     const apiUrl = "https://api.epublicnotices.in/api/webuser/register";
 
@@ -64,7 +68,7 @@ const Register = () => {
         toast.success("Registration successful! Redirecting to login...", { autoClose: 3000 });
         setTimeout(() => {
           navigate("/login");
-        }, 3000); 
+        }, 3000);
       } else {
         const error = await response.json();
         toast.error(`Registration failed: ${error.message || "Please try again"}`);
@@ -76,45 +80,75 @@ const Register = () => {
     }
   };
 
+  // Content mapping for left side based on user type
+  const leftSideContent = {
+    personal: (
+      <div className="relative h-full w-full">
+        <div className="absolute inset-0 bg-white">
+          <div className="h-full flex flex-col justify-center p-8 relative">
+            <div className="absolute bottom-15 left-10">
+              <img src="/leftframe1.png" alt="Business person" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+    corporate: (
+      <div className="relative h-full w-full">
+        <div className="absolute inset-0 bg-white">
+          <div className="h-full flex flex-col justify-center p-8 relative">
+            <div className="absolute bottom-15 left-10">
+              <img src="/leftframe2.png" alt="Business person" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+    government: (
+      <div className="relative h-full w-full">
+        <div className="absolute inset-0 bg-white">
+          <div className="h-full flex flex-col justify-center p-8 relative">
+            <div className="absolute bottom-15 left-10">
+              <img src="/leftframe3.png" alt="Business person" />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  };
+
   return (
     <>
       <Header />
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="flex flex-col md:flex-row shadow-2xl rounded-lg overflow-hidden w-full max-w-5xl">
-          {/* Cover Image Section */}
+        <div className="flex flex-col md:flex-row shadow-xl rounded-lg overflow-hidden w-full max-w-6xl bg-white">
+          {/* Left section with images and stats - hidden on mobile */}
           <div className="hidden md:block md:w-1/2 bg-cover bg-center relative">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${coverImage})` }}
-            >
-              <div className="h-full flex items-center justify-center bg-black bg-opacity-40 text-white p-8">
-                <h2 className="text-4xl font-bold">EERA Notices</h2>
-              </div>
-            </div>
+            {leftSideContent[userType]}
           </div>
 
           {/* Form Section */}
-          <div className="bg-white w-full md:w-1/2 p-4 md:p-8">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 text-center">
+          <div className="bg-white w-full md:w-1/2 p-6 md:p-10">
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
               Create Your Account
             </h3>
-            <p className="text-center text-gray-600 mb-3 text-sm md:text-base">
-              Please select your registration category:
-            </p>
 
-            {/* User Type Selection */}
-            <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-6">
-              {["personal", "corporate", "government"].map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setUserType(type)}
-                  className={`px-3 md:px-4 py-2 rounded-lg text-sm md:text-base ${
-                    userType === type ? "bg-[#A99067] text-white" : "bg-gray-200 text-gray-700"
-                  }`}
-                >
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </button>
-              ))}
+            <div className="mb-6">
+              <p className="text-gray-700 mb-2">Select Your Profile Type</p>
+              <div className="flex rounded-lg overflow-hidden bg-[#B8D7F4] p-3">
+                {["Personal", "Corporate", "Government"].map((type) => (
+                  <button
+                    key={type.toLowerCase()}
+                    onClick={() => setUserType(type.toLowerCase())}
+                    className={`flex-1 py-3 mx-1 rounded-lg text-center transition ${userType === type.toLowerCase()
+                      ? "bg-white text-gray-800 font-medium"
+                      : "bg-transparent text-gray-600"
+                      }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Form */}
@@ -123,122 +157,165 @@ const Register = () => {
                 e.preventDefault();
                 handleSignUp();
               }}
-              className="w-full max-w-md mx-auto"
+              className="space-y-4"
             >
-              <div className="space-y-3 md:space-y-4">
-                {/* Common Fields */}
+              {/* Common Fields - Two Columns */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-700 text-sm md:text-base font-medium">Name</label>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Name<span className="text-red-500">*</span>
+                  </label>
                   <input
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
-                    placeholder="Enter your name"
+                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    placeholder="Name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 text-sm md:text-base font-medium">Phone Number</label>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Phone Number<span className="text-red-500">*</span>
+                  </label>
                   <input
                     name="number"
                     value={formData.number}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
-                    placeholder="Enter your phone number"
+                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    placeholder="Number"
                   />
                 </div>
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-700 text-sm md:text-base font-medium">Email</label>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Email<span className="text-red-500">*</span>
+                  </label>
                   <input
                     name="email"
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
-                    placeholder="Enter your email"
+                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    placeholder="Email"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 text-sm md:text-base font-medium">Location</label>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Location<span className="text-red-500">*</span>
+                  </label>
                   <input
                     name="location"
                     value={formData.location}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
-                    placeholder="Enter your location"
+                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    placeholder="Location"
                   />
                 </div>
+              </div>
 
-                {/* Conditional Fields */}
-                {userType === "corporate" && (
-                  <>
-                    <div>
-                      <label className="block text-gray-700 text-sm md:text-base font-medium">Company Name</label>
-                      <input
-                        name="companyName"
-                        value={formData.companyName}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
-                        placeholder="Enter company name"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 text-sm md:text-base font-medium">UIN Number</label>
-                      <input
-                        name="uinNumber"
-                        value={formData.uinNumber}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
-                        placeholder="Enter UIN number"
-                      />
-                    </div>
-                  </>
-                )}
-
-                {userType === "government" && (
+              {/* Conditional Fields based on user type */}
+              {userType === "corporate" && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 text-sm md:text-base font-medium">Department</label>
+                    <label className="block text-gray-700 text-sm font-medium mb-1">
+                      Company Name<span className="text-red-500">*</span>
+                    </label>
                     <input
-                      name="department"
-                      value={formData.department}
+                      name="companyName"
+                      value={formData.companyName}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
-                      placeholder="Enter department"
+                      className="w-full px-4 py-3 border rounded-lg text-sm"
+                      placeholder="Company Name"
                     />
                   </div>
-                )}
+                  <div>
+                    <label className="block text-gray-700 text-sm font-medium mb-1">
+                      UIN Number<span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      name="uinNumber"
+                      value={formData.uinNumber}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border rounded-lg text-sm"
+                      placeholder="UIN Number"
+                    />
+                  </div>
+                </div>
+              )}
 
+              {userType === "government" && (
                 <div>
-                  <label className="block text-gray-700 text-sm md:text-base font-medium">Password</label>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Department<span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    name="department"
+                    value={formData.department}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    placeholder="Department"
+                  />
+                </div>
+              )}
+
+              {/* Password fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Password<span className="text-red-500">*</span>
+                  </label>
                   <input
                     name="password"
                     type="password"
                     value={formData.password}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg text-sm"
-                    placeholder="Enter your password"
+                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    placeholder="Password"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Confirm Password<span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    name="confirmPassword"
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border rounded-lg text-sm"
+                    placeholder="Confirm Password"
                   />
                 </div>
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-2 text-sm font-semibold rounded text-white bg-[#001A3B] hover:bg-[#1A3B5C] mt-4"
-              >
-                {loading ? "Signing up..." : "Sign Up"}
-              </button>
+              <div className="mt-6 flex flex-row items-center space-x-6">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="py-2 px-4 w-64 text-white text-md font-medium bg-[#1a4b7c] rounded-lg transition"
+                >
+                  {loading ? "Signing up..." : "Sign Up"}
+                </button>
+
+                <div>
+                  <a href="/login" className="text-[#1a4b7c] text-md hover:underline">
+                    I already have an account
+                  </a>
+                </div>
+              </div>
             </form>
           </div>
         </div>
