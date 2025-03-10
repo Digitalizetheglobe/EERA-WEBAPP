@@ -37,7 +37,7 @@ function NoticeCard({ notice, icon }) {
           <IconComponent className="h-12 w-12 text-[#004B80] opacity-50" />
         </div>
         <h3 className="font-semibold mb-2 text-[#004B80]">{notice.notice_title || "Untitled Notice"}</h3>
-        <p className="text-sm text-gray-600 line-clamp-2">{notice.newspaper_name || "No description available."}</p>
+        <p className="text-sm text-gray-600 line-clamp-2">{notice.newspaper_name || ""}</p>
         <div className="flex items-center mt-3 text-gray-600">
           <MapPin className="h-4 w-4 text-[#004B80] mr-2" />
           <span>{notice.location || "No location provided"}</span>
