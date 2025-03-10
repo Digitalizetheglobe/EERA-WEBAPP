@@ -149,7 +149,7 @@ const Notice = () => {
     try {
       // Call API to record the download
       await axios.post(
-        "http://localhost:8080/api/webuser/download-notice",
+        "https://api.epublicnotices.in/api/webuser/download-notice",
         { noticeId: notice.id },
         {
           headers: {
@@ -238,7 +238,7 @@ const Notice = () => {
   
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/webuser/save-notice",
+        "https://api.epublicnotices.in/api/webuser/save-notice",
         { noticeId: id, userId: user.id },
         {
           headers: {
