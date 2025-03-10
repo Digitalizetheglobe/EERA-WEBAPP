@@ -99,8 +99,8 @@ export default function LibraryDashboard() {
           return;
         }
 
-        // Fetch user profile data https://api.epublicnotices.in
-        const response = await axios.get("http://localhost:8080/api/webuser/profile", {
+        // Fetch user profile data https://api.epublicnotices.in  http://localhost:8080
+        const response = await axios.get("https://api.epublicnotices.in/api/webuser/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
