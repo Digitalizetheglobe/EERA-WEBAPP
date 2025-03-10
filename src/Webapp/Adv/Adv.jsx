@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Bell, Star, BookOpen, FileText, Download, User } from "lucide-react";
+import { Bell, Star, BookOpen, FileText, Download, User, MapPin } from "lucide-react";
 import LeftSidebar from "./LeftSidebar";
 
 function Card({ children, className = "" }) {
   return (
-    <div 
+    <div
       className={`rounded-lg border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#b8d7f4] ${className}`}
     >
       {children}
@@ -29,25 +29,64 @@ function Avatar({ fallback, className = "" }) {
 
 function NoticeCard({ notice, icon }) {
   const IconComponent = icon || FileText;
-  
+
   return (
     <Card className="transform transition-transform duration-300 hover:-translate-y-1">
       <CardContent>
         <div className="aspect-square bg-[#b8d7f4] rounded-lg mb-4 flex items-center justify-center overflow-hidden">
           <IconComponent className="h-12 w-12 text-[#004B80] opacity-50" />
         </div>
-        <h3 className="font-semibold mb-2 text-[#004B80]">{notice.title || "Untitled Notice"}</h3>
-        <p className="text-sm text-gray-600 line-clamp-2">{notice.description || "No description available."}</p>
+        <h3 className="font-semibold mb-2 text-[#004B80]">{notice.notice_title || "Untitled Notice"}</h3>
+        <p className="text-sm text-gray-600 line-clamp-2">{notice.newspaper_name || "No description available."}</p>
+        <div className="flex items-center mt-3 text-gray-600">
+          <MapPin className="h-4 w-4 text-[#004B80] mr-2" />
+          <span>{notice.location || "No location provided"}</span>
+        </div>
       </CardContent>
     </Card>
   );
 }
-
 export default function LibraryDashboard() {
   const [user, setUser] = useState(null);
   const [savedNotices, setSavedNotices] = useState([]);
   const [downloadedNotices, setDownloadedNotices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  //   useEffect(() => {
+  //     const fetchUserData = async () => {
+  //       setIsLoading(true);
+  //       try {
+  //         const token = localStorage.getItem("authToken");
+  //         if (!token) {
+  //           console.error("No auth token found in localStorage");
+  //           setIsLoading(false);
+  //           return;
+  //         }
+  // //http://localhost:8080
+  // //https://api.epublicnotices.in
+  //         const response = await axios.get("http://localhost:8080/api/webuser/profile", {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         });
+
+  //         console.log("Fetched User Data:", response.data);
+
+  //         if (response.data && response.data.user) {
+  //           setUser(response.data.user);
+  //           setSavedNotices(response.data.savedNotices || []);
+  //           setDownloadedNotices(response.data.downloadedNotices || []);
+  //         } else {
+  //           console.error("Invalid API response format");
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching user data:", error);
+  //       } finally {
+  //         setIsLoading(false);
+  //       }
+  //     };
+
+  //     fetchUserData();
+  //   }, []);
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -59,8 +98,9 @@ export default function LibraryDashboard() {
           setIsLoading(false);
           return;
         }
-//http://localhost:8080
-        const response = await axios.get("https://api.epublicnotices.in/api/webuser/profile", {
+
+        // Fetch user profile data https://api.epublicnotices.in
+        const response = await axios.get("http://localhost:8080/api/webuser/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -68,8 +108,33 @@ export default function LibraryDashboard() {
 
         if (response.data && response.data.user) {
           setUser(response.data.user);
-          setSavedNotices(response.data.savedNotices || []);
-          setDownloadedNotices(response.data.downloadedNotices || []);
+          const savedNoticesList = response.data.savedNotices || [];
+          const downloadedNoticesList = response.data.downloadedNotices || [];
+
+          // Extract unique noticeIds
+          const noticeIds = [
+            ...new Set([
+              ...savedNoticesList.map((n) => n.noticeId),
+              ...downloadedNoticesList.map((n) => n.noticeId),
+            ]),
+          ];
+
+          let noticesMap = {};
+
+          // Fetch notice details **one by one**
+          for (const id of noticeIds) {
+            try {
+              const noticeResponse = await axios.get(`https://api.epublicnotices.in/notices/${id}`);
+              const { notice_title, location } = noticeResponse.data; // Extract only required fields
+              noticesMap[id] = { notice_title, location };
+            } catch (err) {
+              console.error(`Error fetching notice ${id}:`, err);
+            }
+          }
+
+          // Replace savedNotices and downloadedNotices with actual notice details
+          setSavedNotices(savedNoticesList.map((n) => ({ ...n, ...noticesMap[n.noticeId] })));
+          setDownloadedNotices(downloadedNoticesList.map((n) => ({ ...n, ...noticesMap[n.noticeId] })));
         } else {
           console.error("Invalid API response format");
         }
@@ -82,6 +147,8 @@ export default function LibraryDashboard() {
 
     fetchUserData();
   }, []);
+
+
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -118,14 +185,14 @@ export default function LibraryDashboard() {
                 Browse Notices
               </button>
               <a href="/dashboard/profile">
-              <button className="px-5 py-2 bg-white text-[#004B80] rounded-lg hover:bg-[#f0f7ff] transition-colors duration-200 border border-[#004B80] flex items-center gap-2">
-                <User className="h-4 w-4" />
-                Profile
-              </button>
+                <button className="px-5 py-2 bg-white text-[#004B80] rounded-lg hover:bg-[#f0f7ff] transition-colors duration-200 border border-[#004B80] flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  Profile
+                </button>
               </a>
             </div>
           </div>
-          
+
           {/* Decorative elements */}
           <div className="absolute -right-16 -bottom-16 h-64 w-64 rounded-full bg-[#004B80] opacity-10"></div>
           <div className="absolute right-20 bottom-20 h-16 w-16 rounded-full bg-[#004B80] opacity-20"></div>
@@ -140,7 +207,7 @@ export default function LibraryDashboard() {
                 <Star className="h-6 w-6 text-[#004B80] mr-2" />
                 <h2 className="text-2xl font-bold text-[#004B80]">Saved Notices</h2>
               </div>
-              
+
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {[1, 2, 3, 4].map((i) => (
@@ -172,7 +239,7 @@ export default function LibraryDashboard() {
                 <Download className="h-6 w-6 text-[#004B80] mr-2" />
                 <h2 className="text-2xl font-bold text-[#004B80]">Downloaded Notices</h2>
               </div>
-              
+
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {[1, 2].map((i) => (
@@ -226,7 +293,7 @@ export default function LibraryDashboard() {
                 </ul>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardContent>
                 <h3 className="font-semibold text-[#004B80] mb-4">Recent Activity</h3>

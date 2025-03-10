@@ -102,7 +102,7 @@ export default function Profile() {
                     <div className="p-6 bg-red-50 border border-red-200 rounded-lg mb-6 text-center">
                         <div className="text-red-500 text-lg font-medium mb-4">{error}</div>
                         {(error.includes('session') || error.includes('token') || error.includes('log in')) && (
-                            <button 
+                            <button     
                                 onClick={handleLoginRedirect}
                                 className="bg-[#004B80] text-white py-2 px-6 rounded-md hover:bg-[#004B80]/90 transition-all duration-300 flex items-center gap-2 mx-auto"
                             >

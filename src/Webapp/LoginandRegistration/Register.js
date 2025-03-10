@@ -36,8 +36,8 @@ const Register = () => {
       setLoading(false);
       return;
     }
-
-    const apiUrl = "https://api.epublicnotices.in/api/webuser/register";
+    // https://api.epublicnotices.in
+    const apiUrl = "http://localhost:8080/api/webuser/register";
 
     // Prepare request payload based on userType
     const userPayload = {
