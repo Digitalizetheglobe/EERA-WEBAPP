@@ -161,7 +161,7 @@ const Notice = () => {
   
       // Proceed with PDF generation
       const pdf = new jsPDF();
-      const imgUrl = `https://api.epublicnotices.in/noticesimage/${notice.notices_images}`;
+      const imgUrl = `https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`;
       const imgWidth = 190;
       const imgHeight = 160;
   
@@ -302,7 +302,7 @@ const Notice = () => {
             >
               {notice.notices_images ? (
                 <img
-                  src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                  src={`https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`}
                   alt="Notice"
                   className="object-cover w-full h-64 sm:h-80 lg:h-96"
                 />
@@ -411,7 +411,7 @@ const Notice = () => {
                       {/* Image takes up the entire card - object-top ensures cropping from the top */}
                       <div className="h-full w-full relative">
                         <img
-                          src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                          src={`https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`}
                           alt={notice.notice_title || "Notice image"}
                           className="w-full h-full object-cover object-top"
                           onError={(e) => {
@@ -472,7 +472,7 @@ const Notice = () => {
             <div className="flex justify-center overflow-hidden">
               <img
                 ref={imageRef}
-                src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                src={`https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`}
                 alt="Notice"
                 className="max-w-full max-h-[80vh] transition-transform duration-300"
                 style={{

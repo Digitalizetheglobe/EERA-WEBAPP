@@ -111,7 +111,7 @@ const LocationNotices = () => {
                   <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col">
                     <div className="relative h-48">
                       <img
-                        src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                        src={`https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`}
                         alt={notice.notice_title || "Notice image"}
                         className="w-full h-full object-cover"
                         onError={(e) => (e.target.src = defaultImage)}
@@ -139,7 +139,7 @@ const LocationNotices = () => {
                   <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col">
                     <div className="relative h-48">
                       <img
-                        src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                        src={`https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`}
                         alt={notice.notice_title || "Notice image"}
                         className="w-full h-full object-cover"
                         onError={(e) => (e.target.src = defaultImage)}

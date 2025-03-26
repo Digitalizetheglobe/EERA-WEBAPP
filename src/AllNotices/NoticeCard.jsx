@@ -11,7 +11,7 @@ export function NoticeCard({ notice }) {
                     <div className="w-24 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center">
                         {notice.notices_images ? (
                             <img
-                                src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                                src={`https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`}
                                 alt={notice.notice_title || 'Notice Image'}
                                 className="w-full h-full object-cover"
                             />

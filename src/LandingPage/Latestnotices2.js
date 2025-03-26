@@ -132,7 +132,7 @@ const LatestNotices = () => {
                                     {/* Image takes up the entire card */}
                                     <div className="h-full w-full relative">
                                         <img
-                                            src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                                            src={`https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`}
                                             alt={notice.notice_title || "Notice image"}
                                             className="w-full h-full object-cover object-top"
                                             onError={(e) => {

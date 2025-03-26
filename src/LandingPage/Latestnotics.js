@@ -116,7 +116,7 @@ const LatestNotices = () => {
               <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
                 <div className="relative pt-[60%] sm:pt-[50%] overflow-hidden">
                   <img
-                    src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                    src={`https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`}
                     alt={notice.notice_title || "Notice image"}
                     className="absolute top-0 left-0 w-full h-full object-cover"
                     onError={(e) => {
