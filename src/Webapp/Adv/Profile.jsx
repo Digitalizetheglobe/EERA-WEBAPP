@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronRight, User, Shield, Mail, Phone, MapPin, BookmarkIcon, Download, Lock } from "lucide-react";
+import { ChevronRight, User, Shield, Mail, Phone, MapPin, BookmarkIcon, Download, Lock, X, Eye, EyeOff } from "lucide-react";
 import LeftSidebar from "./LeftSidebar";
+import { toast } from "react-hot-toast";
 
 export default function Profile() {
     // State to store user data from API
@@ -21,6 +22,23 @@ export default function Profile() {
     // State for saved and downloaded notices
     const [savedNotices, setSavedNotices] = useState([]);
     const [downloadedNotices, setDownloadedNotices] = useState([]);
+
+    // State for password change modal
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const [passwordData, setPasswordData] = useState({
+        currentPassword: "",
+        newPassword: "",
+        confirmNewPassword: ""
+    });
+    const [passwordError, setPasswordError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // State for password visibility
+    const [showPasswords, setShowPasswords] = useState({
+        currentPassword: false,
+        newPassword: false,
+        confirmNewPassword: false
+    });
 
     // Fetch user profile data from API
     useEffect(() => {
@@ -73,6 +91,52 @@ export default function Profile() {
     const handleLoginRedirect = () => {
         // Replace with your actual login page path
         window.location.href = '/login';
+    };
+
+    // Handle password change
+    const handlePasswordChange = async (e) => {
+        e.preventDefault();
+        setPasswordError("");
+        setIsSubmitting(true);
+
+        try {
+            const token = localStorage.getItem('authToken');
+            const response = await fetch('https://api.epublicnotices.in/api/webuser/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    currentPassword: passwordData.currentPassword,
+                    newPassword: passwordData.newPassword,
+                    confirmNewPassword: passwordData.confirmNewPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.details || data.error || 'Failed to change password');
+            }
+
+            // Reset form and close modal
+            setPasswordData({
+                currentPassword: "",
+                newPassword: "",
+                confirmNewPassword: ""
+            });
+            setIsPasswordModalOpen(false);
+            toast.success(data.message || "Password changed successfully!");
+            
+            // Clear auth token and redirect to login
+            localStorage.removeItem('authToken');
+            window.location.href = '/login';
+        } catch (err) {
+            setPasswordError(err.message);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     // Loading state
@@ -141,6 +205,7 @@ export default function Profile() {
                         
                         <button
                             type="button"
+                            onClick={() => setIsPasswordModalOpen(true)}
                             className="bg-[#004B80] text-white py-2 px-6 rounded-md hover:bg-[#004B80]/90 transition-all duration-300 flex items-center justify-center gap-2 w-full md:w-auto"
                         >
                             <Lock className="h-4 w-4" />
@@ -243,6 +308,130 @@ export default function Profile() {
                     </div>
                 </div>
             </div>
+
+            {/* Password Change Modal */}
+            {isPasswordModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 relative">
+                        {/* Close button */}
+                        <button
+                            onClick={() => setIsPasswordModalOpen(false)}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                            <X className="w-6 h-6" />
+                        </button>
+
+                        {/* Modal Header */}
+                        <div className="text-center mb-6">
+                            <div className="bg-[#004B80]/10 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                                <Lock className="w-6 h-6 text-[#004B80]" />
+                            </div>
+                            <h2 className="text-2xl font-bold text-[#004B80]">Change Password</h2>
+                            <p className="text-gray-600 mt-2">Enter your current and new password</p>
+                        </div>
+
+                        {/* Password Form */}
+                        <form onSubmit={handlePasswordChange} className="space-y-4">
+                            {/* Current Password */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Current Password
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type={showPasswords.currentPassword ? "text" : "password"}
+                                        value={passwordData.currentPassword}
+                                        onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent transition-all pr-10"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPasswords({...showPasswords, currentPassword: !showPasswords.currentPassword})}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                    >
+                                        {showPasswords.currentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* New Password */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    New Password
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type={showPasswords.newPassword ? "text" : "password"}
+                                        value={passwordData.newPassword}
+                                        onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent transition-all pr-10"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPasswords({...showPasswords, newPassword: !showPasswords.newPassword})}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                    >
+                                        {showPasswords.newPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Confirm New Password */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Confirm New Password
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type={showPasswords.confirmNewPassword ? "text" : "password"}
+                                        value={passwordData.confirmNewPassword}
+                                        onChange={(e) => setPasswordData({...passwordData, confirmNewPassword: e.target.value})}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent transition-all pr-10"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPasswords({...showPasswords, confirmNewPassword: !showPasswords.confirmNewPassword})}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                    >
+                                        {showPasswords.confirmNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Error Message */}
+                            {passwordError && (
+                                <div className="text-red-500 text-sm mt-2 bg-red-50 p-3 rounded-lg border border-red-200">
+                                    {passwordError}
+                                </div>
+                            )}
+
+                            {/* Submit Button */}
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className={`w-full bg-[#004B80] text-white py-2 px-4 rounded-lg font-medium hover:bg-[#004B80]/90 transition-all duration-300 flex items-center justify-center gap-2 ${
+                                    isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+                                }`}
+                            >
+                                {isSubmitting ? (
+                                    <>
+                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                        <span>Updating...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Lock className="w-4 h-4" />
+                                        <span>Update Password</span>
+                                    </>
+                                )}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
