@@ -3,12 +3,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LeftSidebar from "./LeftSidebar";
 import templates from "./templates";
 import { useTranslation } from 'react-i18next';
+import html2canvas from 'html2canvas';
+import { toast } from 'react-hot-toast';
 
 const MyNotices = () => {
   const { t, i18n } = useTranslation();
   const [publishedNotices, setPublishedNotices] = useState([]);
   const [draftNotices, setDraftNotices] = useState([]);
   const [activeTab, setActiveTab] = useState("published");
+  const [userProfile, setUserProfile] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [noticeTemplates, setNoticeTemplates] = useState([
     {
       id: 1,
@@ -34,6 +38,7 @@ const MyNotices = () => {
   ]);
   const [landNotices, setLandNotices] = useState([]);
   const [landFormData, setLandFormData] = useState({
+    userId:"",
     notice_title: "",
     surveyNumber: "",
     hissaNumber: "",
@@ -42,6 +47,36 @@ const MyNotices = () => {
     occupantClass: "",
     mutationEntryNumber: "",
     landArea: "",
+    cultivatorName: "",
+    cropDetails: "",
+    irrigationType: "",
+    taxDetails: "",
+    boundaries: {
+      north: "",
+      south: "",
+      east: "",
+      west: ""
+    },
+    landDescription: ""
+  });
+  const [formData, setFormData] = useState({
+    notice_title: "",
+    category: "",
+    userType: "",
+    lawyer_name: "",
+    username: "",
+    date: new Date().toISOString().split('T')[0],
+    location: "",
+    phone: "",
+    notice_description: "",
+    selectedTemplate: "0",
+    ownerName: "",
+    surveyNumber: "",
+    hissaNumber: "",
+    landArea: "",
+    ownershipType: "",
+    occupantClass: "",
+    mutationEntryNumber: "",
     cultivatorName: "",
     cropDetails: "",
     irrigationType: "",
@@ -90,6 +125,104 @@ const MyNotices = () => {
     setLandNotices(storedLandNotices);
   }, []);
 
+  // Add this after the existing useEffect hooks
+  useEffect(() => {
+    const fetchLandNotices = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          toast.error('Please login to continue');
+          return;
+        }
+
+        // Get user ID from token
+        const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+        const userId = tokenPayload.userId;
+
+        const response = await fetch(`http://localhost:8004/api/land-notices/my-notices?userId=${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch land notices');
+        }
+
+        const data = await response.json();
+        setLandNotices(data.notices);
+      } catch (error) {
+        console.error('Error fetching land notices:', error);
+        toast.error('Failed to fetch land notices');
+      }
+    };
+
+    fetchLandNotices();
+  }, []);
+
+  // Get user ID from token
+  const getUserIdFromToken = () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      console.log('No token found');
+      return null;
+    }
+    try {
+      const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+      console.log('Token payload:', tokenPayload);
+      return tokenPayload.userId;
+    } catch (error) {
+      console.error('Error parsing token:', error);
+      return null;
+    }
+  };
+
+  // Fetch user profile and ID on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          toast.error('Please login to continue');
+          return;
+        }
+
+        // Get user ID from token
+        const userId = getUserIdFromToken();
+        setUserId(userId);
+
+        // Fetch user profile
+        const response = await fetch('http://localhost:8004/api/webuser/profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+
+        const data = await response.json();
+        setUserProfile(data.user);
+        
+        // Update form data with user profile data and ID
+        setLandFormData(prevData => ({
+          ...prevData,
+          userId: userId,
+          lawyer_name: data.user.name || "",
+          location: data.user.location || "",
+          phone: data.user.phone || "",
+          userType: data.user.userType || ""
+        }));
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        toast.error('Failed to fetch user data');
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   // Format date for display
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "short", day: "numeric" };
@@ -133,47 +266,138 @@ const MyNotices = () => {
   };
 
   // Handle land notice actions
-  const handleLandNoticeSubmit = (e) => {
+  const handleLandNoticeSubmit = async (e) => {
     e.preventDefault();
-    const newNotice = {
-      id: Date.now(),
-      ...landFormData,
-      status: "draft",
-      lastEdited: new Date().toISOString(),
-      type: "land_notice",
-      templateIndex: 3
-    };
-    setLandNotices([newNotice, ...landNotices]);
-    localStorage.setItem("landNotices", JSON.stringify([newNotice, ...landNotices]));
-    setLandFormData({
-      notice_title: "",
-      surveyNumber: "",
-      hissaNumber: "",
-      ownerName: "",
-      ownershipType: "",
-      occupantClass: "",
-      mutationEntryNumber: "",
-      landArea: "",
-      cultivatorName: "",
-      cropDetails: "",
-      irrigationType: "",
-      taxDetails: "",
-      boundaries: {
-        north: "",
-        south: "",
-        east: "",
-        west: ""
-      },
-      landDescription: ""
-    });
+    try {
+      // Show loading toast
+      const loadingToast = toast.loading('Creating land notice...');
+
+      // Get the template preview element
+      const templateElement = document.querySelector('.notice-preview');
+      if (!templateElement) {
+        throw new Error('Template preview element not found');
+      }
+
+      // Generate image from template
+      const canvas = await html2canvas(templateElement, {
+        scale: 2, // Higher quality
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      });
+
+      // Convert canvas to blob
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+
+      // Create FormData
+      const formData = new FormData();
+      formData.append('notice_image', blob, 'land-notice.jpg');
+      
+      // Append all form data
+      Object.keys(landFormData).forEach(key => {
+        if (key === 'boundaries') {
+          formData.append(key, JSON.stringify(landFormData[key]));
+        } else {
+          formData.append(key, landFormData[key]);
+        }
+      });
+
+      // Get auth token
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        throw new Error('Authentication token not found');
+      }
+
+      // Make API call
+      const response = await fetch('http://localhost:8004/api/land-notices/create', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.details || data.error || 'Failed to create land notice');
+      }
+
+      // Update local state
+      const newNotice = {
+        ...data.notice,
+        notice_image: URL.createObjectURL(blob),
+        createdAt: new Date().toISOString(),
+        status: 'under_review'
+      };
+      
+      setLandNotices([newNotice, ...landNotices]);
+      
+      // Reset form
+      setLandFormData({
+        userId: "",
+        notice_title: "",
+        surveyNumber: "",
+        hissaNumber: "",
+        ownerName: "",
+        ownershipType: "",
+        occupantClass: "",
+        mutationEntryNumber: "",
+        landArea: "",
+        cultivatorName: "",
+        cropDetails: "",
+        irrigationType: "",
+        taxDetails: "",
+        boundaries: {
+          north: "",
+          south: "",
+          east: "",
+          west: ""
+        },
+        landDescription: ""
+      });
+
+      // Show success message
+      toast.success('Land notice created successfully!', {
+        id: loadingToast
+      });
+
+      // Switch to published notices tab
+      setActiveTab("published");
+
+    } catch (error) {
+      console.error('Error creating land notice:', error);
+      toast.error(error.message || 'Failed to create land notice');
+    }
+  };
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name.includes('.')) {
+      // Handle nested objects (like boundaries)
+      const [parent, child] = name.split('.');
+      setLandFormData(prev => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [child]: value
+        }
+      }));
+    } else {
+      // Handle regular fields
+      setLandFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   return (
     <div className="flex">
       <LeftSidebar />
-      <div className="ml-64 min-h-screen bg-[#f7fbfe] w-full">
+      <div className="min-h-screen bg-[#f7fbfe] w-full transition-all duration-300 lg:ml-64">
         <div className="bg-[#004B80] text-white p-4 shadow-md flex justify-between items-center">
-          <h1 className="text-2xl font-bold">My Notices</h1>
+          <h1 className="text-2xl font-bold ml-16 lg:ml-0">My Notices</h1>
           <div className="flex items-center space-x-4">
             <button
               onClick={() => changeLanguage('en')}
@@ -264,7 +488,7 @@ const MyNotices = () => {
           {/* Published Notices */}
           {activeTab === "published" && (
             <div>
-              {publishedNotices.length === 0 ? (
+              {landNotices.length === 0 ? (
                 <div className="bg-white rounded-lg shadow-md p-8 text-center">
                   <div className="text-gray-400 mb-4">
                     <svg
@@ -297,36 +521,81 @@ const MyNotices = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {publishedNotices.map((notice) => (
+                  {landNotices.map((notice) => (
                     <div
                       key={notice.id}
                       className="bg-white rounded-lg shadow-md overflow-hidden"
                     >
+                      {notice.notice_image && (
+                        <div className="relative h-48">
+                          <img
+                            src={notice.notice_image}
+                            alt="Notice Preview"
+                            className="w-full h-full object-contain bg-gray-50"
+                          />
+                        </div>
+                      )}
                       <div className="bg-[#004B80] text-white py-2 px-4 flex justify-between items-center">
                         <div className="font-medium truncate">
                           {notice.notice_title}
                         </div>
-                        <div className="text-xs bg-yellow-500 text-white py-1 px-2 rounded">
-                          {notice.status === "under_review"
-                            ? "Under Review"
-                            : notice.status}
+                        <div className={`text-xs py-1 px-2 rounded ${
+                          notice.status === 'approved' 
+                            ? 'bg-green-500' 
+                            : notice.status === 'rejected'
+                            ? 'bg-red-500'
+                            : 'bg-yellow-500'
+                        } text-white`}>
+                          {notice.status.charAt(0).toUpperCase() + notice.status.slice(1)}
                         </div>
                       </div>
                       <div className="px-4 py-3 border-b border-gray-100">
                         <div className="text-sm">
-                          <span className="text-gray-500">Category:</span>{" "}
-                          {notice.category.replace("_", " ")}
+                          <span className="text-gray-500">Survey Number:</span>{" "}
+                          {notice.surveyNumber}
                         </div>
                         <div className="text-sm">
-                          <span className="text-gray-500">Published:</span>{" "}
-                          {formatDate(notice.publishDate)}
+                          <span className="text-gray-500">Created:</span>{" "}
+                          {formatDate(notice.createdAt)}
+                        </div>
+                        {notice.status === 'rejected' && notice.rejectionReason && (
+                          <div className="text-sm text-red-500 mt-2">
+                            <span className="font-medium">Rejection Reason:</span>{" "}
+                            {notice.rejectionReason}
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <div className="text-sm text-gray-600 line-clamp-3">
+                          {notice.landDescription}
                         </div>
                       </div>
-                      <div className="p-4 max-h-40 overflow-hidden">
-                        <div className="transform scale-75 origin-top-left">
-                          {templates[notice.templateIndex](notice, t)}
+                      {notice.status === 'approved' && notice.publishedUrl && (
+                        <div className="bg-gray-50 px-4 py-3">
+                          <a
+                            href={notice.publishedUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-[#004B80] hover:text-[#003b66] font-medium flex items-center"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 mr-1"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                              />
+                            </svg>
+                            View Published Notice
+                          </a>
                         </div>
-                      </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -583,270 +852,301 @@ const MyNotices = () => {
             </div>
           )}
 
-          {/* Land Notice Form */}
+          {/* Create A Notice Form */}
           {activeTab === "land_notice" && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Form Section */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold mb-6">{t('landNoticeForm')}</h2>
+                <h2 className="text-2xl font-bold text-[#004B80] mb-8">{t('createLandNotice')}</h2>
                 <form onSubmit={handleLandNoticeSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Notice Title */}
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('noticeTitle')}
-                      </label>
-                      <input
-                        type="text"
-                        value={landFormData.notice_title}
-                        onChange={(e) => setLandFormData({...landFormData, notice_title: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                        placeholder={t('noticeTitle')}
-                      />
-                    </div>
+                  {/* User ID */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t('userId')}
+                    </label>
+                    <input
+                      type="text"
+                      name="userId"
+                      value={userId || ""}
+                      readOnly
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                    />
+                  </div>
 
-                    {/* Survey Number */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('surveyNumber')}
-                      </label>
-                      <input
-                        type="text"
-                        value={landFormData.surveyNumber}
-                        onChange={(e) => setLandFormData({...landFormData, surveyNumber: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                      />
-                    </div>
+                  {/* Notice Title */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t('noticeTitle')}
+                    </label>
+                    <input
+                      type="text"
+                      name="notice_title"
+                      value={landFormData.notice_title}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                      placeholder={t('enterNoticeTitle')}
+                      required
+                    />
+                  </div>
 
-                    {/* Hissa Number */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('hissaNumber')}
-                      </label>
-                      <input
-                        type="text"
-                        value={landFormData.hissaNumber}
-                        onChange={(e) => setLandFormData({...landFormData, hissaNumber: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                      />
-                    </div>
+                  {/* Land Details */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-[#004B80] mb-4">{t('landDetails')}</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('surveyNumber')}
+                        </label>
+                        <input
+                          type="text"
+                          name="surveyNumber"
+                          value={landFormData.surveyNumber}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
 
-                    {/* Owner's Name */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('ownerName')}
-                      </label>
-                      <input
-                        type="text"
-                        value={landFormData.ownerName}
-                        onChange={(e) => setLandFormData({...landFormData, ownerName: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                      />
-                    </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('hissaNumber')}
+                        </label>
+                        <input
+                          type="text"
+                          name="hissaNumber"
+                          value={landFormData.hissaNumber}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
 
-                    {/* Type of Ownership */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('ownershipType')}
-                      </label>
-                      <select
-                        value={landFormData.ownershipType}
-                        onChange={(e) => setLandFormData({...landFormData, ownershipType: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                      >
-                        <option value="">{t('selectOwnershipType')}</option>
-                        <option value="individual">{t('individual')}</option>
-                        <option value="joint">{t('joint')}</option>
-                        <option value="government">{t('government')}</option>
-                        <option value="trust">{t('trust')}</option>
-                      </select>
-                    </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('ownerName')}
+                        </label>
+                        <input
+                          type="text"
+                          name="ownerName"
+                          value={landFormData.ownerName}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
 
-                    {/* Occupant Class */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('occupantClass')}
-                      </label>
-                      <select
-                        value={landFormData.occupantClass}
-                        onChange={(e) => setLandFormData({...landFormData, occupantClass: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                      >
-                        <option value="">{t('selectOccupantClass')}</option>
-                        <option value="owner">{t('owner')}</option>
-                        <option value="tenant">{t('tenant')}</option>
-                        <option value="lease">{t('lease')}</option>
-                      </select>
-                    </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('ownershipType')}
+                        </label>
+                        <select
+                          name="ownershipType"
+                          value={landFormData.ownershipType}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        >
+                          <option value="">{t('selectOwnershipType')}</option>
+                          <option value="Private">{t('private')}</option>
+                          <option value="Government">{t('government')}</option>
+                          <option value="Trust">{t('trust')}</option>
+                        </select>
+                      </div>
 
-                    {/* Mutation Entry Number */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('mutationEntryNumber')}
-                      </label>
-                      <input
-                        type="text"
-                        value={landFormData.mutationEntryNumber}
-                        onChange={(e) => setLandFormData({...landFormData, mutationEntryNumber: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                      />
-                    </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('occupantClass')}
+                        </label>
+                        <select
+                          name="occupantClass"
+                          value={landFormData.occupantClass}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        >
+                          <option value="">{t('selectOccupantClass')}</option>
+                          <option value="Residential">{t('residential')}</option>
+                          <option value="Commercial">{t('commercial')}</option>
+                          <option value="Agricultural">{t('agricultural')}</option>
+                        </select>
+                      </div>
 
-                    {/* Land Area */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('landArea')}
-                      </label>
-                      <input
-                        type="text"
-                        value={landFormData.landArea}
-                        onChange={(e) => setLandFormData({...landFormData, landArea: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                      />
-                    </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('mutationEntryNumber')}
+                        </label>
+                        <input
+                          type="text"
+                          name="mutationEntryNumber"
+                          value={landFormData.mutationEntryNumber}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
 
-                    {/* Cultivator's Name */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('cultivatorName')}
-                      </label>
-                      <input
-                        type="text"
-                        value={landFormData.cultivatorName}
-                        onChange={(e) => setLandFormData({...landFormData, cultivatorName: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                      />
-                    </div>
-
-                    {/* Crop Details */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('cropDetails')}
-                      </label>
-                      <textarea
-                        value={landFormData.cropDetails}
-                        onChange={(e) => setLandFormData({...landFormData, cropDetails: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        rows="3"
-                        required
-                      />
-                    </div>
-
-                    {/* Irrigation Type */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('irrigationType')}
-                      </label>
-                      <select
-                        value={landFormData.irrigationType}
-                        onChange={(e) => setLandFormData({...landFormData, irrigationType: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        required
-                      >
-                        <option value="">{t('selectIrrigationType')}</option>
-                        <option value="well">{t('well')}</option>
-                        <option value="canal">{t('canal')}</option>
-                        <option value="rainfed">{t('rainfed')}</option>
-                        <option value="other">{t('other')}</option>
-                      </select>
-                    </div>
-
-                    {/* Tax & Revenue Details */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('taxDetails')}
-                      </label>
-                      <textarea
-                        value={landFormData.taxDetails}
-                        onChange={(e) => setLandFormData({...landFormData, taxDetails: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        rows="3"
-                        required
-                      />
-                    </div>
-
-                    {/* Boundaries */}
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        {t('boundaries')}
-                      </label>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div>
-                          <label className="block text-xs text-gray-600 mb-1">{t('north')}</label>
-                          <input
-                            type="text"
-                            value={landFormData.boundaries.north}
-                            onChange={(e) => setLandFormData({
-                              ...landFormData,
-                              boundaries: {...landFormData.boundaries, north: e.target.value}
-                            })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs text-gray-600 mb-1">{t('south')}</label>
-                          <input
-                            type="text"
-                            value={landFormData.boundaries.south}
-                            onChange={(e) => setLandFormData({
-                              ...landFormData,
-                              boundaries: {...landFormData.boundaries, south: e.target.value}
-                            })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs text-gray-600 mb-1">{t('east')}</label>
-                          <input
-                            type="text"
-                            value={landFormData.boundaries.east}
-                            onChange={(e) => setLandFormData({
-                              ...landFormData,
-                              boundaries: {...landFormData.boundaries, east: e.target.value}
-                            })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs text-gray-600 mb-1">{t('west')}</label>
-                          <input
-                            type="text"
-                            value={landFormData.boundaries.west}
-                            onChange={(e) => setLandFormData({
-                              ...landFormData,
-                              boundaries: {...landFormData.boundaries, west: e.target.value}
-                            })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                            required
-                          />
-                        </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('landArea')}
+                        </label>
+                        <input
+                          type="text"
+                          name="landArea"
+                          value={landFormData.landArea}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
                       </div>
                     </div>
+                  </div>
 
-                    {/* Land Description */}
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('landDescription')}
-                      </label>
-                      <textarea
-                        value={landFormData.landDescription}
-                        onChange={(e) => setLandFormData({...landFormData, landDescription: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
-                        rows="4"
-                        required
-                      />
+                  {/* Cultivation Details */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-[#004B80] mb-4">{t('cultivationDetails')}</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('cultivatorName')}
+                        </label>
+                        <input
+                          type="text"
+                          name="cultivatorName"
+                          value={landFormData.cultivatorName}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('irrigationType')}
+                        </label>
+                        <select
+                          name="irrigationType"
+                          value={landFormData.irrigationType}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        >
+                          <option value="">{t('selectIrrigationType')}</option>
+                          <option value="Well">{t('well')}</option>
+                          <option value="Canal">{t('canal')}</option>
+                          <option value="Rainfed">{t('rainfed')}</option>
+                        </select>
+                      </div>
+
+                      <div className="col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('cropDetails')}
+                        </label>
+                        <input
+                          type="text"
+                          name="cropDetails"
+                          value={landFormData.cropDetails}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Boundaries */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-[#004B80] mb-4">{t('boundaries')}</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('north')}
+                        </label>
+                        <input
+                          type="text"
+                          name="boundaries.north"
+                          value={landFormData.boundaries.north}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('south')}
+                        </label>
+                        <input
+                          type="text"
+                          name="boundaries.south"
+                          value={landFormData.boundaries.south}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('east')}
+                        </label>
+                        <input
+                          type="text"
+                          name="boundaries.east"
+                          value={landFormData.boundaries.east}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('west')}
+                        </label>
+                        <input
+                          type="text"
+                          name="boundaries.west"
+                          value={landFormData.boundaries.west}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Additional Details */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-[#004B80] mb-4">{t('additionalDetails')}</h3>
+                    <div className="grid grid-cols-1 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('taxDetails')}
+                        </label>
+                        <input
+                          type="text"
+                          name="taxDetails"
+                          value={landFormData.taxDetails}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('landDescription')}
+                        </label>
+                        <textarea
+                          name="landDescription"
+                          value={landFormData.landDescription}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                          rows="3"
+                          required
+                          placeholder={t('enterLandDescription')}
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -880,7 +1180,7 @@ const MyNotices = () => {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-semibold mb-6">{t('noticePreview')}</h2>
                 <div className="border rounded-lg p-4 bg-gray-50">
-                  <div className="transform scale-75 origin-top-left">
+                  <div className="notice-preview transform scale-75 origin-top-left">
                     {templates[3](landFormData, t)}
                   </div>
                 </div>

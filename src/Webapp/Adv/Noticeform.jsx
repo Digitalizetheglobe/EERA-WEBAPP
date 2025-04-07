@@ -2,24 +2,98 @@ import React, { useState, useEffect } from 'react';
 import LeftSidebar from './LeftSidebar';
 import templates from './templates';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import html2canvas from 'html2canvas';
+
 const NoticeForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const draft = location.state?.draft || null;
+  const [userProfile, setUserProfile] = useState(null);
+  const [userId, setUserId] = useState(null);
+
+  // Fetch user profile and ID on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          toast.error('Please login to continue');
+          return;
+        }
+
+        // Get user ID from token
+        const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+        const userId = tokenPayload.userId;
+        setUserId(userId);
+
+        // Fetch user profile
+        const response = await fetch('http://localhost:8004/api/webuser/profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+
+        const data = await response.json();
+        setUserProfile(data.user);
+        
+        // Update form data with user profile data and ID
+        setFormData(prevData => ({
+          ...prevData,
+          userId: userId,
+          lawyer_name: data.user.name || "",
+          location: data.user.location || "",
+          phone: data.user.phone || "",
+          userType: data.user.userType || ""
+        }));
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        toast.error('Failed to fetch user data');
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   const initialFormData = draft || {
-    category: '',
-    lawyer_name: '',
-    notice_description: '',
-    notice_title: '',
-    date: '',
-    location: '',
-    username: '',
-    type: '',
-    phone: ''
+    userId: "",
+    notice_title: "",
+    surveyNumber: "",
+    hissaNumber: "",
+    ownerName: "",
+    ownershipType: "",
+    occupantClass: "",
+    mutationEntryNumber: "",
+    landArea: "",
+    cultivatorName: "",
+    cropDetails: "",
+    irrigationType: "",
+    taxDetails: "",
+    boundaries: {
+      north: "",
+      south: "",
+      east: "",
+      west: ""
+    },
+    landDescription: "",
+    userType: "",
+    location: "",
+    phone: "",
+    lawyer_name: "",
+    date: new Date().toISOString().split('T')[0]
   };
 
   // State for form fields
   const [formData, setFormData] = useState(initialFormData);
+
+  // Add useEffect to log formData changes
+  useEffect(() => {
+    console.log('Form data updated:', formData);
+  }, [formData]);
 
   // State for selected template
   const [selectedTemplate, setSelectedTemplate] = useState(draft?.templateIndex || 0);
@@ -191,6 +265,72 @@ const isFormComplete = () => {
     );
   };
 
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        toast.error('Please login to continue');
+        return;
+      }
+
+      // Get the template preview element
+      const templateElement = document.querySelector('.notice-preview');
+      if (!templateElement) {
+        throw new Error('Template preview element not found');
+      }
+
+      // Generate image from template
+      const canvas = await html2canvas(templateElement, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      });
+
+      // Convert canvas to blob
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+
+      // Create FormData
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append('notice_image', blob, 'land-notice.jpg');
+      
+      // Append all form data including userId
+      Object.keys(formData).forEach(key => {
+        if (key === 'boundaries') {
+          formDataToSubmit.append(key, JSON.stringify(formData[key]));
+        } else {
+          formDataToSubmit.append(key, formData[key]);
+        }
+      });
+
+      // Make API call
+      const response = await fetch('http://localhost:8004/api/land-notices/create', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formDataToSubmit
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.details || data.error || 'Failed to create land notice');
+      }
+
+      // Show success message
+      toast.success('Land notice created successfully!');
+      
+      // Reset form
+      setFormData(initialFormData);
+
+    } catch (error) {
+      console.error('Error creating land notice:', error);
+      toast.error(error.message || 'Failed to create land notice');
+    }
+  };
+
   // Render preview if showPreview is true
   if (showPreview) {
     return (
@@ -214,125 +354,170 @@ const isFormComplete = () => {
         <div className="p-6">
           {/* Form at the top */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-8 border-t-4 border-[#004B80]">
-            <h2 className="text-xl font-semibold text-[#004B80] mb-4">Notice Details</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="col-span-4">
-                <label className="block text-gray-700 mb-1">Notice Title</label>
+            <h2 className="text-2xl font-bold text-[#004B80] mb-8">Create A Notice</h2>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {/* User ID Field */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  User ID
+                </label>
                 <input
                   type="text"
-                  name="notice_title"
-                  value={formData.notice_title}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#b8d7f4]"
-                  placeholder="Enter notice title"
+                  name="userId"
+                  value={userId || ""}
+                  readOnly
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
                 />
               </div>
 
-              <div>
-                <label className="block text-gray-700 mb-1">Category</label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#b8d7f4]"
-                >
-                  <option value="">Select Category</option>
-                  <option value="legal_notice">Legal Notice</option>
-                  <option value="planning_applications">Planning Applications</option>
-                  <option value="government_notice">Government Notice</option>
-                  <option value="financial_notice">Financial Notice</option>
-                  <option value="environmental_notice">Environmental Notice</option>
-                  <option value="corporate_disclosure">Corporate Disclosure</option>
-                  <option value="municipal_announcement">Municipal Announcement</option>
-                  <option value="public_safety_alerts">Public Safety Alerts</option>
-                </select>
-              </div>
+              {/* Notice Details */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-[#004B80] mb-4">Notice Details</h3>
+                <div className="space-y-4">
+                 
+                  {/* Notice Title */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Notice Title
+                    </label>
+                    <input
+                      type="text"
+                      name="notice_title"
+                      value={formData.notice_title}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                      placeholder="Enter notice title"
+                      required
+                    />
+                  </div>
 
-              <div>
-                <label className="block text-gray-700 mb-1">Account Type</label>
-                <input
-                  type="text"
-                  name="type"
-                  value={formData.type}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#b8d7f4]"
-                  placeholder="Enter account type"
-                />
-              </div>
+                  {/* Category and Account Type */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Category
+                      </label>
+                      <select
+                        name="category"
+                        value={formData.category}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                        required
+                      >
+                        <option value="">Select Category</option>
+                        <option value="legal_notice">Legal Notice</option>
+                        <option value="planning_applications">Planning Applications</option>
+                        <option value="government_notice">Government Notice</option>
+                        <option value="financial_notice">Financial Notice</option>
+                        <option value="environmental_notice">Environmental Notice</option>
+                        <option value="corporate_disclosure">Corporate Disclosure</option>
+                        <option value="municipal_announcement">Municipal Announcement</option>
+                        <option value="public_safety_alerts">Public Safety Alerts</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Account Type
+                      </label>
+                      <input
+                        type="text"
+                        name="userType"
+                        value={formData.userType}
+                        readOnly
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                      />
+                    </div>
+                  </div>
 
-              <div>
-                <label className="block text-gray-700 mb-1">Lawyer Name</label>
-                <input
-                  type="text"
-                  name="lawyer_name"
-                  value={formData.lawyer_name}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#b8d7f4]"
-                  placeholder="Enter your name"
-                />
-              </div>
+                  {/* Lawyer Name and Username */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Lawyer Name
+                      </label>
+                      <input
+                        type="text"
+                        name="lawyer_name"
+                        value={formData.lawyer_name}
+                        readOnly
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Username
+                      </label>
+                      <input
+                        type="text"
+                        name="username"
+                        value={formData.lawyer_name}
+                        readOnly
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                      />
+                    </div>
+                  </div>
 
-              <div>
-                <label className="block text-gray-700 mb-1">Username</label>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#b8d7f4]"
-                  placeholder="Enter username"
-                />
-              </div>
+                  {/* Date and Location */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Date
+                      </label>
+                      <input
+                        type="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Location
+                      </label>
+                      <input
+                        type="text"
+                        name="location"
+                        value={formData.location}
+                        readOnly
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                      />
+                    </div>
+                  </div>
 
-              <div>
-                <label className="block text-gray-700 mb-1">Date</label>
-                <input
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#b8d7f4]"
-                />
-              </div>
+                  {/* Phone No. */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone No.
+                    </label>
+                    <input
+                      type="text"
+                      name="phone"
+                      value={formData.phone}
+                      readOnly
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                    />
+                  </div>
 
-              <div>
-                <label className="block text-gray-700 mb-1">Location</label>
-                <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#b8d7f4]"
-                  placeholder="Enter location"
-                />
+                  {/* Notice Description */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Notice Description
+                    </label>
+                    <textarea
+                      name="landDescription"
+                      value={formData.landDescription}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004B80] focus:border-transparent"
+                      rows="4"
+                      required
+                      placeholder="Enter notice description"
+                    />
+                  </div>
+                </div>
               </div>
-              
-              <div>
-                <label className="block text-gray-700 mb-1">Phone No.</label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#b8d7f4]"
-                  placeholder="Enter Phone No."
-                />
-              </div>
-
-              <div className="col-span-4">
-                <label className="block text-gray-700 mb-1">Notice Description</label>
-                <textarea
-                type="text"
-                  name="notice_description"
-                  value={formData.notice_description}
-                  onChange={handleChange}
-                  rows="6"
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#b8d7f4]"
-                  placeholder="Enter notice description"
-                ></textarea>
-              </div>
-            </div>
+            </form>
           </div>
 
           {/* Templates side by side */}
@@ -343,8 +528,9 @@ const isFormComplete = () => {
               {templates.map((template, index) => (
                 <div
                   key={index}
-                  className={`cursor-pointer transition-all transform hover:scale-105 bg-white rounded-lg overflow-hidden shadow-md ${selectedTemplate === index ? 'ring-2 ring-[#004B80] shadow-lg' : 'hover:shadow-lg border border-[#b8d7f4]'
-                    }`}
+                  className={`cursor-pointer transition-all transform hover:scale-105 bg-white rounded-lg overflow-hidden shadow-md ${
+                    selectedTemplate === index ? 'ring-2 ring-[#004B80] shadow-lg' : 'hover:shadow-lg border border-[#b8d7f4]'
+                  }`}
                   onClick={() => handleTemplateSelect(index)}
                 >
                   <div className="text-sm text-white bg-[#004B80] py-1 px-3">
@@ -361,10 +547,11 @@ const isFormComplete = () => {
               <button
                 onClick={handlePreview}
                 disabled={!isFormComplete()}
-                className={`px-8 py-3 rounded-md ${isFormComplete()
+                className={`px-8 py-3 rounded-md ${
+                  isFormComplete()
                     ? 'bg-[#004B80] text-white hover:bg-[#003b66] shadow-md'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  } transition`}
+                } transition`}
               >
                 Preview Notice
               </button>
