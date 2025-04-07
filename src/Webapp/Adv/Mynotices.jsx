@@ -138,8 +138,8 @@ const MyNotices = () => {
         // Get user ID from token
         const tokenPayload = JSON.parse(atob(token.split('.')[1]));
         const userId = tokenPayload.userId;
-
-        const response = await fetch(`http://localhost:8004/api/land-notices/my-notices?userId=${userId}`, {
+// http://localhost:8004/
+        const response = await fetch(`https://api.epublicnotices.in/api/land-notices/my-notices?userId=${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -192,7 +192,7 @@ const MyNotices = () => {
         setUserId(userId);
 
         // Fetch user profile
-        const response = await fetch('http://localhost:8004/api/webuser/profile', {
+        const response = await fetch('https://api.epublicnotices.in/api/webuser/profile', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -308,7 +308,7 @@ const MyNotices = () => {
       }
 
       // Make API call
-      const response = await fetch('http://localhost:8004/api/land-notices/create', {
+      const response = await fetch('https://api.epublicnotices.in/api/land-notices/create', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

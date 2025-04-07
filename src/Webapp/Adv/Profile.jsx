@@ -54,7 +54,7 @@ export default function Profile() {
                 }
                 // https://api.epublicnotices.in
                 //http://localhost:8080 
-                const response = await fetch('http://localhost:8004/api/webuser/profile', {
+                const response = await fetch('https://api.epublicnotices.in/api/webuser/profile', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

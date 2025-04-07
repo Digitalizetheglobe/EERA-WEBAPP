@@ -25,7 +25,7 @@ const Login = () => {
       // http://localhost:8004/
       // https://api.epublicnotices.in
 
-      const response = await fetch("http://localhost:8004/api/webuser/login", {
+      const response = await fetch("https://api.epublicnotices.in/api/webuser/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
