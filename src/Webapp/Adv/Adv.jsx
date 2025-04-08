@@ -156,7 +156,7 @@ export default function LibraryDashboard() {
       <div className="flex-1 overflow-auto ml-64">
         {/* Header */}
         <header className="p-4 flex items-center justify-between bg-white shadow-sm border-b border-[#b8d7f4]">
-          <h1 className="text-5xl font-bold text-[#004B80]">Dashboard</h1>
+          <h1 className="text-5xl font-bold text-[#004B80]">Eera Admin Panal</h1>
           <div className="flex items-center gap-4">
             <button className="relative p-2 rounded-full hover:bg-[#b8d7f4] transition-colors duration-200">
               <Bell className="h-5 w-5 text-[#004B80]" />

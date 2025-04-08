@@ -20,7 +20,7 @@ const Testimonial = () => {
   ];
 
   const testimonials = [
-    { quote: "I am very helped by this E-wallet application, my days are very easy to use this application and it's very helpful in my life, even I can pay in a short time.", name: "Aris Zinanrio" },
+    { quote: "EERA has completely transformed the way we manage public notices. The platform is intuitive, fast, and reliable. Posting notices is now seamless, and the approval workflow ensures everything stays organized. Highly recommend EERA for anyone looking for a professional and efficient solution!.", name: "Prasad Aswar" },
     { quote: "EERA has made my transactions simpler and faster, I never worry about delays anymore. It's truly a lifesaver!", name: "John Doe" },
     { quote: "The best payment management system I've used! It helped me handle payments globally without any hassle.", name: "Jane Smith" },
     { quote: "EERA has changed the way I manage my finances. It's quick, easy, and efficient. Highly recommend it!", name: "Emily Watson" },
@@ -76,12 +76,12 @@ const Testimonial = () => {
           </div>
           <blockquote className="mb-6 text-lg text-white">"{testimonials[currentTestimonial].quote}"</blockquote>
           <p className="font-semibold text-[#A99067]">- {testimonials[currentTestimonial].name}</p>
-          <div className="flex items-center mt-6">
+          {/* <div className="flex items-center mt-6">
             {avatarSets[currentSet].map((avatar, index) => (
               <img key={index} src={avatar} alt={`User ${index + 1}`} className="w-10 h-10 rounded-full mr-3 cursor-pointer" onClick={() => handleAvatarClick(index)} />
             ))}
             <img src={next} alt="Next" className="w-10 h-10 rounded-full cursor-pointer" onClick={handleNextClick} />
-          </div>
+          </div> */}
         </div>
       )}
       
