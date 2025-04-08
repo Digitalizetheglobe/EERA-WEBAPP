@@ -2,47 +2,85 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <link rel="icon" href="%PUBLIC_URL%/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="theme-color" content="#004B80" />
+    
+    <!-- Primary Meta Tags -->
+    <title>E-Public Notices: Legal & Government Announcements Online</title>
+    <meta name="title" content="E-Public Notices: Legal & Government Announcements Online">
+    <meta name="description" content="Find legal notices in newspapers and official government announcements online. Stay informed about public information, legal updates and regulatory changes in one place.">
+    <meta name="keywords" content="public notices, legal notices, government announcements, newspaper notices, official notices, land notices, tender notices">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://epublicnotices.in/">
+    <meta property="og:title" content="E-Public Notices: Legal & Government Announcements Online">
+    <meta property="og:description" content="Find legal notices in newspapers and official government announcements online. Stay informed about public information, legal updates and regulatory changes in one place.">
+    <meta property="og:image" content="%PUBLIC_URL%/social-banner.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://epublicnotices.in/">
+    <meta property="twitter:title" content="E-Public Notices: Legal & Government Announcements Online">
+    <meta property="twitter:description" content="Find legal notices in newspapers and official government announcements online. Stay informed about public information, legal updates and regulatory changes in one place.">
+    <meta property="twitter:image" content="%PUBLIC_URL%/social-banner.png">
+
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.6/keen-slider.min.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>EERA E Public Notices</title>
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://epublicnotices.in/" />
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <div style="text-align: center; padding: 2rem; background: #f0f7ff; color: #004B80; font-family: Arial, sans-serif;">
+        <h1 style="font-size: 1.5rem; margin-bottom: 1rem;">Welcome to E-Public Notices</h1>
+        <p style="margin-bottom: 1.5rem;">
+          Our website requires JavaScript to function properly. Please enable JavaScript in your browser to access all features.
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          <strong>About E-Public Notices:</strong><br>
+          Find legal notices in newspapers and official government announcements online. 
+          Stay informed about public information, legal updates and regulatory changes in one place.
+        </p>
+        <div style="margin-top: 2rem;">
+          <p>Need help enabling JavaScript?</p>
+          <a href="https://www.enable-javascript.com/" 
+             style="color: #004B80; text-decoration: underline;"
+             target="_blank"
+             rel="noopener noreferrer">
+            Click here for instructions
+          </a>
+        </div>
+      </div>
+    </noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    
+    <!-- Schema.org markup for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "E-Public Notices",
+      "url": "https://epublicnotices.in",
+      "description": "Find legal notices in newspapers and official government announcements online.",
+      "applicationCategory": "GovernmentApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+    </script>
   </body>
 </html>

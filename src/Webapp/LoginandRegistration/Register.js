@@ -5,7 +5,7 @@ import WebFooter from "../Notices/WebFooter";
 import Header from "../Home/HomeHeader";
 
 const Register = () => {
-  const [userType, setUserType] = useState("personal");
+  const [userType, setUserType] = useState("individual");
   const [formData, setFormData] = useState({
     name: "",
     number: "",
@@ -82,7 +82,7 @@ const Register = () => {
 
   // Content mapping for left side based on user type
   const leftSideContent = {
-    personal: (
+    individual: (
       <div className="relative h-full w-full">
         <div className="absolute inset-0 bg-white">
           <div className="h-full flex flex-col justify-center p-8 relative">
@@ -136,7 +136,7 @@ const Register = () => {
             <div className="mb-6">
               <p className="text-gray-700 mb-2">Select Your Profile Type</p>
               <div className="flex rounded-lg overflow-hidden bg-[#B8D7F4] p-3">
-                {["Personal", "Corporate", "Government"].map((type) => (
+                {["Individual", "Corporate", "Government"].map((type) => (
                   <button
                     key={type.toLowerCase()}
                     onClick={() => setUserType(type.toLowerCase())}
