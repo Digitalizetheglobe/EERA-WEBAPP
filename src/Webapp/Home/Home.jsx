@@ -12,6 +12,7 @@ import WebFooter from "../Notices/WebFooter";
 import LocationsCarousel from "../../LandingPage/locationscourosel/Locations";
 import CategoryCarousel from "../../LandingPage/categorycourosel/categories";
 import Post from "../PostNotice/post";
+import LandNoticesPage from "../../LandingPage/landnotices/landnoticespage";
 const Home2 = () => {
   return (
     <div>
@@ -22,6 +23,7 @@ const Home2 = () => {
       <LatestNotices />
       <LocationsCarousel/>
       <CategoryCarousel/>
+      <LandNoticesPage/>
       <CTA/>
       <Faq/>
       <Webtestimonial/>
