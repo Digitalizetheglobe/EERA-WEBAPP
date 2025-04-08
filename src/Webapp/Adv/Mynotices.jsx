@@ -89,6 +89,7 @@ const MyNotices = () => {
     },
     landDescription: ""
   });
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const navigate = useNavigate();
 
   // Language switching function
@@ -361,6 +362,9 @@ const MyNotices = () => {
         id: loadingToast
       });
 
+      // Show success modal
+      setShowSuccessModal(true);
+
       // Switch to published notices tab
       setActiveTab("published");
 
@@ -440,17 +444,6 @@ const MyNotices = () => {
             </button>
             <button
               className={`py-2 px-4 text-sm font-medium ${
-                activeTab === "templates"
-                  ? "border-b-2 border-[#004B80] text-[#004B80]"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-              onClick={() => setActiveTab("templates")}
-            >
-              Edit Notices Template{" "}
-              {noticeTemplates.length > 0 && `(${noticeTemplates.length})`}
-            </button>
-            <button
-              className={`py-2 px-4 text-sm font-medium ${
                 activeTab === "land_notice"
                   ? "border-b-2 border-[#004B80] text-[#004B80]"
                   : "text-gray-500 hover:text-gray-700"
@@ -481,7 +474,7 @@ const MyNotices = () => {
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              Create New Notice
+              Create Public Notice
             </button>
           </div>
 
@@ -719,145 +712,12 @@ const MyNotices = () => {
             </div>
           )}
 
-          {/* Edit Notices Template Tab */}
-          {activeTab === "templates" && (
-            <div>
-              <div className="mb-6">
-                {/* <button
-                  onClick={handleCreateTemplate}
-                  className="px-4 py-2 bg-[#004B80] text-white rounded-md hover:bg-[#003b66] transition shadow-md flex items-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mr-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                  Create New Template
-                </button> */}
-              </div>
-
-              {noticeTemplates.length === 0 ? (
-                <div className="bg-white rounded-lg shadow-md p-8 text-center">
-                  <div className="text-gray-400 mb-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-16 w-16 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1}
-                        d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-2">
-                    No templates available
-                  </h3>
-                  <p className="text-gray-500 mb-4">
-                    Create your first notice template to get started
-                  </p>
-                  <button
-                    onClick={handleCreateTemplate}
-                    className="px-4 py-2 bg-[#004B80] text-white rounded-md hover:bg-[#003b66] transition shadow-md"
-                  >
-                    Create Your First Template
-                  </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {noticeTemplates.map((template) => (
-                    <div
-                      key={template.id}
-                      className="bg-white rounded-lg shadow-md overflow-hidden"
-                    >
-                      <div className="bg-[#004B80] text-white py-2 px-4 flex justify-between items-center">
-                        <div className="font-medium truncate">
-                          {template.name}
-                        </div>
-                        <div className={`text-xs py-1 px-2 rounded ${
-                          template.status === "active" 
-                            ? "bg-green-500" 
-                            : "bg-yellow-500"
-                        } text-white`}>
-                          {template.status}
-                        </div>
-                      </div>
-                      <div className="px-4 py-3 border-b border-gray-100">
-                        <div className="text-sm text-gray-600 mb-2">
-                          {template.description}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          Last modified: {formatDate(template.lastModified)}
-                        </div>
-                      </div>
-                      <div className="bg-gray-50 px-4 py-3 flex justify-between">
-                        <button
-                          onClick={() => handleEditTemplate(template.id)}
-                          className="text-sm text-[#004B80] hover:text-[#003b66] font-medium flex items-center"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                            />
-                          </svg>
-                          Edit Template
-                        </button>
-                        <button
-                          onClick={() => handleDeleteTemplate(template.id)}
-                          className="text-sm text-red-500 hover:text-red-700 font-medium flex items-center"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                          </svg>
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Create A Notice Form */}
           {activeTab === "land_notice" && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Form Section */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-[#004B80] mb-8">{t('createLandNotice')}</h2>
+                <h2 className="text-2xl font-bold text-[#004B80] mb-8">Create Land Notice</h2>
                 <form onSubmit={handleLandNoticeSubmit} className="space-y-6">
                   {/* User ID */}
                   <div>
@@ -1188,6 +1048,43 @@ const MyNotices = () => {
             </div>
           )}
         </div>
+
+        {/* Success Modal */}
+        {showSuccessModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg
+                    className="w-8 h-8 text-green-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Your notice has been successfully submitted!
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  It will be live in the next 4 hours.
+                </p>
+                <button
+                  onClick={() => setShowSuccessModal(false)}
+                  className="w-full px-4 py-2 bg-[#004B80] text-white rounded-md hover:bg-[#003b66] transition shadow-md"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import LeftSidebar from './LeftSidebar';
 import templates from './templates';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import html2canvas from 'html2canvas';
+import { useTranslation } from 'react-i18next';
+
+// Success Modal Component
+const SuccessModal = ({ isOpen, onClose, message }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Success!</h3>
+          <p className="text-gray-600 mb-4">{message}</p>
+          <button
+            onClick={onClose}
+            className="bg-[#004B80] text-white px-6 py-2 rounded-md hover:bg-[#003b66] transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const NoticeForm = () => {
   const location = useLocation();
@@ -11,6 +39,11 @@ const NoticeForm = () => {
   const draft = location.state?.draft || null;
   const [userProfile, setUserProfile] = useState(null);
   const [userId, setUserId] = useState(null);
+  const { t } = useTranslation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Fetch user profile and ID on component mount
   useEffect(() => {
@@ -28,7 +61,7 @@ const NoticeForm = () => {
         setUserId(userId);
 
         // Fetch user profile
-        const response = await fetch('http://localhost:8004/api/webuser/profile', {
+        const response = await fetch('https://api.epublicnotices.in/api/webuser/profile', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -218,16 +251,21 @@ useEffect(() => {
 
 // Check if form is complete
 const isFormComplete = () => {
-  return Object.entries(formData).every(([key, value]) => {
-    // Skip username field as it's for reference only
-    
-    
-    // Handle different data types properly
+  // List of required fields
+  const requiredFields = [
+    'notice_title',
+    'category',
+    'landDescription',
+    'date'
+  ];
+
+  // Check if all required fields have values
+  return requiredFields.every(field => {
+    const value = formData[field];
     if (typeof value === 'string') {
       return value.trim() !== '';
-    } else {
-      return value !== null && value !== undefined;
     }
+    return value !== null && value !== undefined;
   });
 };
 
@@ -265,18 +303,24 @@ const isFormComplete = () => {
     );
   };
 
+  // Add ref for the template preview
+  const templateRef = useRef(null);
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('authToken');
       if (!token) {
-        toast.error('Please login to continue');
+        setSuccessMessage('Please login to continue');
+        setShowSuccessModal(true);
         return;
       }
 
+      setLoading(true);
+
       // Get the template preview element
-      const templateElement = document.querySelector('.notice-preview');
+      const templateElement = templateRef.current;
       if (!templateElement) {
         throw new Error('Template preview element not found');
       }
@@ -291,43 +335,73 @@ const isFormComplete = () => {
       // Convert canvas to blob
       const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
 
-      // Create FormData
+      // Create FormData for the image upload
       const formDataToSubmit = new FormData();
-      formDataToSubmit.append('notice_image', blob, 'land-notice.jpg');
-      
-      // Append all form data including userId
-      Object.keys(formData).forEach(key => {
-        if (key === 'boundaries') {
-          formDataToSubmit.append(key, JSON.stringify(formData[key]));
-        } else {
-          formDataToSubmit.append(key, formData[key]);
-        }
-      });
+      formDataToSubmit.append('document', blob, 'land-notice.jpg');
 
-      // Make API call
-      const response = await fetch('http://localhost:8004/api/land-notices/create', {
+      // First, create the notice with the new API
+      const noticeData = {
+        notice_title: formData.notice_title,
+        category: formData.category,
+        accountType: formData.userType,
+        lawyerName: formData.lawyer_name,
+        date: formData.date,
+        location: formData.location,
+        phoneNo: formData.phone,
+        noticeDescription: formData.landDescription,
+        userId: userId
+      };
+
+      // Make API call to create notice
+      const noticeResponse = await fetch('http://localhost:8004/api/notices/create', {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: formDataToSubmit
+        body: JSON.stringify(noticeData)
       });
 
-      const data = await response.json();
+      const noticeResult = await noticeResponse.json();
 
-      if (!response.ok) {
-        throw new Error(data.details || data.error || 'Failed to create land notice');
+      if (!noticeResponse.ok) {
+        throw new Error(noticeResult.message || 'Failed to create notice');
       }
 
-      // Show success message
-      toast.success('Land notice created successfully!');
-      
-      // Reset form
-      setFormData(initialFormData);
+      // If notice creation is successful, upload the image
+      if (noticeResult.success) {
+        // Upload the image using the existing API
+        const imageResponse = await fetch('https://api.epublicnotices.in/api/request-upload-notice', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formDataToSubmit
+        });
+
+        const imageResult = await imageResponse.json();
+
+        if (!imageResponse.ok) {
+          throw new Error(imageResult.message || 'Failed to upload notice image');
+        }
+
+        if (imageResult.success) {
+          setSuccessMessage('Your notice has been successfully submitted! It will be live in the next 4 hours.');
+          setShowSuccessModal(true);
+          setFormData(initialFormData);
+        } else {
+          throw new Error(imageResult.message || 'Failed to upload notice image');
+        }
+      } else {
+        throw new Error(noticeResult.message || 'Failed to create notice');
+      }
 
     } catch (error) {
-      console.error('Error creating land notice:', error);
-      toast.error(error.message || 'Failed to create land notice');
+      console.error('Error submitting notice:', error);
+      setSuccessMessage(error.message || 'Failed to submit notice');
+      setShowSuccessModal(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -525,7 +599,7 @@ const isFormComplete = () => {
             <h2 className="text-xl font-semibold text-[#004B80] mb-4">Select Template</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {templates.map((template, index) => (
+              {templates.slice(0, 3).map((template, index) => (
                 <div
                   key={index}
                   className={`cursor-pointer transition-all transform hover:scale-105 bg-white rounded-lg overflow-hidden shadow-md ${
@@ -553,14 +627,36 @@ const isFormComplete = () => {
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 } transition`}
               >
-                Preview Notice
+                Submit Notice
               </button>
               {!isFormComplete() && (
                 <p className="text-sm text-red-500 mt-2">Fill all required fields to proceed</p>
               )}
             </div>
           </div>
+
+          {/* Preview Section */}
+          {/* <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-semibold mb-6">{t('noticePreview')}</h2>
+            <div className="border rounded-lg p-4 bg-gray-50">
+              <div ref={templateRef} className="notice-preview transform scale-75 origin-top-left">
+                {templates[selectedTemplate](formData)}
+              </div>
+            </div>
+          </div> */}
         </div>
+
+        {/* Success Modal */}
+        <SuccessModal
+          isOpen={showSuccessModal}
+          onClose={() => {
+            setShowSuccessModal(false);
+            if (successMessage.includes('successfully')) {
+              navigate('/mynotices');
+            }
+          }}
+          message={successMessage}
+        />
       </div>
     </div>
   );

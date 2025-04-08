@@ -23,7 +23,7 @@ const templates = [
 
       {/* Notice Content */}
       <div className="text-sm mb-4 whitespace-pre-wrap leading-tight">
-        {data.notice_description || safeTranslate(t, "Take notice that MR. NAME has represented my client...")}
+        {data.landDescription || safeTranslate(t, "Take notice that MR. NAME has represented my client...")}
       </div>
 
       {/* Footer */}
@@ -56,7 +56,7 @@ const templates = [
       {/* Main Notice Content */}
       <div className="px-4 py-2">
         <div className="text-sm mb-4 whitespace-pre-wrap leading-tight">
-          {data.notice_description || safeTranslate(t, "This is to inform you that...")}
+          {data.landDescription || safeTranslate(t, "This is to inform you that...")}
         </div>
 
         {/* Lawyer Details */}
@@ -89,7 +89,7 @@ const templates = [
       </div>
 
       <div className="border border-black p-3 text-xs mb-6 whitespace-pre-wrap break-words">
-        {data.notice_description || safeTranslate(t, "Take notice that...")}
+        {data.landDescription || safeTranslate(t, "Take notice that...")}
       </div>
       <table className="w-full text-sm border-collapse mb-3">
         <tbody>
@@ -236,11 +236,11 @@ const templates = [
               {safeTranslate(t, "date")}: {data.date || new Date().toLocaleDateString()}
             </div>
           </div>
-          <div className="text-right">
+          {/* <div className="text-right">
             <div className="font-bold text-lg mb-1">{data.lawyer_name || "___________"}</div>
             <div>{safeTranslate(t, "advocate")}</div>
             <div className="text-sm mt-1">{safeTranslate(t, "advocateDetails")}</div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

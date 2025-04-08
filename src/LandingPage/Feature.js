@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import feacture from "../assets/banner/Mask group.png";
+import feacture from "../assets/law.jpeg";
 
 const Feature = () => {
   return (
@@ -8,7 +8,7 @@ const Feature = () => {
       <motion.div 
         className="grid xl:grid-cols-2 gap-10 items-center"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: 1 }}  
         transition={{ duration: 1 }}
       >
         {/* Image Section */}
