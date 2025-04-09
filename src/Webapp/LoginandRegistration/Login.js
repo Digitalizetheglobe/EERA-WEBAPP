@@ -175,7 +175,7 @@ const Login = () => {
               </div>
 
               {/* Social Media Login */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6">
+              {/* <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6">
                 <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 border rounded-lg text-sm text-gray-700 hover:shadow-md transition">
                   <img src={Google} alt="Google" className="h-5 w-5" />
                   <span>Google</span>
@@ -184,7 +184,7 @@ const Login = () => {
                   <img src={Facebook} alt="Facebook" className="h-5 w-5" />
                   <span>Facebook</span>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

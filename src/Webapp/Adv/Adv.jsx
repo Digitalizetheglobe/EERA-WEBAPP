@@ -109,21 +109,24 @@ export default function LibraryDashboard() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-white relative">
+    <div className="flex">
+       <LeftSidebar />
+    <div className="min-h-screen bg-[#f7fbfe] w-full transition-all duration-300">
       {/* Mobile sidebar toggle */}
-      <button 
+      {/* <button 
         onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-[#004B80] text-white rounded-md shadow-md"
       >
         <Menu className="h-5 w-5" />
-      </button>
+      </button> */}
 
       {/* Sidebar - Hidden on mobile by default */}
-      <div className={`fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-[#b8d7f4] transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-200 ease-in-out`}>
+      {/* <div className={`fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-[#b8d7f4] transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-200 ease-in-out`}>
         <LeftSidebar onClose={() => setMobileSidebarOpen(false)} />
-      </div>
+      </div> */}
 
       {/* Main content area */}
+      <div className="p-6">
       <div className="flex-1 overflow-auto lg:ml-64">
         {/* Header */}
         <header className="p-3 sm:p-4 flex items-center justify-between bg-white shadow-sm border-b border-[#b8d7f4]">
@@ -288,6 +291,8 @@ export default function LibraryDashboard() {
           </div>
         </main>
       </div>
+      </div>
+    </div>
     </div>
   );
 }

@@ -272,7 +272,7 @@ const isFormComplete = () => {
   // Full preview template with selected style
   const FullPreview = () => {
     return (
-      <div className="ml-64 flex flex-col bg-[#f7fbfe] h-screen">
+      <div className="min-h-screen bg-[#f7fbfe] w-full transition-all duration-300 lg:ml-64">
         <div className="bg-[#004B80] text-white p-4 shadow-md">
           <h1 className="text-2xl font-bold">Notice Preview</h1>
         </div>
@@ -418,7 +418,7 @@ const isFormComplete = () => {
   return (
     <div className="flex">
       <LeftSidebar />
-      <div className="ml-64 min-h-screen bg-[#b8d7f4] bg-opacity-10 w-full">
+      <div className="min-h-screen bg-[#f7fbfe] w-full transition-all duration-300 lg:ml-64">
         <div className="bg-[#004B80] text-white p-4 shadow-md">
           <h1 className="text-2xl font-bold">
             {draft ? 'Continue Editing Notice' : 'Create A Notice'}
