@@ -211,8 +211,27 @@ useEffect(() => {
         return;
       }
 
+      // First, capture the template as an image
+      const templateElement = document.querySelector(`[data-template="${selectedTemplate}"]`);
+      if (!templateElement) {
+        throw new Error('Template element not found');
+      }
+
+      // Generate image from template
+      const canvas = await html2canvas(templateElement, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      });
+
+      // Convert canvas to blob
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+
       // Create FormData for the API request
       const formDataToSubmit = new FormData();
+      
+      // Add the image
+      formDataToSubmit.append('notice_image', blob, 'notice.jpg');
       
       // Add all the form fields
       formDataToSubmit.append('notice_title', formData.notice_title);
@@ -240,22 +259,18 @@ useEffect(() => {
         throw new Error(result.message || 'Failed to create notice');
       }
 
-      if (result.success) {
-        setSuccessMessage('Your notice has been successfully submitted! It will be live in the next 4 hours.');
-        setShowSuccessModal(true);
-        
-        // If this was a draft, remove it from drafts
-        if (draft && draft.id) {
-          const existingDrafts = JSON.parse(localStorage.getItem('noticeDrafts') || '[]');
-          const updatedDrafts = existingDrafts.filter(d => d.id !== draft.id);
-          localStorage.setItem('noticeDrafts', JSON.stringify(updatedDrafts));
-        }
-        
-        // Reset form
-        setFormData(initialFormData);
-      } else {
-        throw new Error(result.message || 'Failed to create notice');
+      setSuccessMessage('Your notice has been successfully submitted! It will be live in the next 4 hours.');
+      setShowSuccessModal(true);
+      
+      // If this was a draft, remove it from drafts
+      if (draft && draft.id) {
+        const existingDrafts = JSON.parse(localStorage.getItem('noticeDrafts') || '[]');
+        const updatedDrafts = existingDrafts.filter(d => d.id !== draft.id);
+        localStorage.setItem('noticeDrafts', JSON.stringify(updatedDrafts));
       }
+      
+      // Reset form
+      setFormData(initialFormData);
 
     } catch (error) {
       console.error('Error submitting notice:', error);
@@ -545,7 +560,10 @@ useEffect(() => {
                   <div className="text-sm text-white bg-[#004B80] py-1 px-3">
                     Template {index + 1}
                   </div>
-                  <div className="transform scale-75 origin-top overflow-hidden min-h-64 p-2">
+                  <div 
+                    className="transform scale-75 origin-top overflow-hidden min-h-64 p-2"
+                    data-template={index}
+                  >
                     {template(formData)}
                   </div>
                 </div>
