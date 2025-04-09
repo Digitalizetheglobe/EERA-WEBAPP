@@ -76,7 +76,7 @@ const NoticeForm = () => {
         
         // Update form data with user profile data and ID
         setFormData(prevData => ({
-          ...prevData,
+          ...prevData,  
           userId: userId,
           lawyer_name: data.user.name || "",
           location: data.user.location || "",
@@ -200,74 +200,91 @@ useEffect(() => {
     setShowPreview(true);
   };
 
-  // Handle publish
-  const handlePublish = () => {
-    // Get existing published notices
-    const publishedNotices = JSON.parse(localStorage.getItem('publishedNotices') || '[]');
-    
-    // Create new notice object
-    const newNotice = {
-      ...formData,
-      templateIndex: selectedTemplate,
-      id: `notice-${Date.now()}`,
-      publishDate: new Date().toISOString(),
-      status: 'under_review'
-    };
-    
-    // Add to published notices
-    localStorage.setItem('publishedNotices', JSON.stringify([...publishedNotices, newNotice]));
-    
-    // If this was a draft, remove it from drafts
-    if (draft && draft.id) {
-      const existingDrafts = JSON.parse(localStorage.getItem('noticeDrafts') || '[]');
-      const updatedDrafts = existingDrafts.filter(d => d.id !== draft.id);
-      localStorage.setItem('noticeDrafts', JSON.stringify(updatedDrafts));
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        toast.error('Please login to continue');
+        return;
+      }
+
+      // Create FormData for the API request
+      const formDataToSubmit = new FormData();
+      
+      // Add all the form fields
+      formDataToSubmit.append('notice_title', formData.notice_title);
+      formDataToSubmit.append('category', formData.category);
+      formDataToSubmit.append('accountType', formData.userType);
+      formDataToSubmit.append('lawyerName', formData.lawyer_name);
+      formDataToSubmit.append('date', formData.date);
+      formDataToSubmit.append('location', formData.location);
+      formDataToSubmit.append('phoneNo', formData.phone);
+      formDataToSubmit.append('noticeDescription', formData.landDescription);
+      formDataToSubmit.append('userId', userId);
+
+      // Make API call to create notice
+      const response = await fetch('https://api.epublicnotices.in/api/notices/create', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formDataToSubmit
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to create notice');
+      }
+
+      if (result.success) {
+        setSuccessMessage('Your notice has been successfully submitted! It will be live in the next 4 hours.');
+        setShowSuccessModal(true);
+        
+        // If this was a draft, remove it from drafts
+        if (draft && draft.id) {
+          const existingDrafts = JSON.parse(localStorage.getItem('noticeDrafts') || '[]');
+          const updatedDrafts = existingDrafts.filter(d => d.id !== draft.id);
+          localStorage.setItem('noticeDrafts', JSON.stringify(updatedDrafts));
+        }
+        
+        // Reset form
+        setFormData(initialFormData);
+      } else {
+        throw new Error(result.message || 'Failed to create notice');
+      }
+
+    } catch (error) {
+      console.error('Error submitting notice:', error);
+      setSuccessMessage(error.message || 'Failed to submit notice');
+      setShowSuccessModal(true);
+    } finally {
+      setLoading(false);
     }
-    
-    alert("Your Notice is currently undergoing review. We appreciate your patience while this process is completed.");
-    
-    // Reset form and go back to edit mode
-    setShowPreview(false);
-    setFormData({
-      category: '',
-      lawyer_name: '',
-      notice_description: '',
-      notice_title: '',
-      date: '',
-      location: '',
-      username: '',
-      type: '',
-      phone: ''
+  };
+
+  // Check if form is complete
+  const isFormComplete = () => {
+    // List of required fields
+    const requiredFields = [
+      'notice_title',
+      'category',
+      'landDescription',
+      'date'
+    ];
+
+    // Check if all required fields have values
+    return requiredFields.every(field => {
+      const value = formData[field];
+      if (typeof value === 'string') {
+        return value.trim() !== '';
+      }
+      return value !== null && value !== undefined;
     });
-    
-    // Redirect to my notices page
-    window.location.href = '/mynotices';
   };
-
-  // Handle back from preview
-  const handleBack = () => {
-    setShowPreview(false);
-  };
-
-// Check if form is complete
-const isFormComplete = () => {
-  // List of required fields
-  const requiredFields = [
-    'notice_title',
-    'category',
-    'landDescription',
-    'date'
-  ];
-
-  // Check if all required fields have values
-  return requiredFields.every(field => {
-    const value = formData[field];
-    if (typeof value === 'string') {
-      return value.trim() !== '';
-    }
-    return value !== null && value !== undefined;
-  });
-};
 
   // Full preview template with selected style
   const FullPreview = () => {
@@ -279,7 +296,7 @@ const isFormComplete = () => {
 
         <div className="flex-grow p-8 overflow-auto">
           <div className="w-full max-w-xl bg-white shadow-xl p-8 rounded-lg border-t-4 border-[#004B80] mx-auto mb-8">
-            <div className="w-full">
+            <div className="w-full" ref={templateRef}>
               {templates[selectedTemplate](formData)}
             </div>
           </div>
@@ -287,13 +304,13 @@ const isFormComplete = () => {
 
         <div className="bg-white p-4 shadow-md flex justify-between border-t border-[#b8d7f4] sticky bottom-0">
           <button
-            onClick={handleBack}
+            onClick={() => setShowPreview(false)}
             className="px-6 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition border border-gray-300"
           >
             Back to Edit
           </button>
           <button
-            onClick={handlePublish}
+            onClick={handleSubmit}
             className="px-6 py-2 bg-[#004B80] text-white rounded hover:bg-[#003b66] transition shadow-md"
           >
             Publish Notice
@@ -305,105 +322,6 @@ const isFormComplete = () => {
 
   // Add ref for the template preview
   const templateRef = useRef(null);
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        setSuccessMessage('Please login to continue');
-        setShowSuccessModal(true);
-        return;
-      }
-
-      setLoading(true);
-
-      // Get the template preview element
-      const templateElement = templateRef.current;
-      if (!templateElement) {
-        throw new Error('Template preview element not found');
-      }
-
-      // Generate image from template
-      const canvas = await html2canvas(templateElement, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff'
-      });
-
-      // Convert canvas to blob
-      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
-
-      // Create FormData for the image upload
-      const formDataToSubmit = new FormData();
-      formDataToSubmit.append('document', blob, 'land-notice.jpg');
-
-      // First, create the notice with the new API
-      const noticeData = {
-        notice_title: formData.notice_title,
-        category: formData.category,
-        accountType: formData.userType,
-        lawyerName: formData.lawyer_name,
-        date: formData.date,
-        location: formData.location,
-        phoneNo: formData.phone,
-        noticeDescription: formData.landDescription,
-        userId: userId
-      };
-
-      // Make API call to create notice
-      const noticeResponse = await fetch('http://localhost:8004/api/notices/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(noticeData)
-      });
-
-      const noticeResult = await noticeResponse.json();
-
-      if (!noticeResponse.ok) {
-        throw new Error(noticeResult.message || 'Failed to create notice');
-      }
-
-      // If notice creation is successful, upload the image
-      if (noticeResult.success) {
-        // Upload the image using the existing API
-        const imageResponse = await fetch('https://api.epublicnotices.in/api/request-upload-notice', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          },
-          body: formDataToSubmit
-        });
-
-        const imageResult = await imageResponse.json();
-
-        if (!imageResponse.ok) {
-          throw new Error(imageResult.message || 'Failed to upload notice image');
-        }
-
-        if (imageResult.success) {
-          setSuccessMessage('Your notice has been successfully submitted! It will be live in the next 4 hours.');
-          setShowSuccessModal(true);
-          setFormData(initialFormData);
-        } else {
-          throw new Error(imageResult.message || 'Failed to upload notice image');
-        }
-      } else {
-        throw new Error(noticeResult.message || 'Failed to create notice');
-      }
-
-    } catch (error) {
-      console.error('Error submitting notice:', error);
-      setSuccessMessage(error.message || 'Failed to submit notice');
-      setShowSuccessModal(true);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Render preview if showPreview is true
   if (showPreview) {
@@ -591,6 +509,23 @@ const isFormComplete = () => {
                   </div>
                 </div>
               </div>
+
+              <div className="mt-8 text-center">
+                <button
+                  type="submit"
+                  disabled={!isFormComplete() || loading}
+                  className={`px-8 py-3 rounded-md ${
+                    isFormComplete() && !loading
+                      ? 'bg-[#004B80] text-white hover:bg-[#003b66] shadow-md'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  } transition`}
+                >
+                  {loading ? 'Submitting...' : 'Submit Notice'}
+                </button>
+                {!isFormComplete() && (
+                  <p className="text-sm text-red-500 mt-2">Fill all required fields to proceed</p>
+                )}
+              </div>
             </form>
           </div>
 
@@ -616,34 +551,7 @@ const isFormComplete = () => {
                 </div>
               ))}
             </div>
-
-            <div className="mt-8 text-center">
-              <button
-                onClick={handlePreview}
-                disabled={!isFormComplete()}
-                className={`px-8 py-3 rounded-md ${
-                  isFormComplete()
-                    ? 'bg-[#004B80] text-white hover:bg-[#003b66] shadow-md'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                } transition`}
-              >
-                Submit Notice
-              </button>
-              {!isFormComplete() && (
-                <p className="text-sm text-red-500 mt-2">Fill all required fields to proceed</p>
-              )}
-            </div>
           </div>
-
-          {/* Preview Section */}
-          {/* <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold mb-6">{t('noticePreview')}</h2>
-            <div className="border rounded-lg p-4 bg-gray-50">
-              <div ref={templateRef} className="notice-preview transform scale-75 origin-top-left">
-                {templates[selectedTemplate](formData)}
-              </div>
-            </div>
-          </div> */}
         </div>
 
         {/* Success Modal */}
@@ -652,7 +560,7 @@ const isFormComplete = () => {
           onClose={() => {
             setShowSuccessModal(false);
             if (successMessage.includes('successfully')) {
-              navigate('/mynotices');
+              window.location.href = '/mynotices';
             }
           }}
           message={successMessage}

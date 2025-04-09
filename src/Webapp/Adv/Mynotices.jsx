@@ -13,6 +13,8 @@ const MyNotices = () => {
   const [activeTab, setActiveTab] = useState("published");
   const [userProfile, setUserProfile] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [regularNotices, setRegularNotices] = useState([]);
   const [noticeTemplates, setNoticeTemplates] = useState([
     {
       id: 1,
@@ -128,8 +130,9 @@ const MyNotices = () => {
 
   // Add this after the existing useEffect hooks
   useEffect(() => {
-    const fetchLandNotices = async () => {
+    const fetchAllNotices = async () => {
       try {
+        setIsLoading(true);
         const token = localStorage.getItem('authToken');
         if (!token) {
           toast.error('Please login to continue');
@@ -139,26 +142,50 @@ const MyNotices = () => {
         // Get user ID from token
         const tokenPayload = JSON.parse(atob(token.split('.')[1]));
         const userId = tokenPayload.userId;
-// http://localhost:8004/
-        const response = await fetch(`https://api.epublicnotices.in/api/land-notices/my-notices?userId=${userId}`, {
+
+        // Fetch regular notices
+        const regularResponse = await fetch(`https://api.epublicnotices.in/api/notices/user/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch land notices');
+        // Fetch land notices
+        const landResponse = await fetch(`https://api.epublicnotices.in/api/land-notices/my-notices?userId=${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!regularResponse.ok || !landResponse.ok) {
+          throw new Error('Failed to fetch notices');
         }
 
-        const data = await response.json();
-        setLandNotices(data.notices);
+        const regularData = await regularResponse.json();
+        const landData = await landResponse.json();
+
+        // Combine and sort both types of notices by creation date
+        const allNotices = [
+          ...regularData.notices.map(notice => ({
+            ...notice,
+            noticeType: 'regular'
+          })),
+          ...landData.notices.map(notice => ({
+            ...notice,
+            noticeType: 'land'
+          }))
+        ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        setPublishedNotices(allNotices);
+        setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching land notices:', error);
-        toast.error('Failed to fetch land notices');
+        console.error('Error fetching notices:', error);
+        toast.error('Failed to fetch notices');
+        setIsLoading(false);
       }
     };
 
-    fetchLandNotices();
+    fetchAllNotices();
   }, []);
 
   // Get user ID from token
@@ -481,7 +508,11 @@ const MyNotices = () => {
           {/* Published Notices */}
           {activeTab === "published" && (
             <div>
-              {landNotices.length === 0 ? (
+              {isLoading ? (
+                <div className="flex justify-center items-center h-64">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#004B80]"></div>
+                </div>
+              ) : publishedNotices.length === 0 ? (
                 <div className="bg-white rounded-lg shadow-md p-8 text-center">
                   <div className="text-gray-400 mb-4">
                     <svg
@@ -514,7 +545,7 @@ const MyNotices = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {landNotices.map((notice) => (
+                  {publishedNotices.map((notice) => (
                     <div
                       key={notice.id}
                       className="bg-white rounded-lg shadow-md overflow-hidden"
@@ -526,6 +557,13 @@ const MyNotices = () => {
                             alt="Notice Preview"
                             className="w-full h-full object-contain bg-gray-50"
                           />
+                          <div className="absolute top-2 right-2">
+                            <span className={`text-xs py-1 px-2 rounded ${
+                              notice.noticeType === 'regular' ? 'bg-blue-500' : 'bg-green-500'
+                            } text-white`}>
+                              {notice.noticeType === 'regular' ? 'Public Notice' : 'Land Notice'}
+                            </span>
+                          </div>
                         </div>
                       )}
                       <div className="bg-[#004B80] text-white py-2 px-4 flex justify-between items-center">
@@ -543,10 +581,29 @@ const MyNotices = () => {
                         </div>
                       </div>
                       <div className="px-4 py-3 border-b border-gray-100">
-                        <div className="text-sm">
-                          <span className="text-gray-500">Survey Number:</span>{" "}
-                          {notice.surveyNumber}
-                        </div>
+                        {notice.noticeType === 'land' ? (
+                          <>
+                            <div className="text-sm">
+                              <span className="text-gray-500">Survey Number:</span>{" "}
+                              {notice.surveyNumber}
+                            </div>
+                            <div className="text-sm">
+                              <span className="text-gray-500">Owner:</span>{" "}
+                              {notice.ownerName}
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-sm">
+                              <span className="text-gray-500">Category:</span>{" "}
+                              {notice.category}
+                            </div>
+                            <div className="text-sm">
+                              <span className="text-gray-500">Lawyer:</span>{" "}
+                              {notice.lawyerName}
+                            </div>
+                          </>
+                        )}
                         <div className="text-sm">
                           <span className="text-gray-500">Created:</span>{" "}
                           {formatDate(notice.createdAt)}
@@ -560,7 +617,7 @@ const MyNotices = () => {
                       </div>
                       <div className="p-4">
                         <div className="text-sm text-gray-600 line-clamp-3">
-                          {notice.landDescription}
+                          {notice.noticeType === 'land' ? notice.landDescription : notice.noticeDescription}
                         </div>
                       </div>
                       {notice.status === 'approved' && notice.publishedUrl && (
