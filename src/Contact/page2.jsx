@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../Webapp/Home/HomeHeader';
 import Footer from '../LandingPage/Footer';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import emailjs from '@emailjs/browser';
+
+// Initialize EmailJS
+emailjs.init("F-yH4f6cqJ3iC_L6z");
 
 // Icons
 const LocationIcon = () => (
@@ -69,6 +73,8 @@ const HelpDeskContactPage = () => {
     });
 
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -78,24 +84,52 @@ const HelpDeskContactPage = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Form submission logic would go here
-        console.log("Form data:", formData);
-        setFormSubmitted(true);
+        setIsSubmitting(true);
+        setError('');
 
-        // Reset form after 3 seconds
-        setTimeout(() => {
-            setFormSubmitted(false);
-            setFormData({
-                name: '',
-                email: '',
-                phone: '',
-                subject: '',
-                message: '',
-                department: 'general'
-            });
-        }, 3000);
+        try {
+            const templateParams = {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                subject: formData.subject,
+                message: formData.message,
+                department: formData.department,
+                time: new Date().toLocaleString()
+            };
+
+            const response = await emailjs.send(
+                'service_3h6fhwq',
+                'template_43u0ivp',
+                templateParams
+            );
+
+            if (response.status === 200) {
+                setFormSubmitted(true);
+                
+                // Reset form after 3 seconds
+                setTimeout(() => {
+                    setFormSubmitted(false);
+                    setFormData({
+                        name: '',
+                        email: '',
+                        phone: '',
+                        subject: '',
+                        message: '',
+                        department: 'general'
+                    });
+                }, 3000);
+            } else {
+                throw new Error('Failed to send email');
+            }
+        } catch (err) {
+            console.error('Error sending email:', err);
+            setError('Failed to send message. Please try again later or contact support directly.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -159,11 +193,20 @@ const HelpDeskContactPage = () => {
                                 <CalendarIcon />
                                 Hours
                             </h3>
-                            <p className="ml-8 text-gray-700">
-                                Monday - Friday: 9AM - 6PM IST<br />
-                                Saturday: 10AM - 4PM IST<br />
-                                Sunday: Closed
-                            </p>
+                            <div className="ml-8 text-gray-700">
+                                <div className="flex justify-between max-w-xs">
+                                    <span className="font-medium">Monday - Friday :</span>
+                                    <span>9AM - 6PM IST</span>
+                                </div>
+                                <div className="flex justify-between max-w-xs mt-2">
+                                    <span className="font-medium">Saturday :</span>
+                                    <span>10AM - 4PM IST</span>
+                                </div>
+                                <div className="flex justify-between max-w-xs mt-2">
+                                    <span className="font-medium">Sunday :</span>
+                                    <span className="text-red-500">Closed</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -186,6 +229,11 @@ const HelpDeskContactPage = () => {
                                 </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="space-y-6">
+                                    {error && (
+                                        <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-center">
+                                            <p className="text-red-700">{error}</p>
+                                        </div>
+                                    )}
                                     <div className="grid md:grid-cols-2 gap-6">
                                         {/* Left column */}
                                         <div className="space-y-6">
@@ -307,9 +355,10 @@ const HelpDeskContactPage = () => {
                                     <div className="flex justify-end">
                                         <button
                                             type="submit"
-                                            className="px-8 py-3 bg-[#004b80] text-white font-semibold rounded-lg shadow-md hover:bg-[#003b66] transform transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#b8d7f4] focus:ring-opacity-50"
+                                            disabled={isSubmitting}
+                                            className={`px-8 py-3 bg-[#004b80] text-white font-semibold rounded-lg shadow-md hover:bg-[#003b66] transform transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#b8d7f4] focus:ring-opacity-50 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                                         >
-                                            Send Message
+                                            {isSubmitting ? 'Sending...' : 'Send Message'}
                                         </button>
                                     </div>
                                 </form>
